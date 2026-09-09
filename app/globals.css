@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-barlow), "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+  --color-paper: #eef1f4;
+  --color-paper-deep: #dce2e8;
+  --color-card: #f7f9fb;
+  --color-ink: #161b22;
+  --color-ink-soft: #3d4754;
+  --color-rule: #c5ced6;
+  --color-amp: #c47b12;
+  --color-amp-dark: #8a5408;
+  --color-steel: #1f4e6b;
+  --color-steel-soft: #d5e4ee;
+  --color-warn: #8a3d12;
+  --color-warn-soft: #f3ddc8;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 380px at 0% -8%, rgba(196, 123, 18, 0.1), transparent 55%),
+    radial-gradient(900px 360px at 100% 0%, rgba(31, 78, 107, 0.1), transparent 50%),
+    var(--color-paper);
+}
+
+::selection {
+  background: #f0d3a0;
+  color: var(--color-ink);
+}
+
+.strand-rule {
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-amp) 0 10px,
+    var(--color-ink) 10px 14px,
+    var(--color-steel) 14px 24px,
+    var(--color-paper-deep) 24px 32px
+  );
+  opacity: 0.7;
+}
+
+.prose-cord {
+  color: var(--color-ink-soft);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.prose-cord > * + * {
+  margin-top: 1.15rem;
+}
+
+.prose-cord h2 {
+  color: var(--color-ink);
+  font-size: 1.55rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-top: 2.4rem;
+}
+
+.prose-cord h3 {
+  color: var(--color-ink);
+  font-size: 1.15rem;
+  font-weight: 650;
+  margin-top: 1.8rem;
+}
+
+.prose-cord a {
+  color: var(--color-steel);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose-cord a:hover {
+  color: var(--color-amp-dark);
+}
+
+.prose-cord ul,
+.prose-cord ol {
+  padding-left: 1.2rem;
+}
+
+.prose-cord li + li {
+  margin-top: 0.45rem;
+}
+
+.prose-cord ul {
+  list-style: disc;
+}
+
+.prose-cord ol {
+  list-style: decimal;
+}
+
+.prose-cord strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--color-rule);
+  background: var(--color-card);
+}
+
+.table-scroll table {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table-scroll th,
+.table-scroll td {
+  border-bottom: 1px solid var(--color-rule);
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.table-scroll th {
+  background: var(--color-paper-deep);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.table-scroll tr:last-child td {
+  border-bottom: 0;
+}
+
+.table-scroll .pick {
+  font-weight: 650;
+  color: var(--color-ink);
+}
