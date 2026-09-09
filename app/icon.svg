@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="CordGauge Guide">
+  <rect width="32" height="32" fill="#161b22"/>
+  <path d="M6 22c4-10 16-10 20 0" fill="none" stroke="#c47b12" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M8 22c3.2-7.4 12.8-7.4 16 0" fill="none" stroke="#d5e4ee" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="6" cy="22" r="2.1" fill="#c47b12"/>
+  <circle cx="26" cy="22" r="2.1" fill="#1f4e6b"/>
+</svg>
