@@ -56,6 +56,14 @@ export const guides: Guide[] = [
       "Extension cord gauge for a 15 A portable air compressor. Nameplate vs start surge, why thin cords trip and heat, and when 12 AWG vs 10 AWG.",
   },
   {
+    href: "/best-extension-cord-for-pressure-washer",
+    title: "Best extension cord for a pressure washer",
+    kicker: "Pressure washer",
+    dek: "Nameplate 13–15 A electric washers outdoors, SJTW jacket, why thin cords trip and heat, and 12 AWG vs 10 AWG on a driveway.",
+    description:
+      "Extension cord gauge for a 13–15 A electric pressure washer. Why outdoor SJTW matters, why thin cords trip and heat, and when 12 AWG vs 10 AWG on a driveway.",
+  },
+  {
     href: "/100-foot-extension-cord-gauge",
     title: "100-foot extension cord gauge",
     kicker: "Long runs",
