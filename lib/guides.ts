@@ -32,6 +32,14 @@ export const guides: Guide[] = [
       "Extension cord gauge for a 15 A circular saw. Why 12 AWG beats 14 AWG past a short run, and why 16 AWG is the wrong aisle.",
   },
   {
+    href: "/best-extension-cord-for-table-saw",
+    title: "Best extension cord for a table saw",
+    kicker: "Table saw",
+    dek: "Nameplate 15 A contractor saws, start surge, and when 12 AWG is enough vs when 10 AWG is the honest run.",
+    description:
+      "Extension cord gauge for a 15 A table saw. Why 16 AWG is wrong, when 12 AWG is the shop default, and when 10 AWG is the honest long run.",
+  },
+  {
     href: "/100-foot-extension-cord-gauge",
     title: "100-foot extension cord gauge",
     kicker: "Long runs",
