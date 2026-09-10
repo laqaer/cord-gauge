@@ -64,6 +64,14 @@ export const guides: Guide[] = [
       "What gauge for a 100-foot extension cord. Copper voltage-drop planning for 10–15 A tools, and why two 50-foot cords are not the same.",
   },
   {
+    href: "/daisy-chain-extension-cords",
+    title: "Can you daisy-chain extension cords?",
+    kicker: "Daisy chain",
+    dek: "Why two 50-foot cords are a 100-foot drop plus extra plugs — and why the thinnest link sets the ampacity.",
+    description:
+      "Why stacking two 50-foot cords fails for shop tools. 100-foot voltage drop, ampacity of the thinnest link, heat at the plugs, and when one properly gauged cord is the fix.",
+  },
+  {
     href: "/outdoor-extension-cord-gauge-sjtw",
     title: "Outdoor extension cord gauge and SJTW",
     kicker: "Outdoor / SJTW",
