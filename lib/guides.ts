@@ -24,6 +24,14 @@ export const guides: Guide[] = [
       "Compare 12 AWG and 14 AWG extension cords for 15 A shop tools. Voltage drop, weight, and when the thinner cord is fine.",
   },
   {
+    href: "/10-vs-12-gauge-extension-cord",
+    title: "10 vs 12 gauge extension cord",
+    kicker: "10 vs 12",
+    dek: "When 10 AWG beats 12 AWG on 100-foot 15 A motors, start sag, and a cord that lives on the shop floor.",
+    description:
+      "Compare 10 AWG and 12 AWG extension cords for 15 A shop tools. Voltage drop at 100 feet, motor start, and when the thicker cord is worth the weight.",
+  },
+  {
     href: "/best-extension-cord-for-circular-saw",
     title: "Best extension cord for a circular saw",
     kicker: "15 A saws",
