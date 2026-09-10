@@ -48,6 +48,14 @@ export const guides: Guide[] = [
       "Extension cord gauge for a 15 A table saw. Why 16 AWG is wrong, when 12 AWG is the shop default, and when 10 AWG is the honest long run.",
   },
   {
+    href: "/best-extension-cord-for-air-compressor",
+    title: "Best extension cord for an air compressor",
+    kicker: "Compressor",
+    dek: "Nameplate vs start surge on a 15 A portable compressor, why thin cords trip and heat, and when 12 AWG vs 10 AWG.",
+    description:
+      "Extension cord gauge for a 15 A portable air compressor. Nameplate vs start surge, why thin cords trip and heat, and when 12 AWG vs 10 AWG.",
+  },
+  {
     href: "/100-foot-extension-cord-gauge",
     title: "100-foot extension cord gauge",
     kicker: "Long runs",
