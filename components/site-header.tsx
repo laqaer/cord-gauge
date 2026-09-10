@@ -1,6 +1,13 @@
 import Link from "next/link";
-import { guides } from "@/lib/guides";
 import { site } from "@/lib/site";
+
+const primaryNav = [
+  { href: "/extension-cord-gauge-chart", label: "Master chart" },
+  { href: "/12-vs-14-gauge-extension-cord", label: "12 vs 14" },
+  { href: "/best-extension-cord-for-circular-saw", label: "15 A saws" },
+  { href: "/100-foot-extension-cord-gauge", label: "Long runs" },
+  { href: "/outdoor-extension-cord-gauge-sjtw", label: "Outdoor" },
+] as const;
 
 export function SiteHeader() {
   return (
@@ -14,9 +21,9 @@ export function SiteHeader() {
           <Link className="hover:text-amp-dark" href="/#how-to-pick">
             How to pick
           </Link>
-          {guides.slice(0, 3).map((guide) => (
-            <Link key={guide.href} className="hover:text-amp-dark" href={guide.href}>
-              {guide.kicker}
+          {primaryNav.map((item) => (
+            <Link key={item.href} className="hover:text-amp-dark" href={item.href}>
+              {item.label}
             </Link>
           ))}
           <Link className="hover:text-amp-dark" href="/about">
