@@ -41,8 +41,8 @@ export default function AboutPage() {
           “outdoor” reel. We do not manufacture cords. We do not invent star ratings.
         </p>
         <p>
-          The site is published by <strong>{site.publisher}</strong>. The intended production
-          domain is <strong>{site.domain}</strong> (not wired yet). For corrections or a voltage-drop
+          The site is published by <strong>{site.publisher}</strong> at{" "}
+          <a href={site.url}>{new URL(site.url).host}</a>. For corrections or a voltage-drop
           assumption we should label more clearly, write{" "}
           <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
