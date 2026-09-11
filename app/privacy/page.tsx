@@ -57,16 +57,14 @@ export default function PrivacyPage() {
 
         <h2>Affiliate and advertising technology</h2>
         <p>
-          Some product mentions may become affiliate links. None are live with tracking tags on
-          this ship. Clicking through to a future retailer can cause that retailer or their network
-          to set cookies, record that you came from CordGauge Guide, and attribute a commission if
-          you buy. Those companies have their own privacy policies. CordGauge Guide does not
-          receive your payment card number.
+          Some product links are Amazon Associates links (tag=laqaer-20). Clicking through to
+          Amazon can cause Amazon to set cookies, record that you came from CordGauge Guide, and
+          attribute a commission if you buy. Amazon has its own privacy policy. CordGauge Guide
+          does not receive your payment card number.
         </p>
         <p>
-          <code>ads.txt</code> on this site is a placeholder until authorized sellers are listed.
-          If display ads are added, ad networks may use cookies or similar identifiers for
-          frequency capping and fraud prevention. We will not pretend those vendors are invisible.
+          <code>ads.txt</code> on this site is a placeholder. We do not run display ads or list
+          an AdSense publisher ID. If that changes, this page will name the network.
         </p>
 
         <h2>What we do not do</h2>
@@ -85,8 +83,8 @@ export default function PrivacyPage() {
 
         <h2>Changes</h2>
         <p>
-          If the site adds accounts, a newsletter, or live ad/affiliate tags, we will update this
-          page and the date above.
+          If the site adds accounts, a newsletter, or display ads, we will update this page and the
+          date above.
         </p>
       </div>
     </article>

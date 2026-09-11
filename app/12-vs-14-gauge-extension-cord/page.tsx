@@ -4,6 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
+import { ShopCords } from "@/components/shop-cords";
 import { formatDrop } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -126,6 +127,7 @@ export default function TwelveVsFourteenPage() {
           melted jackets.
         </p>
       </div>
+      <ShopCords />
       <RelatedGuides except="/12-vs-14-gauge-extension-cord" />
     </article>
   );
