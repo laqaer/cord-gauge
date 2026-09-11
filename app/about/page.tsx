@@ -72,10 +72,10 @@ export default function AboutPage() {
 
         <h2>How the site is funded</h2>
         <p>
-          Some product mentions may later become affiliate links. None are tagged yet; there are no
-          retailer tracking IDs on this ship. If that changes, a purchase through those links may
-          earn {site.publisher} a commission. Money does not buy a score here. See{" "}
-          <Link href="/privacy">privacy</Link> for how a content-and-affiliate site handles data.
+          Amazon Associates links may appear when a named outdoor cord is relevant; a purchase
+          through those links may earn {site.publisher} a commission. Money does not buy a score
+          here. See <Link href="/privacy">privacy</Link> for how a content-and-affiliate site
+          handles data.
         </p>
 
         <h2>What we are not</h2>

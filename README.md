@@ -43,7 +43,7 @@ npm run build
 2. Framework preset: **Next.js**. Leave build/output commands at defaults (`next build`).
 3. No environment variables are required for the editorial site.
 4. Production primary is `https://www.cordgaugeguide.com` (apex 308 → www). Canonicals, OG, sitemap, and robots Host/Sitemap use www.
-5. Replace `public/ads.txt` and add real retailer links before serving ads or affiliate clicks.
+5. `ads.txt` stays a placeholder (no AdSense pub ID). Amazon Associates shop links use `tag=laqaer-20`.
 
 ## Routes
 
