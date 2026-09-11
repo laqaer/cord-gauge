@@ -3,7 +3,7 @@
 Independent comparison directory for **extension cord gauge (AWG × amps × length)**. Helps shop and DIY users pick 12 AWG vs 14 AWG without treating the jacket color as a spec.
 
 **Brand:** CordGauge Guide  
-**Domain:** cordgaugeguide.com (intended; not wired yet)  
+**Domain:** [www.cordgaugeguide.com](https://www.cordgaugeguide.com) (apex 308 → www)  
 **Contact:** [hello@cordgaugeguide.com](mailto:hello@cordgaugeguide.com)  
 **Publisher:** Laqaer Products
 
@@ -42,7 +42,7 @@ npm run build
 1. Import `laqaer/cord-gauge`.
 2. Framework preset: **Next.js**. Leave build/output commands at defaults (`next build`).
 3. No environment variables are required for the editorial site.
-4. Production domain `cordgaugeguide.com` is the intended name and is **not purchased / not wired** in this ship.
+4. Production primary is `https://www.cordgaugeguide.com` (apex 308 → www). Canonicals, OG, sitemap, and robots Host/Sitemap use www.
 5. Replace `public/ads.txt` and add real retailer links before serving ads or affiliate clicks.
 
 ## Routes

@@ -4,12 +4,12 @@ export const site = {
   tagline: "Pick extension-cord gauge from amps and run length — not from the color of the jacket.",
   description:
     "Independent AWG decision guide for shop and DIY power tools. Compare extension-cord gauge by amps × run length. No fake reviews.",
-  url: "https://cordgaugeguide.com",
+  url: "https://www.cordgaugeguide.com",
   domain: "cordgaugeguide.com",
   email: "hello@cordgaugeguide.com",
   publisher: "Laqaer Products",
   locale: "en_US",
-  updated: "2026-09-09",
+  updated: "2026-09-11",
 } as const;
 
 export const affiliateDisclosure =

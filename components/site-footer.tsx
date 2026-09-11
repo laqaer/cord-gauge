@@ -11,7 +11,11 @@ export function SiteFooter() {
             <p className="text-lg font-semibold tracking-tight text-ink">{site.name}</p>
             <p className="mt-3 max-w-sm text-sm leading-6 text-ink-soft">{site.tagline}</p>
             <p className="mt-3 text-sm text-ink-soft">
-              A {site.publisher} comparison site. Intended domain: {site.domain} (not wired yet).
+              A {site.publisher} comparison site.{" "}
+              <a className="text-steel hover:text-amp-dark" href={site.url}>
+                {new URL(site.url).host}
+              </a>
+              .
             </p>
           </div>
           <div>
