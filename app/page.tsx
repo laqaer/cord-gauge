@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ShopCords } from "@/components/shop-cords";
 import { gaugeChart, pickSteps } from "@/lib/cords";
 import { guides } from "@/lib/guides";
 import { site } from "@/lib/site";
@@ -78,6 +79,8 @@ export default function HomePage() {
           </table>
         </div>
       </section>
+
+      <ShopCords />
 
       <section className="mt-16 grid gap-6 md:grid-cols-3">
         <article className="border border-rule bg-card p-5">
