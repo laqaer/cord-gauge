@@ -4,6 +4,9 @@ import { site } from "@/lib/site";
 
 const staticRoutes = ["/", "/about", "/privacy"] as const;
 
+// Build-time metadata route for Next.js static export.
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date(site.updated);
 
