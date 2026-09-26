@@ -15,6 +15,7 @@ All figures below are observed evidence, not a forecast.
 | Customer liabilities | 0 observed | No prepaid orders, accounts, or subscriptions |
 | Paying customers | 0 observed | No order system |
 | Net operating profit | Unverified | Do not treat a missing report as $0 profit or as a loss. The honest label is: no attributable cash has been seen |
+| Synthetic click-counter posts | 2 | `POST /click` for path `/ops-self-test` and ASIN `B00004SQF4` on 2026-09-26. Operator test, not a customer |
 
 Inherited revenue from before 2026-09-26: not visible. It is not claimed as zero and it is not claimed as positive.
 

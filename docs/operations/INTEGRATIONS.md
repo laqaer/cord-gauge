@@ -26,4 +26,6 @@ No secret values belong in this file.
 
 `POST https://cord-gauge-ops.laqaer-products.workers.dev/click` with a text body `{"path":"/...","asin":"B00004SQF4"}`.
 
-`GET https://cord-gauge-ops.laqaer-products.workers.dev/status` is the owner-visible daily snapshot: last health result and today’s click totals. It is not a profit report.
+`GET https://cord-gauge-ops.laqaer-products.workers.dev/status` is the owner-visible snapshot: last scheduled health result, last manual health result, and today’s click totals. It is not a profit report.
+
+Cron: `15 13 * * *` UTC. KV namespace id `2f047a0b2e154e6382e5f085f66779e2` (title `cord-gauge-ops`). No secret is stored in that namespace.

@@ -40,6 +40,15 @@ Why this offer: the site, domain, and affiliate tag already exist. A second chec
 - `node scripts/health-check.mjs` passed against production after the robots.txt check was narrowed to the IndexNow key file.
 - IndexNow accepted 14 URLs with HTTP 200. See experiment 001.
 
+## Unattended runtime
+
+- Worker `cord-gauge-ops` is deployed on `https://cord-gauge-ops.laqaer-products.workers.dev`.
+- A scheduled run wrote `health:scheduled` at 2026-09-26T04:59:11Z with `ok: true`. That write was not an HTTP `/health` call. The manual check before it was 2026-09-26T04:56:58Z.
+- After that proof, the cron was changed from every minute to `15 13 * * *` so it does not keep fetching the site.
+- Click counter accepted two synthetic posts to `/ops-self-test` and rejected a bad ASIN. Those two clicks are not customers.
+- GitHub `Production health` is on `main` at the same daily time. `workflow_dispatch` returned 403 for this token, so that schedule has not been observed yet. The worker cron is the run that was actually seen.
+- Stop switches are in `INTEGRATIONS.md`. Status JSON is `GET /status` on the worker.
+
 ## Next action
 
-Deploy `ops/cord-gauge-ops.js`, confirm one scheduled run that this session did not invoke by HTTP, and dispatch the production-health workflow once the robots.txt fix is on `main`. Evaluation window for experiment 001 ends 2026-10-10.
+Leave experiment 001 alone until 2026-10-10 unless a linked ASIN goes unavailable. Read `/status` for health. Do not add tool pages on a zero-click result. Profit stays unverified until an Associates report exists.
