@@ -33,7 +33,7 @@ for (const path of pages) {
       !body.includes("B09BDFM4HC") &&
       !body.includes("B09BDGHQBP");
   }
-  if (path.endsWith(".txt")) ok = ok && body.trim() === INDEXNOW_KEY;
+  if (path === `/${INDEXNOW_KEY}.txt`) ok = ok && body.trim() === INDEXNOW_KEY;
   if (path === "/sitemap.xml") ok = ok && body.includes("/extension-cord-gauge-calculator");
   console.log(`${ok ? "ok" : "FAIL"} ${res.status} ${path}`);
   if (!ok) failed = true;
