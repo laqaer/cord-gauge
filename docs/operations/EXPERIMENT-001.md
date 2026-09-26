@@ -1,6 +1,6 @@
 # Experiment 001 — index the gauge decision and link an in-stock cord
 
-Recorded before the IndexNow submission. Status: defined, not yet run.
+Recorded before the IndexNow submission. Status: running. IndexNow accepted the batch on 2026-09-26 with HTTP 200, after production was already serving the calculator and the checked ASINs. That acceptance is not indexing and it is not a sale.
 
 ## Hypothesis
 

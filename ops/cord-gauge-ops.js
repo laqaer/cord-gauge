@@ -49,7 +49,7 @@ async function runHealth() {
       if (path === "/") {
         ok = ok && body.includes("tag=laqaer-20") && body.includes("Amazon Associates");
       }
-      if (path.endsWith(".txt")) {
+      if (path === `/${INDEXNOW_KEY}.txt`) {
         ok = ok && body.trim() === INDEXNOW_KEY;
       }
       checks.push({ path, status: res.status, ok });

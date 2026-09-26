@@ -34,6 +34,12 @@ Why this offer: the site, domain, and affiliate tag already exist. A second chec
 - Vercel API access to team `laqaers-projects` returned 403. Production updates depend on the existing GitHub integration.
 - This file does not claim the worker cron or the GitHub schedule has already fired. Those checks are recorded after they happen.
 
+## Verified on 2026-09-26
+
+- Pull request #10 merged as `3100aaa`. Vercel published `/extension-cord-gauge-calculator` and the Southwire ASINs. The first request after merge was still 404; the next check was 200.
+- `node scripts/health-check.mjs` passed against production after the robots.txt check was narrowed to the IndexNow key file.
+- IndexNow accepted 14 URLs with HTTP 200. See experiment 001.
+
 ## Next action
 
-After this revision is on `main` and Vercel has published it: run IndexNow, deploy `ops/cord-gauge-ops.js`, confirm one scheduled worker run, and dispatch the production-health workflow. Evaluation window for experiment 001 ends 2026-10-10.
+Deploy `ops/cord-gauge-ops.js`, confirm one scheduled run that this session did not invoke by HTTP, and dispatch the production-health workflow once the robots.txt fix is on `main`. Evaluation window for experiment 001 ends 2026-10-10.
