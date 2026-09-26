@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { recommendAwg, voltageDropPercent, voltageDropVolts } from "./cords.ts";
 import { AMAZON_TAG, amazonUrl, products, selectProducts } from "./affiliates.ts";
+import { guidesByHref, toolBuyerHrefs, toolBuyerWhy } from "./guides.ts";
 
 test("15 A voltage drop uses the two-way copper path", () => {
   assert.equal(voltageDropVolts(12, 15, 100), 5.79);
@@ -52,4 +53,23 @@ test("in-stock shop links match gauge and length", () => {
   const light = selectProducts({ pick: 16, lengthFt: 25 });
   assert.match(light.note ?? "", /16 AWG/);
   assert.equal(light.products.length, 2);
+});
+
+test("calculator and chart hand off to the four tool buyer guides", () => {
+  assert.deepEqual(
+    [...toolBuyerHrefs],
+    [
+      "/best-extension-cord-for-circular-saw",
+      "/best-extension-cord-for-table-saw",
+      "/best-extension-cord-for-air-compressor",
+      "/best-extension-cord-for-pressure-washer",
+    ],
+  );
+  assert.deepEqual(
+    guidesByHref(toolBuyerHrefs).map((guide) => guide.href),
+    [...toolBuyerHrefs],
+  );
+  for (const href of toolBuyerHrefs) {
+    assert.match(toolBuyerWhy[href], /AWG/);
+  }
 });

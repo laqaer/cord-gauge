@@ -7,6 +7,7 @@ import { RelatedGuides } from "@/components/related-guides";
 import { GaugePicker } from "@/components/gauge-picker";
 import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { awgOrder, gaugeChart, listedAmpNotes } from "@/lib/cords";
+import { toolBuyerHrefs, toolBuyerWhy } from "@/lib/guides";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
 
@@ -97,6 +98,14 @@ export default function GaugeChartPage() {
           </tbody>
         </table>
       </div>
+
+      <RelatedGuides
+        compact
+        hrefs={toolBuyerHrefs}
+        whyByHref={toolBuyerWhy}
+        heading="Next: tool-specific picks"
+        intro="You already have the amps and the feet. These pages apply that pick to the tool."
+      />
 
       <div className="prose-cord mt-10">
         <h2>What the listing usually allows</h2>

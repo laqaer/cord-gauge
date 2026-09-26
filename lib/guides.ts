@@ -100,3 +100,33 @@ export const guides: Guide[] = [
 export function guideByHref(href: string): Guide | undefined {
   return guides.find((guide) => guide.href === href);
 }
+
+export function guidesByHref(hrefs: readonly string[]): Guide[] {
+  return hrefs.map((href) => {
+    const guide = guideByHref(href);
+    if (!guide) {
+      throw new Error(`Unknown guide href: ${href}`);
+    }
+    return guide;
+  });
+}
+
+/** Purchase-intent guides. Order is the order shown after the calculator and chart. */
+export const toolBuyerHrefs = [
+  "/best-extension-cord-for-circular-saw",
+  "/best-extension-cord-for-table-saw",
+  "/best-extension-cord-for-air-compressor",
+  "/best-extension-cord-for-pressure-washer",
+] as const;
+
+/** One-line why for the post-math handoff. Gauge advice only — not a product pitch. */
+export const toolBuyerWhy: Record<(typeof toolBuyerHrefs)[number], string> = {
+  "/best-extension-cord-for-circular-saw":
+    "About 13–15 A. Short runs → 12 AWG.",
+  "/best-extension-cord-for-table-saw":
+    "15 A contractor saw. Shop default is 12 AWG; 100 ft wants 10 AWG.",
+  "/best-extension-cord-for-air-compressor":
+    "15 A portable compressor, hard start. 12 AWG to 50 ft, 10 AWG at 100 ft.",
+  "/best-extension-cord-for-pressure-washer":
+    "13–15 A electric washer outdoors. Short runs → 12 AWG in an SJTW jacket.",
+};
