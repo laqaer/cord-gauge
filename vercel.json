@@ -1,1 +1,8 @@
-{"git":{"deploymentEnabled":{"infra/cloudflare-static-export":false}}}
+{
+  "git": {
+    "deploymentEnabled": {
+      "infra/cloudflare-static-export": false,
+      "infra/cloudflare-preview-workflow": false
+    }
+  }
+}
