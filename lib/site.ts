@@ -9,7 +9,7 @@ export const site = {
   email: "hello@cordgaugeguide.com",
   publisher: "Laqaer Products",
   locale: "en_US",
-  updated: "2026-09-11",
+  updated: "2026-09-26",
 } as const;
 
 export const affiliateDisclosure =

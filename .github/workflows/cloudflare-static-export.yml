@@ -22,6 +22,7 @@ jobs:
       - name: Generate Next.js route types
         run: npx next typegen
       - run: npm run typecheck
+      - run: npm test
       - run: npm run build
       - name: Verify static output
         shell: bash
@@ -31,6 +32,13 @@ jobs:
           test -f out/404.html
           test -f out/robots.txt
           test -f out/sitemap.xml
+          test -f out/extension-cord-gauge-calculator.html
           test "$(find out -type f -name '*.html' | wc -l)" -ge 4
+          grep -q 'B00004SQF4' out/index.html
+          grep -q 'B00004SQF5' out/index.html
+          if grep -q -E 'B01LXI1NL8|B09BDFM4HC|B09BDGHQBP' out/index.html; then
+            echo "removed affiliate ASIN reappeared in the homepage"
+            exit 1
+          fi
       - name: Validate Cloudflare bundle without deploying
         run: npx --yes wrangler@4.135.0 deploy --dry-run --outdir "$RUNNER_TEMP/cloudflare-dry-run"

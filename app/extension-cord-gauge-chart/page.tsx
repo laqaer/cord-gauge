@@ -4,6 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
+import { GaugePicker } from "@/components/gauge-picker";
 import { ShopCords } from "@/components/shop-cords";
 import { awgOrder, gaugeChart, listedAmpNotes } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
@@ -35,6 +36,7 @@ export default function GaugeChartPage() {
         title="Extension cord gauge by amps and length"
         dek="Use the nameplate amps and the actual run. Then pick AWG so voltage drop stays in a range a motor tool can live with. The printed “heavy duty” is not a spec."
       />
+      <GaugePicker />
 
       <div className="prose-cord mt-10">
         <p>

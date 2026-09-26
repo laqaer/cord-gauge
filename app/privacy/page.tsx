@@ -50,8 +50,12 @@ export default function PrivacyPage() {
             write. We use that to reply. We do not add you to a newsletter by default.
           </li>
           <li>
-            <strong>Optional analytics.</strong> If we later add a privacy-respecting analytics
-            tool, this page will name it. None is required to read the guides today.
+            <strong>Outbound cord clicks.</strong> “View on Amazon” opens Amazon directly. The
+            browser also sends the page path and the Amazon product id to a CordGauge counter at{" "}
+            <code>cord-gauge-ops.laqaer-products.workers.dev</code>. We store a daily total for
+            that path and product. We do not store your IP address, name, or email in that
+            counter. If the counter is down, the Amazon link still opens. Reading the guides does
+            not require this request. We do not run a separate analytics suite or display ads.
           </li>
         </ul>
 

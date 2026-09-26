@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { GaugePicker } from "@/components/gauge-picker";
 import { ShopCords } from "@/components/shop-cords";
 import { gaugeChart, pickSteps } from "@/lib/cords";
 import { guides } from "@/lib/guides";
@@ -42,6 +43,8 @@ export default function HomePage() {
           ))}
         </ol>
       </section>
+
+      <GaugePicker />
 
       <section className="mt-14">
         <div className="flex flex-wrap items-end justify-between gap-3">

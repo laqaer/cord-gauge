@@ -8,6 +8,14 @@ export type Guide = {
 
 export const guides: Guide[] = [
   {
+    href: "/extension-cord-gauge-calculator",
+    title: "Extension cord gauge calculator",
+    kicker: "Calculator",
+    dek: "Nameplate amps and run length in, AWG pick and copper voltage drop out, plus a cord only when the listing matches.",
+    description:
+      "Extension cord gauge calculator for 10, 13, and 15 amp tools at 25, 50, and 100 feet. Copper voltage-drop planning and a matching in-stock cord when we have one.",
+  },
+  {
     href: "/extension-cord-gauge-chart",
     title: "Extension cord gauge chart",
     kicker: "Master chart",

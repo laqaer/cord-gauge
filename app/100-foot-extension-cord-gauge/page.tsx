@@ -114,7 +114,7 @@ export default function HundredFootPage() {
           14 AWG at 100 feet on 15 A is the wrong aisle.
         </p>
       </div>
-      <ShopCords />
+      <ShopCords pick={10} lengthFt={100} heading="Cords for a 100-foot run" />
       <RelatedGuides except="/100-foot-extension-cord-gauge" />
     </article>
   );

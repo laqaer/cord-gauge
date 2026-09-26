@@ -127,7 +127,7 @@ export default function TwelveVsFourteenPage() {
           melted jackets.
         </p>
       </div>
-      <ShopCords />
+      <ShopCords pick={12} lengthFt={50} heading="12 AWG cords for this comparison" />
       <RelatedGuides except="/12-vs-14-gauge-extension-cord" />
     </article>
   );

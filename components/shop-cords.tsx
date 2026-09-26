@@ -1,15 +1,33 @@
-import { amazonUrl, products } from "@/lib/affiliates";
+import { AmazonLink } from "@/components/amazon-link";
+import { selectProducts } from "@/lib/affiliates";
+import type { Awg } from "@/lib/cords";
 
-export function ShopCords() {
+export function ShopCords({
+  pick,
+  lengthFt,
+  heading = "Shop outdoor cords",
+}: {
+  pick?: Awg;
+  lengthFt?: 25 | 50 | 100;
+  heading?: string;
+}) {
+  const selection = selectProducts({ pick, lengthFt });
+
   return (
     <section className="mt-14" id="shop-cords">
-      <h2 className="text-2xl font-semibold tracking-tight text-ink">Shop outdoor cords</h2>
+      <h2 className="text-2xl font-semibold tracking-tight text-ink">{heading}</h2>
       <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-soft">
-        Named SJTW cords that match the gauges in these guides. Links go to Amazon (Associates tag
-        laqaer-20). We may earn a commission. No scores, no invented prices.
+        Named SJTW cords checked against the Amazon listing for gauge, length, and a live buy box.
+        Links go to Amazon (Associates tag laqaer-20). We may earn a commission. No scores and no
+        prices.
       </p>
+      {selection.note ? (
+        <p className="mt-3 max-w-2xl border border-rule bg-warn-soft px-4 py-3 text-sm leading-6 text-ink">
+          {selection.note}
+        </p>
+      ) : null}
       <ul className="mt-6 grid gap-3">
-        {products.map((product) => (
+        {selection.products.map((product) => (
           <li
             key={product.asin}
             className="flex flex-col gap-3 border border-rule bg-card p-5 sm:flex-row sm:items-center sm:justify-between"
@@ -19,16 +37,9 @@ export function ShopCords() {
               <p className="mt-1 font-mono text-xs font-medium text-amp-dark">
                 {product.awg} AWG · {product.lengthFt} ft · {product.jacket}
               </p>
+              {product.note ? <p className="mt-2 text-sm leading-6 text-ink-soft">{product.note}</p> : null}
             </div>
-            <a
-              className="shrink-0 text-sm font-medium text-steel underline underline-offset-3 hover:text-amp-dark"
-              href={amazonUrl(product.asin)}
-              rel="nofollow sponsored noopener"
-              target="_blank"
-              aria-label={`View ${product.label} on Amazon`}
-            >
-              View on Amazon
-            </a>
+            <AmazonLink asin={product.asin} label={product.label} />
           </li>
         ))}
       </ul>
