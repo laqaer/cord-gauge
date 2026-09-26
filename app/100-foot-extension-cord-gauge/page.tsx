@@ -4,7 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
-import { ShopCords } from "@/components/shop-cords";
+import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { formatDrop, recommendAwg } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -113,6 +113,13 @@ export default function HundredFootPage() {
           <Link href="/12-vs-14-gauge-extension-cord">12 vs 14 page</Link> is the short version:
           14 AWG at 100 feet on 15 A is the wrong aisle.
         </p>
+        <ShopBuyLine
+          awg={12}
+          lengthFt={50}
+          after="for a 50-foot 15 A job. At a full 100 feet and 15 A the chart pick is 10 AWG, and we do not link a checked 10 AWG cord."
+        >
+          50 ft 12 AWG SJTW is the usual shop buy
+        </ShopBuyLine>
       </div>
       <ShopCords pick={10} lengthFt={100} heading="Cords for a 100-foot run" />
       <RelatedGuides except="/100-foot-extension-cord-gauge" />

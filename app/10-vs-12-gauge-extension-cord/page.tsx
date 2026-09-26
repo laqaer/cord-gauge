@@ -4,7 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
-import { ShopCords } from "@/components/shop-cords";
+import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { formatDrop } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -140,6 +140,13 @@ export default function TenVsTwelvePage() {
           chose. <Link href="/outdoor-extension-cord-gauge-sjtw">SJTW</Link> is the jacket, not
           thicker copper. A 12 AWG SJTW 100-foot “outdoor” reel is still a 12 AWG resistor.
         </p>
+        <ShopBuyLine
+          awg={12}
+          lengthFt={50}
+          after="for a 50-foot run. When this page’s pick is 10 AWG at 100 feet, we do not link a checked 10 AWG cord."
+        >
+          50 ft 12 AWG SJTW is the usual shop buy
+        </ShopBuyLine>
       </div>
       <ShopCords pick={10} lengthFt={100} heading="Cords when the pick is 10 AWG" />
       <RelatedGuides except="/10-vs-12-gauge-extension-cord" />

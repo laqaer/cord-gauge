@@ -1,12 +1,25 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { amazonUrl } from "@/lib/affiliates";
 import { CLICK_BEACON } from "@/lib/beacon";
 
-export function AmazonLink({ asin, label }: { asin: string; label: string }) {
+export function AmazonLink({
+  asin,
+  label,
+  children,
+}: {
+  asin: string;
+  label: string;
+  children?: ReactNode;
+}) {
   return (
     <a
-      className="shrink-0 text-sm font-medium text-steel underline underline-offset-3 hover:text-amp-dark"
+      className={
+        children
+          ? "font-medium text-steel underline underline-offset-3 hover:text-amp-dark"
+          : "shrink-0 text-sm font-medium text-steel underline underline-offset-3 hover:text-amp-dark"
+      }
       href={amazonUrl(asin)}
       rel="nofollow sponsored noopener"
       target="_blank"
@@ -23,7 +36,7 @@ export function AmazonLink({ asin, label }: { asin: string; label: string }) {
         }
       }}
     >
-      View on Amazon
+      {children ?? "View on Amazon"}
     </a>
   );
 }
