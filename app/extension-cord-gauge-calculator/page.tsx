@@ -7,6 +7,7 @@ import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
 import { formatDrop, recommendAwg } from "@/lib/cords";
+import { toolBuyerHrefs, toolBuyerWhy } from "@/lib/guides";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
 import { site } from "@/lib/site";
@@ -99,7 +100,17 @@ export default function CalculatorPage() {
           circular saw has its own notes on the{" "}
           <Link href="/best-extension-cord-for-circular-saw">saw page</Link>.
         </p>
+      </div>
 
+      <RelatedGuides
+        compact
+        hrefs={toolBuyerHrefs}
+        whyByHref={toolBuyerWhy}
+        heading="Next: tool-specific picks"
+        intro="You already have the amps and the feet. These pages apply that pick to the tool."
+      />
+
+      <div className="prose-cord">
         <h2>What this calculator will not do</h2>
         <ul>
           <li>It does not replace the tool nameplate or the amp rating molded into the cord.</li>
