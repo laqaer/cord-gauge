@@ -4,6 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
+import { ShopCords } from "@/components/shop-cords";
 import { formatDrop, recommendAwg } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -121,6 +122,7 @@ export default function CircularSawPage() {
           hanging storage loop are convenience. They are not a substitute for copper.
         </p>
       </div>
+      <ShopCords pick={12} lengthFt={50} heading="Cords for a 15 A saw" />
       <RelatedGuides except="/best-extension-cord-for-circular-saw" />
     </article>
   );

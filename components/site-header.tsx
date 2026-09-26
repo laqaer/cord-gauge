@@ -2,6 +2,7 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 
 const primaryNav = [
+  { href: "/extension-cord-gauge-calculator", label: "Calculator" },
   { href: "/extension-cord-gauge-chart", label: "Master chart" },
   { href: "/12-vs-14-gauge-extension-cord", label: "12 vs 14" },
   { href: "/best-extension-cord-for-circular-saw", label: "15 A saws" },

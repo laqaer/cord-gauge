@@ -4,6 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
+import { ShopCords } from "@/components/shop-cords";
 import { formatDrop } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -140,6 +141,7 @@ export default function TenVsTwelvePage() {
           thicker copper. A 12 AWG SJTW 100-foot “outdoor” reel is still a 12 AWG resistor.
         </p>
       </div>
+      <ShopCords pick={10} lengthFt={100} heading="Cords when the pick is 10 AWG" />
       <RelatedGuides except="/10-vs-12-gauge-extension-cord" />
     </article>
   );

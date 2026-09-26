@@ -4,6 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
+import { ShopCords } from "@/components/shop-cords";
 import { formatDrop, recommendAwg, voltageDropVolts, type Awg } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -158,6 +159,7 @@ export default function DaisyChainPage() {
           that length. One cord, right AWG, intact ends, matching receptacle. That is the buy.
         </p>
       </div>
+      <ShopCords pick={12} lengthFt={50} heading="One cord instead of a chain" />
       <RelatedGuides except="/daisy-chain-extension-cords" />
     </article>
   );

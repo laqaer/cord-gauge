@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test lib/planning.test.ts",
     "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {

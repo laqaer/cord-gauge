@@ -4,6 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
+import { ShopCords } from "@/components/shop-cords";
 import { formatDrop, recommendAwg } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -143,6 +144,7 @@ export default function TableSawPage() {
           for copper, and a 16 AWG “heavy duty” outdoor reel is still 16 AWG.
         </p>
       </div>
+      <ShopCords pick={12} lengthFt={50} heading="Cords for a 15 A table saw" />
       <RelatedGuides except="/best-extension-cord-for-table-saw" />
     </article>
   );

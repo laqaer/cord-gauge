@@ -49,7 +49,8 @@ npm run build
 
 | Path | Purpose |
 | --- | --- |
-| `/` | Hub: amps → length → AWG; links every guide |
+| `/` | Hub: amps → length → AWG; calculator; links every guide |
+| `/extension-cord-gauge-calculator` | Interactive AWG pick plus checked in-stock cords |
 | `/extension-cord-gauge-chart` | Master gauge × amps × length chart |
 | `/12-vs-14-gauge-extension-cord` | When 12 AWG beats 14 |
 | `/best-extension-cord-for-circular-saw` | 15 A saw cord sizing |
