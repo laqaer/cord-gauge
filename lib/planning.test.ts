@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { recommendAwg, voltageDropPercent, voltageDropVolts } from "./cords.ts";
-import { products, selectProducts } from "./affiliates.ts";
+import { AMAZON_TAG, amazonUrl, products, selectProducts } from "./affiliates.ts";
 
 test("15 A voltage drop uses the two-way copper path", () => {
   assert.equal(voltageDropVolts(12, 15, 100), 5.79);
@@ -21,10 +21,19 @@ test("shop picks stay near 3% for motor tools", () => {
 });
 
 test("in-stock shop links match gauge and length", () => {
+  assert.equal(AMAZON_TAG, "laqaer-20");
+  assert.equal(amazonUrl("B00004SQF4"), "https://www.amazon.com/dp/B00004SQF4?tag=laqaer-20");
   assert.deepEqual(
     products.map((product) => product.asin),
     ["B00004SQF4", "B00004SQF5"],
   );
+  for (const dropped of ["B01LXI1NL8", "B09BDFM4HC", "B09BDGHQBP"]) {
+    assert.equal(
+      products.some((product) => product.asin === dropped),
+      false,
+      dropped,
+    );
+  }
 
   const fifty = selectProducts({ pick: 12, lengthFt: 50 });
   assert.equal(fifty.note, null);

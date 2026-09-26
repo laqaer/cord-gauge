@@ -1,6 +1,33 @@
+import type { ReactNode } from "react";
 import { AmazonLink } from "@/components/amazon-link";
-import { selectProducts } from "@/lib/affiliates";
+import { products, selectProducts } from "@/lib/affiliates";
 import type { Awg } from "@/lib/cords";
+
+export function ShopBuyLine({
+  awg,
+  lengthFt,
+  children,
+  after,
+  className,
+}: {
+  awg: 10 | 12;
+  lengthFt: 50 | 100;
+  children: ReactNode;
+  after?: ReactNode;
+  className?: string;
+}) {
+  const product = products.find((item) => item.awg === awg && item.lengthFt === lengthFt);
+  if (!product) return null;
+
+  return (
+    <p className={className}>
+      <AmazonLink asin={product.asin} label={product.label}>
+        {children}
+      </AmazonLink>
+      {after ? <> {after}</> : null}
+    </p>
+  );
+}
 
 export function ShopCords({
   pick,

@@ -4,7 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
-import { ShopCords } from "@/components/shop-cords";
+import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { formatDrop, recommendAwg, voltageDropVolts, type Awg } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -144,6 +144,9 @@ export default function DaisyChainPage() {
             that does not need a hundred feet.
           </li>
         </ul>
+        <ShopBuyLine awg={12} lengthFt={50} after="instead of a second cord.">
+          50 ft 12 AWG SJTW is the usual shop buy
+        </ShopBuyLine>
         <p>
           Outdoor or open-door work still needs a weather-rated jacket in the gauge you already
           chose. <Link href="/outdoor-extension-cord-gauge-sjtw">SJTW</Link> is the jacket, not

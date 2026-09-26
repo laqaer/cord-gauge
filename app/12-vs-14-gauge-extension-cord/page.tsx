@@ -4,7 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
-import { ShopCords } from "@/components/shop-cords";
+import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { formatDrop } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -107,6 +107,9 @@ export default function TwelveVsFourteenPage() {
           </li>
           <li>You want one cord that can also feed a 15 A table saw without being the weak link.</li>
         </ul>
+        <ShopBuyLine awg={12} lengthFt={50}>
+          50 ft 12 AWG SJTW is the usual shop buy.
+        </ShopBuyLine>
         <Callout title="The plug is part of the rating">
           Plenty of 12 AWG outdoor cords ship with 15 A ends. That is a 15 A cord. A 20 A receptacle
           and a 20 A plug are a different product. Do not file the blades. Match the circuit.

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GaugePicker } from "@/components/gauge-picker";
-import { ShopCords } from "@/components/shop-cords";
+import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { gaugeChart, pickSteps } from "@/lib/cords";
 import { guides } from "@/lib/guides";
 import { site } from "@/lib/site";
@@ -81,6 +81,14 @@ export default function HomePage() {
             </tbody>
           </table>
         </div>
+        <ShopBuyLine
+          awg={12}
+          lengthFt={50}
+          className="mt-4 max-w-2xl text-sm leading-6 text-ink-soft"
+          after="for the 50-foot row. At 100 feet the chart pick is 10 AWG."
+        >
+          50 ft 12 AWG SJTW is the usual shop buy
+        </ShopBuyLine>
       </section>
 
       <ShopCords />

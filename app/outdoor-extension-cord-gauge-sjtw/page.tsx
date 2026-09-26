@@ -4,7 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
-import { ShopCords } from "@/components/shop-cords";
+import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
 
@@ -91,6 +91,9 @@ export default function OutdoorSjtwPage() {
           A 16 AWG SJTW Halloween-light cord is correctly outdoor-rated and still the wrong product
           for a <Link href="/best-extension-cord-for-circular-saw">15 A circular saw</Link>.
         </p>
+        <ShopBuyLine awg={12} lengthFt={50}>
+          50 ft 12 AWG SJTW is the usual outdoor shop buy.
+        </ShopBuyLine>
 
         <h2>Outdoor use that is not “just add SJTW”</h2>
         <ul>

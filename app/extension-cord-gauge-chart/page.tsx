@@ -5,7 +5,7 @@ import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
 import { GaugePicker } from "@/components/gauge-picker";
-import { ShopCords } from "@/components/shop-cords";
+import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { awgOrder, gaugeChart, listedAmpNotes } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -140,6 +140,9 @@ export default function GaugeChartPage() {
           differences are jacket type, flexibility in the cold, and whether the ends are 15 A or 20 A
           — not a star rating.
         </p>
+        <ShopBuyLine awg={12} lengthFt={50} after="for a 15 A tool at 50 feet. At 100 feet the chart pick is 10 AWG.">
+          50 ft 12 AWG SJTW is the usual shop buy
+        </ShopBuyLine>
       </div>
       <ShopCords />
       <RelatedGuides except="/extension-cord-gauge-chart" />

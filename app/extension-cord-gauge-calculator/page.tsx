@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AmazonLink } from "@/components/amazon-link";
 import { GaugePicker } from "@/components/gauge-picker";
+import { ShopCords } from "@/components/shop-cords";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -76,8 +77,10 @@ export default function CalculatorPage() {
         <ul>
           <li>
             15 A at 50 ft → {sawFifty} AWG, {formatDrop(12, 15, 50)} on 12 AWG and{" "}
-            {formatDrop(14, 15, 50)} on 14 AWG. The checked match is the Southwire 12/3 SJTW 50 ft
-            cord. <AmazonLink asin="B00004SQF4" label="Southwire 12/3 SJTW 50 ft outdoor" />
+            {formatDrop(14, 15, 50)} on 14 AWG.{" "}
+            <AmazonLink asin="B00004SQF4" label="Southwire 12/3 SJTW 50 ft outdoor">
+              50 ft 12 AWG SJTW is the usual shop buy.
+            </AmazonLink>
           </li>
           <li>
             15 A at 100 ft → {sawHundred} AWG, {formatDrop(10, 15, 100)} on 10 AWG and{" "}
@@ -118,6 +121,7 @@ export default function CalculatorPage() {
           inspect your circuit from an email.
         </p>
       </div>
+      <ShopCords heading="Checked outdoor cords" />
       <RelatedGuides except={path} />
     </article>
   );

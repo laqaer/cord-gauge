@@ -16,15 +16,21 @@ export type AffiliateProduct = {
 };
 
 /**
- * Cords whose Amazon listing title, gauge, length, and a buy box were
- * checked on 2026-09-26. Do not restore an ASIN from a search snippet:
- * earlier links resolved to a different length or to an unavailable listing.
+ * Cords whose Amazon page was opened on 2026-09-26. A link stays only when
+ * the page ASIN, gauge, length, and a buy box match the label. A search
+ * title is not enough: several /dp/ URLs open a different length or ASIN.
  *
- * Removed that day:
- * - B01LXI1NL8 was labeled Bold 10/3 100 ft; the live page was not an
- *   in-stock 100 ft 10/3 cord.
- * - B09BDFM4HC Lone Star 12/3 50 ft was unavailable.
- * - B09BDGHQBP Lone Star 10/3 100 ft was unavailable.
+ * Kept, with a live buy box:
+ * - B00004SQF4 Southwire 12/3 SJTW 50 ft (model 2588SW0002).
+ * - B00004SQF5 Southwire 12/3 SJTW 100 ft (model 25890002). The page ASIN
+ *   is B00004SQF5. It is 12 AWG, not 10 AWG.
+ *
+ * Rechecked the same day and still not linked:
+ * - B01LXI1NL8 opened as Bold 50005, 25 ft 10 AWG, unavailable, page ASIN
+ *   B013WNUJFC. It is not an in-stock 100 ft 10/3 cord.
+ * - B09BDFM4HC Lone Star, titled 12/3 50 ft, had no buy box. One bullet
+ *   also says 25 ft.
+ * - B09BDGHQBP Lone Star, titled 10/3 100 ft, had no buy box.
  */
 export const products: AffiliateProduct[] = [
   {

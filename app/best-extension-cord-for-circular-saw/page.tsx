@@ -4,7 +4,7 @@ import { Callout } from "@/components/callout";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
-import { ShopCords } from "@/components/shop-cords";
+import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { formatDrop, recommendAwg } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
@@ -80,6 +80,9 @@ export default function CircularSawPage() {
           15 A answer — details in the{" "}
           <Link href="/100-foot-extension-cord-gauge">100-foot guide</Link>.
         </p>
+        <ShopBuyLine awg={12} lengthFt={50}>
+          50 ft 12 AWG SJTW is the usual shop buy.
+        </ShopBuyLine>
         <Callout title="16 AWG is not a saw cord" tone="warn">
           Light-duty 16 AWG cords are for lamps and chargers. A 15 A saw will push them into heat
           and trip territory. If the only cord in the truck is 16 AWG, move the saw to the outlet
