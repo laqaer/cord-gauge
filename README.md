@@ -43,7 +43,7 @@ npm run build
 2. Framework preset: **Next.js**. Leave build/output commands at defaults (`next build`).
 3. No environment variables are required for the editorial site.
 4. Production primary is `https://www.cordgaugeguide.com` (apex 308 → www). Canonicals, OG, sitemap, and robots Host/Sitemap use www.
-5. `ads.txt` stays a placeholder (no AdSense pub ID). Amazon Associates shop links use `tag=laqaer-20`.
+5. `/ads.txt` is comment-only until `ADSENSE_PUB_ID` in `lib/site.ts` or build env `NEXT_PUBLIC_ADSENSE_PUB_ID` is set. Amazon Associates shop links use `tag=laqaer-20`.
 
 ## Routes
 
@@ -60,7 +60,7 @@ npm run build
 | `/privacy` | Privacy policy for a content + affiliate site |
 | `/robots.txt` | Generated |
 | `/sitemap.xml` | Generated |
-| `/ads.txt` | Placeholder seller file |
+| `/ads.txt` | Seller file; comment-only until the pub ID above is set |
 
 Affiliate disclosure and the electrical caveat appear in the footer on every page.
 
