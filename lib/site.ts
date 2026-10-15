@@ -17,3 +17,22 @@ export const affiliateDisclosure =
 
 export const electricalCaveat =
   "This is planning guidance, not an electrical-code inspection and not a substitute for the tool nameplate or the cord listing. Ampacity comes from the marked cord and plug, not from AWG alone. National Electrical Code rules, local amendments, and the equipment manual control the job. Hire a licensed electrician for new circuits, and do not use an indoor cord outdoors.";
+
+// Swap path: set this fallback, or NEXT_PUBLIC_ADSENSE_PUB_ID at build.
+export const ADSENSE_PUB_ID = (process.env.NEXT_PUBLIC_ADSENSE_PUB_ID ?? "").trim();
+
+const GOOGLE_ADS_TXT_CERT = "f08c47fec0942fa0";
+
+export function adsTxtBody(pubId: string = ADSENSE_PUB_ID): string {
+  const id = pubId.trim().replace(/^pub-/i, "");
+  if (!id) {
+    return [
+      "# CordGauge Guide ads.txt placeholder",
+      "# Replace with authorized digital sellers before serving ads.",
+      "# cordgaugeguide.com",
+      "",
+    ].join("\n");
+  }
+
+  return `google.com, pub-${id}, DIRECT, ${GOOGLE_ADS_TXT_CERT}\n`;
+}

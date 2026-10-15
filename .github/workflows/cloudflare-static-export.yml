@@ -32,6 +32,11 @@ jobs:
           test -f out/404.html
           test -f out/robots.txt
           test -f out/sitemap.xml
+          test -f out/ads.txt
+          if grep -q 'pub-XXXXXXXXXXXXXXXX' out/ads.txt; then
+            echo "ads.txt still contains the placeholder publisher id"
+            exit 1
+          fi
           test -f out/extension-cord-gauge-calculator.html
           test "$(find out -type f -name '*.html' | wc -l)" -ge 4
           grep -q 'B00004SQF4' out/index.html
