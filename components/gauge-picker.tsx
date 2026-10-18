@@ -29,7 +29,7 @@ export function GaugePicker() {
         <label className="block text-sm font-medium text-ink">
           Nameplate amps
           <select
-            className="mt-2 w-full border border-rule bg-paper px-3 py-2 text-base text-ink"
+            className="mt-2 w-full border border-rule bg-paper px-3 py-2 text-base text-ink hover:border-amp-dark focus-visible:border-amp-dark"
             name="amps"
             value={amps}
             onChange={(event) => setAmps(Number(event.target.value) as LoadAmps)}
@@ -44,7 +44,7 @@ export function GaugePicker() {
         <label className="block text-sm font-medium text-ink">
           Run length, outlet to tool
           <select
-            className="mt-2 w-full border border-rule bg-paper px-3 py-2 text-base text-ink"
+            className="mt-2 w-full border border-rule bg-paper px-3 py-2 text-base text-ink hover:border-amp-dark focus-visible:border-amp-dark"
             name="length"
             value={lengthFt}
             onChange={(event) => setLengthFt(Number(event.target.value) as LengthFt)}
@@ -57,24 +57,28 @@ export function GaugePicker() {
           </select>
         </label>
       </div>
-      <p className="mt-5 text-lg font-semibold text-ink">
-        Shop pick: <span className="text-amp-dark">{pick} AWG</span>
-      </p>
-      <p className="mt-1 font-mono text-sm text-ink-soft">
-        {pick} AWG drop at {amps} A · {lengthFt} ft: {formatDrop(pick, amps, lengthFt)}
-      </p>
-      <dl className="mt-4 grid gap-2 text-sm text-ink-soft sm:grid-cols-3">
-        {([14, 12, 10] as const).map((awg) => (
-          <div key={awg} className="border border-rule px-3 py-2">
-            <dt className="font-mono text-xs text-amp-dark">{awg} AWG</dt>
-            <dd className="mt-1 text-ink">{formatDrop(awg, amps, lengthFt)}</dd>
-          </div>
-        ))}
-      </dl>
+      <div aria-live="polite">
+        <div key={`${amps}-${lengthFt}`} className="result-ease">
+          <p className="mt-5 text-lg font-semibold text-ink">
+            Shop pick: <span className="text-amp-dark">{pick} AWG</span>
+          </p>
+          <p className="mt-1 font-mono text-sm text-ink-soft">
+            {pick} AWG drop at {amps} A · {lengthFt} ft: {formatDrop(pick, amps, lengthFt)}
+          </p>
+          <dl className="mt-4 grid gap-2 text-sm text-ink-soft sm:grid-cols-3">
+            {([14, 12, 10] as const).map((awg) => (
+              <div key={awg} className="border border-rule px-3 py-2">
+                <dt className="font-mono text-xs text-amp-dark">{awg} AWG</dt>
+                <dd className="mt-1 text-ink">{formatDrop(awg, amps, lengthFt)}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
       {shop.note ? <p className="mt-4 text-sm leading-6 text-ink">{shop.note}</p> : null}
       <ul className="mt-4 grid gap-3">
         {shop.products.map((product) => (
-          <li key={product.asin} className="flex flex-col gap-2 border border-rule px-3 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <li key={product.asin} className="motion-line flex flex-col gap-2 border border-rule px-3 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-medium text-ink">{product.label}</p>
               <p className="mt-1 font-mono text-xs text-amp-dark">

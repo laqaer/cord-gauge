@@ -22,7 +22,7 @@ export function RelatedGuides({
 
   if (compact) {
     return (
-      <section className="mt-10 border border-rule bg-card px-4 py-4 sm:px-5">
+      <section className="motion-card reveal mt-10 border border-rule bg-card px-4 py-4 sm:px-5">
         <h2 className="text-lg font-semibold tracking-tight text-ink">{heading}</h2>
         {intro ? <p className="mt-1 text-sm leading-6 text-ink-soft">{intro}</p> : null}
         <ul className="mt-2 divide-y divide-rule">
@@ -48,7 +48,7 @@ export function RelatedGuides({
       {intro ? <p className="mt-2 text-sm leading-6 text-ink-soft">{intro}</p> : null}
       <ul className="mt-4 grid gap-4 md:grid-cols-2">
         {items.map((guide) => (
-          <li key={guide.href} className="border border-rule bg-card p-4">
+          <li key={guide.href} className="motion-card reveal border border-rule bg-card p-4">
             <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-amp-dark">
               {guide.kicker}
             </p>
