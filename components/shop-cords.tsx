@@ -57,7 +57,7 @@ export function ShopCords({
         {selection.products.map((product) => (
           <li
             key={product.asin}
-            className="flex flex-col gap-3 border border-rule bg-card p-5 sm:flex-row sm:items-center sm:justify-between"
+            className="motion-line flex flex-col gap-3 border border-rule bg-card p-5 sm:flex-row sm:items-center sm:justify-between"
           >
             <div>
               <p className="font-semibold text-ink">{product.label}</p>

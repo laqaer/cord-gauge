@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GaugePicker } from "@/components/gauge-picker";
+import { HeroCord } from "@/components/hero-cord";
 import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { gaugeChart, pickSteps } from "@/lib/cords";
 import { guides } from "@/lib/guides";
@@ -29,13 +30,14 @@ export default function HomePage() {
           on the hang tag do not tell you whether a 15 A circular saw will sag at 100 feet. Nameplate
           amps and run length do.
         </p>
+        <HeroCord />
       </section>
 
       <section id="how-to-pick" className="mt-12 scroll-mt-8">
         <h2 className="text-2xl font-semibold tracking-tight text-ink">How to pick a cord</h2>
         <ol className="mt-6 grid gap-4 md:grid-cols-3">
           {pickSteps.map((step) => (
-            <li key={step.n} className="border border-rule bg-card p-5">
+            <li key={step.n} className="motion-card reveal border border-rule bg-card p-5">
               <p className="font-mono text-xs font-medium text-amp-dark">Step {step.n}</p>
               <h3 className="mt-2 text-xl font-semibold text-ink">{step.title}</h3>
               <p className="mt-2 text-sm leading-6 text-ink-soft">{step.body}</p>
@@ -47,18 +49,19 @@ export default function HomePage() {
       <GaugePicker />
 
       <section className="mt-14">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 className="text-2xl font-semibold tracking-tight text-ink">15 A shop loads, at a glance</h2>
-          <Link className="text-sm text-steel underline underline-offset-3 hover:text-amp-dark" href="/extension-cord-gauge-chart">
-            Full gauge × amps × length chart
-          </Link>
-        </div>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-soft">
-          Copper planning drop at 120 V (NEC Ch. 9 Table 8 resistances). Aim near 3% for motor tools.
-          The marked ampacity on the cord still wins if it is lower.
-        </p>
-        <div className="table-scroll mt-5">
-          <table>
+        <div className="reveal">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <h2 className="text-2xl font-semibold tracking-tight text-ink">15 A shop loads, at a glance</h2>
+            <Link className="text-sm text-steel underline underline-offset-3 hover:text-amp-dark" href="/extension-cord-gauge-chart">
+              Full gauge × amps × length chart
+            </Link>
+          </div>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-soft">
+            Copper planning drop at 120 V (NEC Ch. 9 Table 8 resistances). Aim near 3% for motor tools.
+            The marked ampacity on the cord still wins if it is lower.
+          </p>
+          <div className="table-scroll mt-5">
+            <table>
             <thead>
               <tr>
                 <th>Run</th>
@@ -79,7 +82,8 @@ export default function HomePage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
         <ShopBuyLine
           awg={12}
@@ -94,7 +98,7 @@ export default function HomePage() {
       <ShopCords />
 
       <section className="mt-16 grid gap-6 md:grid-cols-3">
-        <article className="border border-rule bg-card p-5">
+        <article className="motion-card reveal border border-rule bg-card p-5">
           <h2 className="text-2xl font-semibold text-ink">12 AWG beats 14 on long 15 A runs</h2>
           <p className="mt-3 text-sm leading-6 text-ink-soft">
             A 14 AWG cord is not “wrong” at 25 feet. At 50–100 feet the same 15 A saw is a voltage-drop
@@ -105,7 +109,7 @@ export default function HomePage() {
             .
           </p>
         </article>
-        <article className="border border-rule bg-card p-5">
+        <article className="motion-card reveal border border-rule bg-card p-5">
           <h2 className="text-2xl font-semibold text-ink">SJTW is a jacket, not a gauge</h2>
           <p className="mt-3 text-sm leading-6 text-ink-soft">
             Outdoor-rated means weather-resistant insulation. It does not make 16 AWG safe for a saw.
@@ -116,7 +120,7 @@ export default function HomePage() {
             .
           </p>
         </article>
-        <article className="border border-rule bg-card p-5">
+        <article className="motion-card reveal border border-rule bg-card p-5">
           <h2 className="text-2xl font-semibold text-ink">100 feet wants thicker copper</h2>
           <p className="mt-3 text-sm leading-6 text-ink-soft">
             Two cheap 50-foot 16 AWG cords in a daisy chain are how tools overheat. Use the{" "}
@@ -136,7 +140,7 @@ export default function HomePage() {
         </p>
         <ul className="mt-6 grid gap-4 md:grid-cols-2">
           {guides.map((guide) => (
-            <li key={guide.href} className="border border-rule bg-card p-5">
+            <li key={guide.href} className="motion-card reveal border border-rule bg-card p-5">
               <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-amp-dark">
                 {guide.kicker}
               </p>

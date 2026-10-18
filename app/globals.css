@@ -144,3 +144,298 @@ body {
   font-weight: 650;
   color: var(--color-ink);
 }
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-amp-dark);
+  outline-offset: 3px;
+}
+
+a:focus-visible {
+  color: var(--color-amp-dark);
+}
+
+.motion-card:hover,
+.motion-card:focus-within,
+.motion-line:hover,
+.motion-line:focus-within {
+  border-color: #8ea3b3;
+  background-color: #fff;
+}
+
+.hero-cord {
+  --cord: 13px;
+  --plug-w: calc(4.75rem * 92 / 112);
+  --cap-w: calc(4.75rem * 40 / 112);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 4.75rem;
+  margin-top: 2rem;
+}
+
+.cord-plug-svg,
+.cord-cap-svg,
+.cord-run {
+  display: block;
+  height: 100%;
+  flex: none;
+}
+
+.cord-plug-svg {
+  width: var(--plug-w);
+}
+
+.cord-cap-svg {
+  width: var(--cap-w);
+}
+
+.cord-run {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 2.5rem;
+  margin-inline: -2px;
+}
+
+.cord-blade {
+  fill: #d7e0e6;
+}
+
+.cord-ground {
+  fill: #edf2f5;
+}
+
+.cord-body,
+.cord-cap {
+  fill: #1b242c;
+}
+
+.cord-ridges,
+.cord-slots {
+  stroke: #6d8292;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.cord-jacket,
+.cord-sheen,
+.cord-copper,
+.cord-flow {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+
+.cord-jacket {
+  stroke: #1b242c;
+  stroke-width: var(--cord);
+}
+
+.cord-sheen {
+  stroke: #3e596b;
+  stroke-width: calc(var(--cord) * 0.16);
+}
+
+.cord-copper {
+  stroke: #c47b12;
+  stroke-width: calc(var(--cord) * 0.24);
+}
+
+.cord-flow {
+  stroke-dashoffset: -24;
+}
+
+.cord-flow-glow {
+  stroke: #f3d7a4;
+  stroke-width: calc(var(--cord) * 0.46);
+  stroke-dasharray: 12 88;
+  opacity: 0.85;
+}
+
+.cord-flow-core {
+  stroke: #fffaf2;
+  stroke-width: calc(var(--cord) * 0.18);
+  stroke-dasharray: 4 96;
+}
+
+.gauge-stamp {
+  display: grid;
+  flex: none;
+  width: 4.85rem;
+  height: 2.05rem;
+  margin-left: 0.45rem;
+  place-items: center;
+  border: 1px solid var(--color-rule);
+  border-left: 3px solid var(--color-amp);
+  background: var(--color-card);
+}
+
+.gauge-readout {
+  grid-area: 1 / 1;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-amp-dark);
+  opacity: 0;
+}
+
+.gauge-readout-12 {
+  opacity: 1;
+}
+
+@media (min-width: 640px) {
+  .hero-cord {
+    --cord: 18px;
+    --plug-w: calc(6.5rem * 92 / 112);
+    --cap-w: calc(6.5rem * 40 / 112);
+    height: 6.5rem;
+  }
+
+  .gauge-stamp {
+    width: 5.6rem;
+    height: 2.35rem;
+  }
+
+  .gauge-readout {
+    font-size: 0.8125rem;
+  }
+}
+
+@keyframes cord-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes gauge-pass {
+  0% {
+    opacity: 0;
+  }
+
+  18%,
+  72% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes gauge-lock {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes result-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a {
+    transition: color 160ms ease;
+  }
+
+  .motion-card,
+  .motion-line {
+    transition:
+      translate 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .motion-card:hover,
+  .motion-card:focus-within {
+    translate: 0 -2px;
+  }
+
+  .cord-flow {
+    animation: cord-flow 2.6s linear infinite;
+  }
+
+  .gauge-readout-16 {
+    animation: gauge-pass 0.46s ease forwards;
+  }
+
+  .gauge-readout-14 {
+    animation: gauge-pass 0.46s ease 0.4s forwards;
+  }
+
+  .gauge-readout-12 {
+    animation: gauge-lock 0.4s ease 0.84s both;
+  }
+
+  .result-ease {
+    animation: result-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal,
+    .prose-cord > h2,
+    .prose-cord > h3 {
+      animation-name: reveal-rise;
+      animation-duration: auto;
+      animation-timing-function: ease;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 18%;
+    }
+
+    .reveal:focus-within,
+    .prose-cord > h2:focus-within,
+    .prose-cord > h3:focus-within {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cord-flow,
+  .gauge-readout,
+  .reveal,
+  .result-ease,
+  .motion-card,
+  .motion-line {
+    animation: none;
+    transition: none;
+  }
+
+  .gauge-readout-12 {
+    opacity: 1;
+    transform: none;
+  }
+}
