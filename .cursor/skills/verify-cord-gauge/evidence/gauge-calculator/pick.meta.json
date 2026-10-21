@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:4321/extension-cord-gauge-calculator",
+  "capturedAt": "2026-10-21T06:23:18.694Z",
+  "featureId": "gauge-calculator",
+  "amps": "15",
+  "lengthFt": 100,
+  "forbiddenRequests": []
+}

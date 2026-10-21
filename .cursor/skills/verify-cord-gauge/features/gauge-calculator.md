@@ -42,4 +42,5 @@ Preconditions:
 - 15 A at 100 ft is 10 AWG. The page may still link a 12 AWG cord and say it is not that pick. Do not treat the Amazon link as the result, and do not follow it.
 - Reloading the page restores 15 A and 50 ft. There is no saved calculation to reopen.
 - `pick` fails closed when Chrome or `WebSocket` is missing. Do not substitute `node --test lib/planning.test.ts` and call the page verified.
+- Screenshots of `next dev` include the Next.js development indicator in the corner. That badge is the local server, not part of the reader page. Do not turn `devIndicators` off in `next.config.ts` to hide it.
 - One entry (header, card, chart, or hub) does not cover the others. Say which entry `PROOF.txt` used.
