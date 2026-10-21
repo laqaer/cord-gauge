@@ -33,6 +33,8 @@ Ready when the helper prints `launched pid=… http://127.0.0.1:4321` and that p
 
 There is no database, migration, or seed. An empty checkout plus `npm install` is the usable state.
 
+`next dev` may create untracked `AGENTS.md` and `CLAUDE.md` at the repo root (Next's agent-rules files). Leave them untracked. A verification run does not commit them.
+
 `CORDGAUGE_MODE=start` is refused. Do not point the helper at `https://www.cordgaugeguide.com`.
 
 Teardown is `cord-gauge cleanup` (see Cleanup). Do not `pkill next`.
@@ -216,7 +218,7 @@ If a drive fails, run cleanup before the next launch so port 4321 is not strande
 
 ## Anti-jobs
 
-Do not edit editorial copy, `ADSENSE_PUB_ID`, affiliate ASINs, or `lib/site.ts` as part of a verification run. Do not invent traffic, revenue, or review scores. Do not run `npm run indexnow`, `node scripts/indexnow.mjs`, or `node scripts/health-check.mjs` — those target `www.cordgaugeguide.com` (IndexNow also calls Bing/Yandex). Do not crawl or warm the production host. Do not send email or social posts. Do not follow Amazon Associates links. Local proof is enough.
+Do not edit editorial copy, `ADSENSE_PUB_ID`, affiliate ASINs, or `lib/site.ts` as part of a verification run. Do not commit the `AGENTS.md` and `CLAUDE.md` files `next dev` drops at the repo root. Do not invent traffic, revenue, or review scores. Do not run `npm run indexnow`, `node scripts/indexnow.mjs`, or `node scripts/health-check.mjs` — those target `www.cordgaugeguide.com` (IndexNow also calls Bing/Yandex). Do not crawl or warm the production host. Do not send email or social posts. Do not follow Amazon Associates links. Local proof is enough.
 
 ## Maintenance
 
