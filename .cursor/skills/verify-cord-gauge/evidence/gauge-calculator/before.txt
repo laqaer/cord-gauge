@@ -1,0 +1,35 @@
+Gauge calculator
+
+Planning estimate for a 120 V copper cord. The marked ampacity on the cord still wins if it is lower. This does not size a new circuit.
+
+Nameplate amps
+10 A
+13 A
+15 A
+Run length, outlet to tool
+25 ft
+50 ft
+100 ft
+
+Shop pick: 12 AWG
+
+12 AWG drop at 15 A · 50 ft: 2.9 V (2.4%)
+
+14 AWG
+4.6 V (3.8%)
+12 AWG
+2.9 V (2.4%)
+10 AWG
+1.8 V (1.5%)
+
+Southwire 12/3 SJTW 50 ft outdoor
+
+12 AWG · 50 ft · SJTW outdoor, lighted end, marked 15 A
+
+View on Amazon
+
+Southwire 12/3 SJTW 100 ft outdoor
+
+12 AWG · 100 ft · SJTW outdoor, lighted end, marked 15 A
+
+View on Amazon

@@ -1,0 +1,1345 @@
+#!/usr/bin/env node
+"use strict";
+
+/**
+ * Verification harness for CordGauge Guide.
+ * Starts an isolated `next dev` on 127.0.0.1 and drives the pages it serves.
+ * Does not request www.cordgaugeguide.com, Amazon, or the click beacon.
+ */
+
+const fs = require("node:fs");
+const path = require("node:path");
+const net = require("node:net");
+const { spawn } = require("node:child_process");
+
+const DEFAULT_HOST = "127.0.0.1";
+const DEFAULT_PORT = 4321;
+const REFUSED_PORT = 3000;
+const READY_H1 = "Pick an extension cord by amps, then length, then AWG";
+const READY_MARK = "CordGauge Guide";
+const LAUNCH_TIMEOUT_MS = 120000;
+
+const SITEMAP_PATHS = [
+  "/",
+  "/about",
+  "/privacy",
+  "/extension-cord-gauge-calculator",
+  "/extension-cord-gauge-chart",
+  "/12-vs-14-gauge-extension-cord",
+  "/10-vs-12-gauge-extension-cord",
+  "/best-extension-cord-for-circular-saw",
+  "/best-extension-cord-for-table-saw",
+  "/best-extension-cord-for-air-compressor",
+  "/best-extension-cord-for-pressure-washer",
+  "/100-foot-extension-cord-gauge",
+  "/daisy-chain-extension-cords",
+  "/outdoor-extension-cord-gauge-sjtw",
+];
+
+const PRODUCTION_HOSTS = [
+  "cordgaugeguide.com",
+  "amazon.com",
+  "amazon-adsystem.com",
+  "workers.dev",
+  "indexnow.org",
+  "doubleclick.net",
+  "googlesyndication.com",
+];
+
+function fail(message) {
+  const error = new Error(message);
+  error.cordGauge = true;
+  throw error;
+}
+
+function repoRoot() {
+  const root = path.resolve(__dirname, "../../../..");
+  const pkgPath = path.join(root, "package.json");
+  let pkg;
+  try {
+    pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+  } catch (error) {
+    fail(`cannot read ${pkgPath}: ${error.message}`);
+  }
+  if (pkg.name !== "cord-gauge") {
+    fail(`refusing to drive package "${pkg.name}" at ${root}; expected cord-gauge`);
+  }
+  return root;
+}
+
+const ROOT = repoRoot();
+const EVIDENCE_ROOT = path.join(ROOT, ".cursor/skills/verify-cord-gauge/evidence");
+
+function hostPort() {
+  const host = process.env.CORDGAUGE_HOST || DEFAULT_HOST;
+  const port = Number(process.env.CORDGAUGE_PORT || DEFAULT_PORT);
+  if (host !== DEFAULT_HOST) {
+    fail(`refusing host ${host}; verification binds ${DEFAULT_HOST} only`);
+  }
+  if (!Number.isInteger(port) || port < 1024 || port > 65535) {
+    fail(`refusing port ${process.env.CORDGAUGE_PORT}; use an integer from 1024 to 65535`);
+  }
+  if (port === REFUSED_PORT) {
+    fail(
+      "refusing port 3000. CordGauge verification uses a dedicated loopback port (default 4321). A listener on :3000 is a shared or foreign next dev, including one this run did not start.",
+    );
+  }
+  return { host, port };
+}
+
+function runDir(port) {
+  return `/tmp/cord-gauge-verify-${port}`;
+}
+
+function instancePath(port) {
+  return path.join(runDir(port), "instance.json");
+}
+
+function baseUrl(host, port) {
+  return `http://${host}:${port}`;
+}
+
+function readInstance(port) {
+  const file = instancePath(port);
+  if (!fs.existsSync(file)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch (error) {
+    fail(`cannot parse ${file}: ${error.message}`);
+  }
+}
+
+function writeInstance(port, data) {
+  const dir = runDir(port);
+  fs.mkdirSync(dir, { recursive: true });
+  const file = instancePath(port);
+  const next = `${file}.tmp`;
+  fs.writeFileSync(next, JSON.stringify(data, null, 2) + "\n");
+  fs.renameSync(next, file);
+}
+
+function isAlive(pid) {
+  if (!Number.isInteger(pid) || pid <= 1) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function readCmdline(pid) {
+  try {
+    return fs.readFileSync(`/proc/${pid}/cmdline`).toString("utf8").replaceAll("\0", " ").trim();
+  } catch {
+    return "";
+  }
+}
+
+function childrenOf(pid) {
+  const kids = [];
+  let entries = [];
+  try {
+    entries = fs.readdirSync("/proc");
+  } catch {
+    return kids;
+  }
+  for (const entry of entries) {
+    if (!/^\d+$/.test(entry)) continue;
+    let status;
+    try {
+      status = fs.readFileSync(`/proc/${entry}/status`, "utf8");
+    } catch {
+      continue;
+    }
+    const match = /^PPid:\s+(\d+)/m.exec(status);
+    if (match && Number(match[1]) === pid) kids.push(Number(entry));
+  }
+  return kids;
+}
+
+function descendants(pid, acc = new Set()) {
+  for (const kid of childrenOf(pid)) {
+    if (acc.has(kid)) continue;
+    acc.add(kid);
+    descendants(kid, acc);
+  }
+  return acc;
+}
+
+function listeningSockets(port) {
+  const hex = port.toString(16).toUpperCase().padStart(4, "0");
+  const found = [];
+  for (const file of ["/proc/net/tcp", "/proc/net/tcp6"]) {
+    let text;
+    try {
+      text = fs.readFileSync(file, "utf8");
+    } catch {
+      continue;
+    }
+    for (const line of text.split("\n").slice(1)) {
+      const parts = line.trim().split(/\s+/);
+      if (parts.length < 10) continue;
+      const local = parts[1];
+      const state = parts[3];
+      const inode = parts[9];
+      const [addr, localPort] = local.split(":");
+      if (state === "0A" && localPort?.toUpperCase() === hex) {
+        found.push({ addr, inode, family: file.endsWith("6") ? 6 : 4 });
+      }
+    }
+  }
+  return found;
+}
+
+function pidsForInodes(inodes) {
+  const wanted = new Set(inodes);
+  const pids = new Set();
+  if (wanted.size === 0) return [];
+  let entries = [];
+  try {
+    entries = fs.readdirSync("/proc");
+  } catch {
+    return [];
+  }
+  for (const entry of entries) {
+    if (!/^\d+$/.test(entry)) continue;
+    let fds;
+    try {
+      fds = fs.readdirSync(`/proc/${entry}/fd`);
+    } catch {
+      continue;
+    }
+    for (const fd of fds) {
+      let link;
+      try {
+        link = fs.readlinkSync(`/proc/${entry}/fd/${fd}`);
+      } catch {
+        continue;
+      }
+      const match = /^socket:\[(\d+)\]$/.exec(link);
+      if (match && wanted.has(match[1])) pids.add(Number(entry));
+    }
+  }
+  return [...pids];
+}
+
+function listeners(port) {
+  const sockets = listeningSockets(port);
+  const pids = pidsForInodes(sockets.map((socket) => socket.inode));
+  return { sockets, pids };
+}
+
+function isLoopbackSocket(socket) {
+  const addr = socket.addr.toUpperCase();
+  if (socket.family === 4) return addr === "0100007F";
+  return addr === "00000000000000000000000001000000";
+}
+
+function loopbackBound(port) {
+  const { sockets } = listeners(port);
+  if (sockets.length === 0) return false;
+  const v4 = sockets.some((socket) => socket.family === 4 && socket.addr.toUpperCase() === "0100007F");
+  return v4 && sockets.every(isLoopbackSocket);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function decode(html) {
+  return html
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#x27;/gi, "'")
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&amp;/gi, "&");
+}
+
+function stripScripts(html) {
+  return html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "");
+}
+
+function collapse(text) {
+  return decode(text).replace(/\s+/g, " ").trim();
+}
+
+function visibleText(html) {
+  return collapse(stripScripts(html).replace(/<[^>]+>/g, " "));
+}
+
+function titleOf(html) {
+  const match = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(html);
+  return match ? collapse(match[1]) : "";
+}
+
+function h1Of(html) {
+  const match = /<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(stripScripts(html));
+  return match ? collapse(match[1].replace(/<[^>]+>/g, " ")) : "";
+}
+
+function jsonLdTypes(html) {
+  const types = [];
+  const re = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let match;
+  while ((match = re.exec(html))) {
+    try {
+      const data = JSON.parse(match[1]);
+      const items = Array.isArray(data) ? data : [data];
+      for (const item of items) {
+        if (item && item["@type"]) types.push(String(item["@type"]));
+      }
+    } catch {
+      types.push("(unparsed)");
+    }
+  }
+  return types;
+}
+
+function canonicalOf(html) {
+  const tags = html.match(/<link\b[^>]*>/gi) || [];
+  for (const tag of tags) {
+    if (!/\brel=["']canonical["']/i.test(tag)) continue;
+    const href = /\bhref=["']([^"']+)["']/i.exec(tag);
+    if (href) return decode(href[1]);
+  }
+  return "";
+}
+
+function linksFrom(html) {
+  const source = stripScripts(html);
+  const links = [];
+  const re = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
+  let match;
+  while ((match = re.exec(source))) {
+    const attrs = match[1];
+    const hrefMatch = /\bhref\s*=\s*"([^"]*)"/i.exec(attrs) || /\bhref\s*=\s*'([^']*)'/i.exec(attrs);
+    if (!hrefMatch) continue;
+    const aria = /\baria-label\s*=\s*"([^"]*)"/i.exec(attrs) || /\baria-label\s*=\s*'([^']*)'/i.exec(attrs);
+    const text = collapse(match[2].replace(/<[^>]+>/g, " "));
+    const name = aria ? collapse(aria[1]) : text;
+    if (!name) continue;
+    links.push({ href: decode(hrefMatch[1]), name, text });
+  }
+  return links;
+}
+
+function navsFrom(html) {
+  const source = stripScripts(html);
+  const navs = [];
+  const re = /<nav\b([^>]*)>([\s\S]*?)<\/nav>/gi;
+  let match;
+  while ((match = re.exec(source))) {
+    const label = /\baria-label\s*=\s*"([^"]*)"/i.exec(match[1]) || /\baria-label\s*=\s*'([^']*)'/i.exec(match[1]);
+    const names = linksFrom(match[2]).map((link) => link.name);
+    navs.push({ label: label ? collapse(label[1]) : "", names });
+  }
+  return navs;
+}
+
+function parseFlags(args) {
+  const flags = { expect: [], absent: [], _: [] };
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+    const take = () => {
+      i += 1;
+      if (i >= args.length) fail(`missing value after ${arg}`);
+      return args[i];
+    };
+    if (arg === "--expect") flags.expect.push(take());
+    else if (arg === "--absent") flags.absent.push(take());
+    else if (arg === "--from") flags.from = take();
+    else if (arg === "--name") flags.name = take();
+    else if (arg === "--out") flags.out = take();
+    else if (arg === "--dir") flags.dir = take();
+    else if (arg === "--path") flags.path = take();
+    else if (arg === "--amps") flags.amps = take();
+    else if (arg === "--length") flags.length = take();
+    else if (arg === "--feature") flags.feature = take();
+    else if (arg === "--status") flags.status = Number(take());
+    else if (arg === "--screenshot") flags.screenshot = true;
+    else if (arg === "--help" || arg === "-h") flags.help = true;
+    else if (arg.startsWith("-")) fail(`unknown flag ${arg}`);
+    else flags._.push(arg);
+  }
+  return flags;
+}
+
+function evidencePath(input) {
+  if (!input) return null;
+  const resolved = path.resolve(ROOT, input);
+  const rootWithSep = EVIDENCE_ROOT.endsWith(path.sep) ? EVIDENCE_ROOT : EVIDENCE_ROOT + path.sep;
+  if (resolved !== EVIDENCE_ROOT && !resolved.startsWith(rootWithSep)) {
+    fail(`evidence path must stay under ${EVIDENCE_ROOT} (got ${resolved})`);
+  }
+  if (resolved.startsWith("/tmp/cord-gauge-verify-")) {
+    fail(`refusing to write evidence under ${resolved}; cleanup deletes that directory`);
+  }
+  return resolved;
+}
+
+function slugFromPath(urlPath) {
+  if (urlPath === "/" || urlPath === "") return "index";
+  return urlPath.replace(/^\/+/, "").replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/-+/g, "-");
+}
+
+async function httpGet(host, port, urlPath) {
+  let current = new URL(urlPath, baseUrl(host, port));
+  for (let hop = 0; hop < 5; hop += 1) {
+    if (current.hostname !== host || String(current.port || (current.protocol === "https:" ? 443 : 80)) !== String(port)) {
+      fail(`refusing non-local URL ${current.href}`);
+    }
+    const response = await fetch(current, { redirect: "manual", signal: AbortSignal.timeout(20000) });
+    if ([301, 302, 303, 307, 308].includes(response.status)) {
+      const location = response.headers.get("location");
+      if (!location) fail(`redirect from ${current.href} without Location`);
+      current = new URL(location, current);
+      continue;
+    }
+    const body = await response.text();
+    return {
+      status: response.status,
+      body,
+      finalPath: `${current.pathname}${current.search}`,
+      url: current.origin + current.pathname + current.search,
+    };
+  }
+  fail(`too many redirects from ${urlPath}`);
+}
+
+function summarize(page) {
+  return {
+    status: page.status,
+    url: page.url,
+    title: titleOf(page.body),
+    h1: h1Of(page.body),
+    jsonLd: jsonLdTypes(page.body),
+    canonical: canonicalOf(page.body),
+    navs: navsFrom(page.body),
+    links: linksFrom(page.body),
+    visible: visibleText(page.body),
+  };
+}
+
+function assertExpect(summary, raw, flags) {
+  const misses = [];
+  for (const expect of flags.expect) {
+    if (!raw.includes(expect) && !summary.visible.includes(expect)) misses.push(expect);
+  }
+  for (const absent of flags.absent) {
+    if (raw.includes(absent) || summary.visible.includes(absent)) misses.push(`present but forbidden: ${absent}`);
+  }
+  return misses;
+}
+
+function printPage(summary, misses) {
+  console.log(`status: ${summary.status}`);
+  console.log(`url: ${summary.url}`);
+  console.log(`title: ${summary.title}`);
+  console.log(`h1: ${summary.h1}`);
+  console.log(`jsonLd: ${summary.jsonLd.join(", ") || "(none)"}`);
+  if (summary.canonical) console.log(`canonical: ${summary.canonical}`);
+  for (const nav of summary.navs) {
+    console.log(`nav ${nav.label || "(unlabeled)"}: ${nav.names.join(" | ")}`);
+  }
+  if (misses.length === 0) console.log("expect: ok");
+  else {
+    for (const miss of misses) console.log(`expect: missing ${JSON.stringify(miss)}`);
+  }
+}
+
+function requireInstance(host, port) {
+  const instance = readInstance(port);
+  if (!instance) fail(`no instance at ${instancePath(port)}. Launch this run before driving.`);
+  if (instance.host !== host || Number(instance.port) !== port) {
+    fail(`instance host/port ${instance.host}:${instance.port} does not match ${host}:${port}`);
+  }
+  if (instance.repoRoot !== ROOT) {
+    fail(`instance repo ${instance.repoRoot} is not ${ROOT}`);
+  }
+  if (instance.state !== "ready") fail(`instance state is ${instance.state}, not ready`);
+  if (!isAlive(instance.pid)) fail(`launch pid ${instance.pid} is not running`);
+  const cmd = readCmdline(instance.pid);
+  if (!cmd.includes("next") || !cmd.includes(String(port))) {
+    fail(`pid ${instance.pid} cmdline is not this run's next dev (${cmd || "unreadable"})`);
+  }
+  const tree = descendants(instance.pid);
+  tree.add(instance.pid);
+  const { pids, sockets } = listeners(port);
+  if (pids.length === 0) {
+    fail(`nothing is listening on ${host}:${port}`);
+  }
+  const foreign = pids.filter((pid) => !tree.has(pid));
+  if (foreign.length > 0) {
+    fail(
+      `port ${port} is served by pid ${foreign.join(",")} outside launch pid ${instance.pid}. Refusing to drive a shared or foreign instance.`,
+    );
+  }
+  if (!sockets.length || !sockets.every(isLoopbackSocket) || !sockets.some((socket) => socket.family === 4 && socket.addr.toUpperCase() === "0100007F")) {
+    fail(`port ${port} is not bound only to loopback`);
+  }
+  return instance;
+}
+
+async function commandDoctor(host, port) {
+  if (port === REFUSED_PORT) {
+    fail("refusing port 3000");
+  }
+  const instance = readInstance(port);
+  const problems = [];
+  if (!instance) problems.push(`instance.json missing at ${instancePath(port)}`);
+  else {
+    if (instance.host !== host || Number(instance.port) !== port) {
+      problems.push(`instance file is ${instance.host}:${instance.port}, env is ${host}:${port}`);
+    }
+    if (instance.repoRoot !== ROOT) problems.push(`instance repoRoot is ${instance.repoRoot}`);
+    if (instance.state !== "ready") problems.push(`instance state is ${instance.state || "unknown"}`);
+    if (!isAlive(instance.pid)) problems.push(`pid ${instance.pid} is not alive`);
+    else {
+      const cmd = readCmdline(instance.pid);
+      if (!cmd.includes("next") || !cmd.includes(String(port))) {
+        problems.push(`pid ${instance.pid} is not this repo's next dev on port ${port}`);
+      }
+    }
+  }
+
+  let page = null;
+  try {
+    page = await httpGet(host, port, "/");
+  } catch (error) {
+    problems.push(`GET / failed: ${error.message}`);
+  }
+
+  const summary = page ? summarize(page) : null;
+  if (page && page.status !== 200) problems.push(`GET / status ${page.status}`);
+  if (summary && !summary.title.includes(READY_MARK)) problems.push(`title ${JSON.stringify(summary.title)}`);
+  if (summary && summary.h1 !== READY_H1) problems.push(`h1 ${JSON.stringify(summary.h1)}`);
+
+  const { pids, sockets } = listeners(port);
+  if (instance && isAlive(instance.pid)) {
+    const tree = descendants(instance.pid);
+    tree.add(instance.pid);
+    if (pids.length === 0) problems.push(`no listener visible on ${host}:${port}`);
+    const foreign = pids.filter((pid) => !tree.has(pid));
+    if (foreign.length) {
+      problems.push(`listener pid ${foreign.join(",")} is not in launch pid ${instance.pid}'s process tree`);
+    }
+    if (sockets.length && !sockets.every(isLoopbackSocket)) {
+      problems.push(`listener on ${port} is not loopback-only`);
+    }
+    if (sockets.length && !sockets.some((socket) => socket.family === 4 && socket.addr.toUpperCase() === "0100007F")) {
+      problems.push(`listener on ${port} is not 127.0.0.1`);
+    }
+  }
+
+  if (problems.length) {
+    console.log("doctor: fail");
+    for (const problem of problems) console.log(`- ${problem}`);
+    process.exit(1);
+  }
+  console.log("doctor: pass");
+  console.log(`pid: ${instance.pid}`);
+  console.log(`url: ${baseUrl(host, port)}`);
+  console.log(`title: ${summary.title}`);
+  console.log(`h1: ${summary.h1}`);
+  console.log(`listeners: ${pids.join(",")}`);
+}
+
+function ownedCommand(pid, port) {
+  const cmd = readCmdline(pid);
+  return cmd.includes("next") && cmd.includes(String(port)) && cmd.includes(ROOT);
+}
+
+async function killOwned(pid) {
+  const signalTree = (sig) => {
+    try {
+      process.kill(-pid, sig);
+    } catch {
+      // The pid may not be a process-group leader.
+    }
+    const tree = descendants(pid);
+    tree.add(pid);
+    for (const child of tree) {
+      try {
+        process.kill(child, sig);
+      } catch {
+        // Already gone.
+      }
+    }
+  };
+  signalTree("SIGTERM");
+  for (let i = 0; i < 30; i += 1) {
+    const tree = descendants(pid);
+    tree.add(pid);
+    if (![...tree].some((child) => isAlive(child))) return;
+    await sleep(100);
+  }
+  signalTree("SIGKILL");
+  await sleep(200);
+}
+
+function cwdOf(pid) {
+  try {
+    return fs.readlinkSync(`/proc/${pid}/cwd`);
+  } catch {
+    return "";
+  }
+}
+
+async function commandCleanup(host, port) {
+  const dir = runDir(port);
+  const instance = readInstance(port);
+  if (!instance) {
+    const pids = listeners(port).pids;
+    if (pids.length === 0) {
+      console.log(`cleanup: no instance at ${dir}`);
+      console.log(`evidence kept: ${EVIDENCE_ROOT}`);
+      return;
+    }
+    fail(
+      `no instance.json but ${host}:${port} is in use by pid ${pids.join(",")}. Not killing a process this run did not record.`,
+    );
+  }
+  if (instance.repoRoot !== ROOT || Number(instance.port) !== port || instance.host !== host) {
+    fail(`instance.json at ${dir} is not this repo on ${host}:${port}. Not cleaning it.`);
+  }
+  if (isAlive(instance.pid)) {
+    if (!ownedCommand(instance.pid, port)) {
+      fail(
+        `pid ${instance.pid} is alive but its cmdline is not this repo's next dev on port ${port}. Not killing it. cmdline=${readCmdline(instance.pid) || "unreadable"}`,
+      );
+    }
+    await killOwned(instance.pid);
+  }
+  const orphans = listeners(port).pids.filter((pid) => {
+    const cmd = readCmdline(pid);
+    return cmd.includes("next") && cwdOf(pid) === ROOT && (cmd.includes(String(port)) || cmd.includes("next-server"));
+  });
+  for (const pid of orphans) {
+    try {
+      process.kill(pid, "SIGTERM");
+    } catch {
+      // Already gone.
+    }
+  }
+  await sleep(200);
+  for (const pid of orphans.filter((pid) => isAlive(pid))) {
+    try {
+      process.kill(pid, "SIGKILL");
+    } catch {
+      // Already gone.
+    }
+  }
+  await sleep(100);
+  const remaining = listeners(port).pids;
+  if (remaining.length) {
+    fail(
+      `port ${port} still has pid ${remaining.join(",")} after stopping launch pid ${instance.pid}. Left ${dir} in place. Not killing an unrecognized process. cmdline=${remaining.map((pid) => readCmdline(pid) || "unreadable").join(" || ")}`,
+    );
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+  console.log(`cleanup: removed ${dir}`);
+  console.log(`evidence kept: ${EVIDENCE_ROOT}`);
+}
+
+async function commandLaunch(host, port) {
+  if (process.env.CORDGAUGE_MODE && process.env.CORDGAUGE_MODE !== "dev") {
+    fail(
+      'CordGauge verification only launches `next dev`. next.config.ts sets output: "export", and `next start` exits with: "next start" does not work with "output: export". Do not serve this app from production.',
+    );
+  }
+  const existing = readInstance(port);
+  if (existing?.pid && isAlive(existing.pid) && ownedCommand(existing.pid, port)) {
+    fail(`already running pid ${existing.pid} on ${host}:${port}. Run cleanup before launching again.`);
+  }
+  const busy = listeners(port).pids;
+  if (busy.length) {
+    fail(`port ${port} is already in use by pid ${busy.join(",")}. Not attaching and not killing it.`);
+  }
+  const nextBin = path.join(ROOT, "node_modules/next/dist/bin/next");
+  if (!fs.existsSync(nextBin)) fail(`missing ${nextBin}. Run npm install from the repo root first.`);
+
+  const dir = runDir(port);
+  fs.rmSync(dir, { recursive: true, force: true });
+  fs.mkdirSync(dir, { recursive: true });
+  const logPath = path.join(dir, "next.log");
+  const logFd = fs.openSync(logPath, "a");
+  const args = [nextBin, "dev", "--hostname", host, "--port", String(port)];
+  fs.writeSync(logFd, `command: ${process.execPath} ${args.join(" ")}\n`);
+  const child = spawn(process.execPath, args, {
+    cwd: ROOT,
+    detached: true,
+    stdio: ["ignore", logFd, logFd],
+    env: {
+      ...process.env,
+      PORT: String(port),
+      BROWSER: "none",
+      NEXT_TELEMETRY_DISABLED: "1",
+    },
+  });
+  fs.closeSync(logFd);
+  child.unref();
+  if (!child.pid) fail("next dev did not return a pid");
+
+  const instance = {
+    pid: child.pid,
+    host,
+    port,
+    mode: "dev",
+    state: "starting",
+    cwd: ROOT,
+    repoRoot: ROOT,
+    startedAt: new Date().toISOString(),
+    log: logPath,
+    command: `${process.execPath} ${args.join(" ")}`,
+  };
+  writeInstance(port, instance);
+
+  const deadline = Date.now() + LAUNCH_TIMEOUT_MS;
+  let lastError = "hub page did not become ready";
+  try {
+    while (Date.now() < deadline) {
+      if (!isAlive(child.pid)) {
+        lastError = `next dev exited before ready. log:\n${tail(logPath)}`;
+        break;
+      }
+      try {
+        const page = await httpGet(host, port, "/");
+        const summary = summarize(page);
+        if (page.status === 200 && summary.h1 === READY_H1 && summary.visible.includes(READY_MARK)) {
+          if (!loopbackBound(port)) {
+            lastError = `next is listening on ${port} but not only on 127.0.0.1`;
+            break;
+          }
+          instance.state = "ready";
+          instance.readyAt = new Date().toISOString();
+          writeInstance(port, instance);
+          console.log(`launched pid=${child.pid} ${baseUrl(host, port)}`);
+          console.log(`log: ${logPath}`);
+          console.log(`instance: ${instancePath(port)}`);
+          return;
+        }
+        lastError = `status ${page.status} h1 ${JSON.stringify(summary.h1)}`;
+      } catch (error) {
+        lastError = error.message;
+      }
+      await sleep(400);
+    }
+    throw new Error(lastError);
+  } catch (error) {
+    const logTail = tail(logPath);
+    if (isAlive(child.pid) && ownedCommand(child.pid, port)) await killOwned(child.pid);
+    const lingering = listeners(port).pids;
+    if (lingering.length === 0) fs.rmSync(dir, { recursive: true, force: true });
+    fail(`${error.message}\nlog tail:\n${logTail}`);
+  }
+}
+
+function tail(file) {
+  try {
+    const text = fs.readFileSync(file, "utf8");
+    return text.slice(-2000);
+  } catch {
+    return "(no log)";
+  }
+}
+
+async function commandGet(host, port, flags) {
+  requireInstance(host, port);
+  const urlPath = flags._[0];
+  if (!urlPath || !urlPath.startsWith("/")) fail("get needs a path starting with /");
+  const page = await httpGet(host, port, urlPath);
+  const summary = summarize(page);
+  const expectedStatus = flags.status || 200;
+  const misses = assertExpect(summary, page.body, flags);
+  if (page.status !== expectedStatus) misses.push(`status ${page.status} wanted ${expectedStatus}`);
+  printPage(summary, misses);
+  if (misses.length) process.exit(1);
+}
+
+function resolveLocal(host, port, fromPath, href) {
+  if (/^(mailto:|javascript:|data:)/i.test(href)) {
+    return { refuse: `refusing non-http link ${href}` };
+  }
+  let url;
+  try {
+    url = new URL(href, `${baseUrl(host, port)}${fromPath}`);
+  } catch (error) {
+    return { refuse: `unparseable href ${href}: ${error.message}` };
+  }
+  if (url.hostname !== host || String(url.port || 80) !== String(port)) {
+    return { refuse: `refusing external link ${url.href}` };
+  }
+  return { path: `${url.pathname}${url.search}`, hash: url.hash };
+}
+
+async function commandFollow(host, port, flags) {
+  requireInstance(host, port);
+  if (!flags.from || !flags.from.startsWith("/")) fail("follow needs --from /path");
+  if (!flags.name) fail("follow needs --name");
+  const source = await httpGet(host, port, flags.from);
+  if (source.status !== 200) fail(`source ${flags.from} returned ${source.status}`);
+  const name = collapse(flags.name);
+  const matches = linksFrom(source.body).filter((link) => link.name === name);
+  if (matches.length === 0) {
+    const nearby = linksFrom(source.body)
+      .filter((link) => link.name.toLowerCase().includes(name.toLowerCase().slice(0, Math.min(12, name.length))))
+      .slice(0, 8)
+      .map((link) => `${link.name} -> ${link.href}`);
+    fail(`no link named ${JSON.stringify(name)} on ${flags.from}. nearby: ${nearby.join(" | ") || "(none)"}`);
+  }
+  const resolved = matches.map((link) => ({ ...link, target: resolveLocal(host, port, flags.from, link.href) }));
+  const refused = resolved.filter((link) => link.target.refuse);
+  if (refused.length === resolved.length) fail(refused[0].target.refuse);
+  const local = resolved.filter((link) => !link.target.refuse);
+  const paths = [...new Set(local.map((link) => link.target.path))];
+  if (paths.length !== 1) {
+    fail(`link name ${JSON.stringify(name)} points at more than one local path: ${paths.join(", ")}`);
+  }
+  console.log(`from: ${flags.from}`);
+  console.log(`name: ${name}`);
+  console.log(`href: ${local[0].href}`);
+  console.log(`matches: ${matches.length}`);
+  const page = await httpGet(host, port, paths[0]);
+  const summary = summarize(page);
+  const misses = assertExpect(summary, page.body, flags);
+  const expectedStatus = flags.status || 200;
+  if (page.status !== expectedStatus) misses.push(`status ${page.status} wanted ${expectedStatus}`);
+  if (local[0].target.hash) {
+    const id = local[0].target.hash.slice(1);
+    if (id && !source.body.includes(`id="${id}"`) && !page.body.includes(`id="${id}"`)) {
+      misses.push(`missing id ${id}`);
+    }
+  }
+  printPage(summary, misses);
+  if (misses.length) process.exit(1);
+}
+
+async function commandLinks(host, port, flags) {
+  requireInstance(host, port);
+  const urlPath = flags._[0] || flags.path;
+  if (!urlPath || !urlPath.startsWith("/")) fail("links needs a path starting with /");
+  const page = await httpGet(host, port, urlPath);
+  if (page.status !== (flags.status || 200)) fail(`status ${page.status}`);
+  for (const link of linksFrom(page.body)) {
+    const target = resolveLocal(host, port, urlPath, link.href);
+    const note = target.refuse ? " external" : "";
+    console.log(`${link.name}\t${link.href}${note}`);
+  }
+}
+
+function findChrome() {
+  const fromEnv = process.env.CORDGAUGE_CHROME;
+  const candidates = [fromEnv, "/usr/local/bin/google-chrome", "/usr/bin/google-chrome", "/usr/bin/chromium"].filter(Boolean);
+  return candidates.find((candidate) => fs.existsSync(candidate)) || null;
+}
+
+function snapshotFiles(dir, urlPath, page, flags) {
+  fs.mkdirSync(dir, { recursive: true });
+  const slug = slugFromPath(new URL(page.url).pathname);
+  const summary = summarize(page);
+  const htmlPath = path.join(dir, `${slug}.html`);
+  const textPath = path.join(dir, `${slug}.txt`);
+  const metaPath = path.join(dir, `${slug}.meta.json`);
+  fs.writeFileSync(htmlPath, page.body);
+  const lines = [
+    `url: ${summary.url}`,
+    `status: ${summary.status}`,
+    `title: ${summary.title}`,
+    `h1: ${summary.h1}`,
+    `jsonLd: ${summary.jsonLd.join(", ") || "(none)"}`,
+    `canonical: ${summary.canonical || "(none)"}`,
+    ...summary.navs.map((nav) => `nav ${nav.label || "(unlabeled)"}: ${nav.names.join(" | ")}`),
+    "links:",
+    ...summary.links.map((link) => `- ${link.name} -> ${link.href}`),
+    "",
+  ];
+  fs.writeFileSync(textPath, lines.join("\n"));
+  const meta = {
+    url: summary.url,
+    status: summary.status,
+    title: summary.title,
+    h1: summary.h1,
+    jsonLdTypes: summary.jsonLd,
+    canonical: summary.canonical,
+    capturedAt: new Date().toISOString(),
+    featureId: flags.feature || null,
+  };
+  fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2) + "\n");
+  return { htmlPath, textPath, metaPath, slug, summary };
+}
+
+async function screenshot(url, outFile) {
+  const chrome = findChrome();
+  if (!chrome) {
+    console.error("screenshot: blocked, chrome missing. Set CORDGAUGE_CHROME or install google-chrome. HTTP snapshot still stands.");
+    return false;
+  }
+  const userData = fs.mkdtempSync("/tmp/cord-gauge-chrome-");
+  const child = spawn(
+    chrome,
+    [
+      "--headless=new",
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+      "--hide-scrollbars",
+      "--window-size=1280,900",
+      "--virtual-time-budget=8000",
+      `--user-data-dir=${userData}`,
+      `--screenshot=${outFile}`,
+      url,
+    ],
+    { detached: true, stdio: "ignore" },
+  );
+  try {
+    const deadline = Date.now() + 25000;
+    let lastSize = 0;
+    while (Date.now() < deadline) {
+      if (fs.existsSync(outFile)) {
+        const size = fs.statSync(outFile).size;
+        if (size > 1000 && size === lastSize) return true;
+        lastSize = size;
+      }
+      if (child.exitCode !== null && fs.existsSync(outFile) && fs.statSync(outFile).size > 1000) return true;
+      await sleep(200);
+    }
+    if (fs.existsSync(outFile) && fs.statSync(outFile).size > 1000) return true;
+    fail(`chrome did not write ${outFile}`);
+  } finally {
+    try {
+      process.kill(-child.pid, "SIGKILL");
+    } catch {
+      try {
+        process.kill(child.pid, "SIGKILL");
+      } catch {
+        // Chrome already exited.
+      }
+    }
+    fs.rmSync(userData, { recursive: true, force: true });
+  }
+  return false;
+}
+
+async function commandSnapshot(host, port, flags) {
+  requireInstance(host, port);
+  const urlPath = flags._[0];
+  if (!urlPath || !urlPath.startsWith("/")) fail("snapshot needs a path starting with /");
+  const dir = evidencePath(flags.dir);
+  if (!dir) fail("snapshot needs --dir under the evidence directory");
+  const page = await httpGet(host, port, urlPath);
+  const written = snapshotFiles(dir, urlPath, page, flags);
+  console.log(`snapshot: ${written.textPath}`);
+  if (flags.screenshot) {
+    const png = path.join(dir, `${written.slug}.png`);
+    const ok = await screenshot(page.url, png);
+    if (ok) console.log(`screenshot: ${png}`);
+  }
+}
+
+async function commandScreenshot(host, port, flags) {
+  requireInstance(host, port);
+  const urlPath = flags._[0];
+  if (!urlPath || !urlPath.startsWith("/")) fail("screenshot needs a path starting with /");
+  const out = evidencePath(flags.out);
+  if (!out) fail("screenshot needs --out under the evidence directory");
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  const page = await httpGet(host, port, urlPath);
+  if (page.status !== 200) fail(`status ${page.status}`);
+  const ok = await screenshot(page.url, out);
+  if (!ok) process.exit(1);
+  console.log(`screenshot: ${out}`);
+}
+
+function webSocketImpl() {
+  if (typeof WebSocket === "function") return WebSocket;
+  return null;
+}
+
+function connectWs(Ws, url) {
+  return new Promise((resolve, reject) => {
+    const ws = new Ws(url);
+    const pending = new Map();
+    let next = 1;
+    const client = {
+      onEvent: null,
+      send(method, params = {}) {
+        const id = next++;
+        return new Promise((res, rej) => {
+          pending.set(id, { res, rej });
+          ws.send(JSON.stringify({ id, method, params }));
+        });
+      },
+    };
+    const timer = setTimeout(() => reject(new Error("chrome websocket open timed out")), 10000);
+    ws.addEventListener("open", () => {
+      clearTimeout(timer);
+      resolve(client);
+    });
+    ws.addEventListener("error", () => {
+      clearTimeout(timer);
+      reject(new Error("chrome websocket failed"));
+    });
+    ws.addEventListener("message", (event) => {
+      const raw = typeof event.data === "string" ? event.data : Buffer.from(event.data).toString("utf8");
+      const message = JSON.parse(raw);
+      if (message.id && pending.has(message.id)) {
+        const { res, rej } = pending.get(message.id);
+        pending.delete(message.id);
+        if (message.error) rej(new Error(JSON.stringify(message.error)));
+        else res(message.result || {});
+      } else if (message.method && client.onEvent) {
+        client.onEvent(message);
+      }
+    });
+  });
+}
+
+async function readDebugPort(userData) {
+  const file = path.join(userData, "DevToolsActivePort");
+  const deadline = Date.now() + 10000;
+  while (Date.now() < deadline) {
+    if (fs.existsSync(file)) {
+      const port = Number(fs.readFileSync(file, "utf8").split("\n")[0]);
+      if (port > 0) return port;
+    }
+    await sleep(100);
+  }
+  throw new Error("chrome did not write DevToolsActivePort");
+}
+
+async function withChromePage(url, fn) {
+  const chrome = findChrome();
+  if (!chrome) fail("chrome missing. Set CORDGAUGE_CHROME. pick cannot be replaced by a GET of the default HTML.");
+  const Ws = webSocketImpl();
+  if (!Ws) fail("global WebSocket is missing. pick needs Node 22 (this repo's CI version). Do not call the default HTML a calculator pass.");
+  const userData = fs.mkdtempSync("/tmp/cord-gauge-chrome-");
+  let stderr = "";
+  const child = spawn(
+    chrome,
+    [
+      "--headless=new",
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+      "--disable-background-networking",
+      "--no-first-run",
+      "--window-size=1280,900",
+      `--user-data-dir=${userData}`,
+      "--remote-debugging-port=0",
+      "--remote-allow-origins=*",
+      "about:blank",
+    ],
+    { detached: true, stdio: ["ignore", "pipe", "pipe"] },
+  );
+  child.stderr.on("data", (chunk) => {
+    stderr = (stderr + chunk.toString()).slice(-4000);
+  });
+  try {
+    const debugPort = await readDebugPort(userData);
+    const version = await fetch(`http://127.0.0.1:${debugPort}/json/version`).then((response) => response.json());
+    const browser = await connectWs(Ws, version.webSocketDebuggerUrl);
+    const created = await browser.send("Target.createTarget", { url: "about:blank" });
+    const list = await fetch(`http://127.0.0.1:${debugPort}/json/list`).then((response) => response.json());
+    const pageInfo = list.find((target) => target.id === created.targetId);
+    if (!pageInfo?.webSocketDebuggerUrl) throw new Error("chrome did not expose a page websocket");
+    const page = await connectWs(Ws, pageInfo.webSocketDebuggerUrl);
+    const requests = [];
+    page.onEvent = (message) => {
+      if (message.method === "Network.requestWillBeSent") requests.push(message.params.request.url);
+    };
+    await page.send("Network.enable");
+    await page.send("Page.enable");
+    await page.send("Runtime.enable");
+    await page.send("Page.navigate", { url });
+    await fn({ page, requests });
+  } catch (error) {
+    if (stderr) error.message += `\nchrome stderr: ${stderr}`;
+    throw error;
+  } finally {
+    try {
+      process.kill(-child.pid, "SIGKILL");
+    } catch {
+      try {
+        process.kill(child.pid, "SIGKILL");
+      } catch {
+        // Chrome already exited.
+      }
+    }
+    fs.rmSync(userData, { recursive: true, force: true });
+  }
+}
+
+async function evalPage(page, expression) {
+  const result = await page.send("Runtime.evaluate", {
+    expression,
+    returnByValue: true,
+    awaitPromise: true,
+  });
+  if (result.exceptionDetails) {
+    throw new Error(result.exceptionDetails.text || JSON.stringify(result.exceptionDetails));
+  }
+  return result.result?.value;
+}
+
+function forbiddenHost(url) {
+  let hostname = "";
+  try {
+    hostname = new URL(url).hostname;
+  } catch {
+    return false;
+  }
+  return PRODUCTION_HOSTS.some((blocked) => hostname === blocked || hostname.endsWith(`.${blocked}`));
+}
+
+async function commandPick(host, port, flags) {
+  requireInstance(host, port);
+  const urlPath = flags.path;
+  if (!urlPath || !urlPath.startsWith("/")) fail("pick needs --path /...");
+  const amps = String(flags.amps || "");
+  const length = String(flags.length || "");
+  if (!["10", "13", "15"].includes(amps)) fail("--amps must be 10, 13, or 15");
+  if (!["25", "50", "100"].includes(length)) fail("--length must be 25, 50, or 100");
+  const dir = flags.dir ? evidencePath(flags.dir) : null;
+  if (dir) fs.mkdirSync(dir, { recursive: true });
+  const pageUrl = `${baseUrl(host, port)}${urlPath}`;
+  let before = "";
+  let after = "";
+  let requests = [];
+  await withChromePage(pageUrl, async ({ page, requests: seen }) => {
+    requests = seen;
+    const deadline = Date.now() + 30000;
+    while (Date.now() < deadline) {
+      const text = await evalPage(page, "document.querySelector('form') ? document.querySelector('form').innerText : ''");
+      if (typeof text === "string" && text.includes("Shop pick:")) {
+        before = text;
+        break;
+      }
+      await sleep(200);
+    }
+    if (!before.includes("Shop pick:")) fail("gauge form did not render Shop pick");
+    if (dir) {
+      const png = await page.send("Page.captureScreenshot", { format: "png" });
+      fs.writeFileSync(path.join(dir, "before.png"), Buffer.from(png.data, "base64"));
+      fs.writeFileSync(path.join(dir, "before.txt"), before);
+    }
+    const changed = await evalPage(
+      page,
+      `(() => {
+        const form = document.querySelector('form');
+        function setSelect(name, value) {
+          const el = form.querySelector('select[name="' + name + '"]');
+          if (!el) return { ok: false, name };
+          const previous = el.value;
+          const descriptor = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value');
+          descriptor.set.call(el, String(value));
+          if (el._valueTracker) el._valueTracker.setValue(previous);
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+          return { ok: true, value: el.value };
+        }
+        return { amps: setSelect('amps', ${JSON.stringify(amps)}), length: setSelect('length', ${JSON.stringify(length)}) };
+      })()`,
+    );
+    const wantChange = !(amps === "15" && length === "50");
+    const changeDeadline = Date.now() + 8000;
+    let stable = false;
+    while (Date.now() < changeDeadline) {
+      after = await evalPage(page, "document.querySelector('form').innerText");
+      const normalized = collapse(after);
+      const expectsOk = flags.expect.every((expect) => normalized.includes(collapse(expect)));
+      if (expectsOk && (!wantChange || collapse(after) !== collapse(before))) {
+        stable = true;
+        break;
+      }
+      await evalPage(
+        page,
+        `(() => {
+          const form = document.querySelector('form');
+          function setSelect(name, value) {
+            const el = form.querySelector('select[name="' + name + '"]');
+            const previous = el.value;
+            const descriptor = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value');
+            descriptor.set.call(el, String(value));
+            if (el._valueTracker) el._valueTracker.setValue(previous);
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          setSelect('amps', ${JSON.stringify(amps)});
+          setSelect('length', ${JSON.stringify(length)});
+          return true;
+        })()`,
+      );
+      await sleep(150);
+    }
+    if (!stable) {
+      fail(
+        `select change did not stick. before=${JSON.stringify(collapse(before))} after=${JSON.stringify(collapse(after))} set=${JSON.stringify(changed)}`,
+      );
+    }
+    if (dir) {
+      const png = await page.send("Page.captureScreenshot", { format: "png" });
+      fs.writeFileSync(path.join(dir, "after.png"), Buffer.from(png.data, "base64"));
+      const html = await evalPage(page, "document.documentElement.outerHTML");
+      fs.writeFileSync(path.join(dir, "after.html"), html);
+    }
+  });
+
+  const normalizedAfter = collapse(after);
+  const misses = flags.expect.filter((expect) => !normalizedAfter.includes(collapse(expect)));
+  const hits = requests.filter((url) => forbiddenHost(url));
+  console.log(`path: ${urlPath}`);
+  console.log(`action: set Nameplate amps=${amps} Run length=${length}`);
+  console.log(`before: ${collapse(before)}`);
+  console.log(`after: ${normalizedAfter}`);
+  if (dir) {
+    fs.writeFileSync(path.join(dir, "after.txt"), after);
+    fs.writeFileSync(
+      path.join(dir, "action.txt"),
+      [
+        `path: ${urlPath}`,
+        `set: Nameplate amps=${amps}`,
+        `set: Run length, outlet to tool=${length} ft`,
+        `before: ${collapse(before)}`,
+        `after: ${normalizedAfter}`,
+        "",
+      ].join("\n"),
+    );
+    fs.writeFileSync(path.join(dir, "requests.txt"), requests.join("\n") + (requests.length ? "\n" : ""));
+    const meta = {
+      url: pageUrl,
+      capturedAt: new Date().toISOString(),
+      featureId: flags.feature || null,
+      amps,
+      lengthFt: Number(length),
+      forbiddenRequests: hits,
+    };
+    fs.writeFileSync(path.join(dir, "pick.meta.json"), JSON.stringify(meta, null, 2) + "\n");
+    console.log(`dir: ${dir}`);
+  }
+  if (hits.length) {
+    console.log(`forbidden-requests: ${hits.join(" ")}`);
+    process.exit(1);
+  }
+  if (misses.length) {
+    for (const miss of misses) console.log(`expect: missing ${JSON.stringify(miss)}`);
+    process.exit(1);
+  }
+  console.log("expect: ok");
+  console.log(`requests: ${requests.length}`);
+}
+
+function locUrl(urlPath) {
+  return urlPath === "/" ? "https://www.cordgaugeguide.com" : `https://www.cordgaugeguide.com${urlPath}`;
+}
+
+async function commandSeo(host, port, flags) {
+  requireInstance(host, port);
+  const dir = flags.dir ? evidencePath(flags.dir) : null;
+  if (dir) fs.mkdirSync(dir, { recursive: true });
+  const robots = await httpGet(host, port, "/robots.txt");
+  const sitemap = await httpGet(host, port, "/sitemap.xml");
+  const ads = await httpGet(host, port, "/ads.txt");
+  const problems = [];
+  if (robots.status !== 200) problems.push(`robots status ${robots.status}`);
+  if (sitemap.status !== 200) problems.push(`sitemap status ${sitemap.status}`);
+  if (ads.status !== 200) problems.push(`ads status ${ads.status}`);
+  for (const needle of [
+    "User-Agent: *",
+    "Allow: /",
+    "Sitemap: https://www.cordgaugeguide.com/sitemap.xml",
+    "Host: www.cordgaugeguide.com",
+  ]) {
+    if (!robots.body.includes(needle)) problems.push(`robots missing ${JSON.stringify(needle)}`);
+  }
+  const locs = [...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1].trim());
+  const expected = SITEMAP_PATHS.map(locUrl);
+  const missing = expected.filter((loc) => !locs.includes(loc));
+  const extra = locs.filter((loc) => !expected.includes(loc));
+  if (missing.length) problems.push(`sitemap missing ${missing.join(", ")}`);
+  if (extra.length) problems.push(`sitemap extra ${extra.join(", ")}`);
+  const adsBody = ads.body;
+  const commentOnly = adsBody.includes("# CordGauge Guide ads.txt placeholder") && !adsBody.includes("pub-");
+  const directLine = /^google\.com, pub-[0-9]+, DIRECT, f08c47fec0942fa0\s*$/.test(adsBody.trim());
+  if (adsBody.includes("pub-XXXXXXXXXXXXXXXX")) problems.push("ads.txt still contains the placeholder publisher id");
+  if (!commentOnly && !directLine) problems.push("ads.txt is neither the comment-only placeholder nor one google.com DIRECT line");
+  if (dir) {
+    fs.writeFileSync(path.join(dir, "robots.txt"), robots.body);
+    fs.writeFileSync(path.join(dir, "sitemap.xml"), sitemap.body);
+    fs.writeFileSync(path.join(dir, "ads.txt"), ads.body);
+    fs.writeFileSync(
+      path.join(dir, "seo.txt"),
+      [
+        `robots: ${robots.status}`,
+        `sitemap-locs: ${locs.length}`,
+        `ads: ${commentOnly ? "comment-only" : directLine ? "google.com DIRECT" : "unexpected"}`,
+        ...problems.map((problem) => `problem: ${problem}`),
+        "",
+      ].join("\n"),
+    );
+  }
+  console.log(`robots: ${robots.status}`);
+  console.log(`sitemap-locs: ${locs.length}`);
+  console.log(`ads: ${commentOnly ? "comment-only" : directLine ? "google.com DIRECT" : "unexpected"}`);
+  if (problems.length) {
+    for (const problem of problems) console.log(`seo: ${problem}`);
+    process.exit(1);
+  }
+  console.log("seo: pass");
+}
+
+function usage() {
+  console.log(`cord-gauge commands:
+  launch
+  doctor
+  url
+  get <path> [--expect text]... [--status N]
+  follow --from <path> --name <text> [--expect text]...
+  links <path>
+  snapshot <path> --dir <evidence-dir> [--screenshot] [--feature id]
+  screenshot <path> --out <evidence-file>
+  pick --path <path> --amps 10|13|15 --length 25|50|100 [--expect text]... [--dir <evidence-dir>] [--feature id]
+  seo [--dir <evidence-dir>]
+  cleanup
+
+Environment: CORDGAUGE_HOST=127.0.0.1 CORDGAUGE_PORT=4321
+Port 3000 is refused. Evidence writes must stay under:
+  ${EVIDENCE_ROOT}`);
+}
+
+async function main() {
+  const [command, ...rest] = process.argv.slice(2);
+  const flags = parseFlags(rest);
+  if (!command || flags.help || command === "help") {
+    usage();
+    process.exit(command ? 0 : 1);
+  }
+  const { host, port } = hostPort();
+  if (command === "url") {
+    console.log(baseUrl(host, port));
+    return;
+  }
+  if (command === "launch") return commandLaunch(host, port);
+  if (command === "doctor") return commandDoctor(host, port);
+  if (command === "cleanup") return commandCleanup(host, port);
+  if (command === "get") return commandGet(host, port, flags);
+  if (command === "follow") return commandFollow(host, port, flags);
+  if (command === "links") return commandLinks(host, port, flags);
+  if (command === "snapshot") return commandSnapshot(host, port, flags);
+  if (command === "screenshot") return commandScreenshot(host, port, flags);
+  if (command === "pick") return commandPick(host, port, flags);
+  if (command === "seo") return commandSeo(host, port, flags);
+  fail(`unknown command ${command}`);
+}
+
+main().catch((error) => {
+  if (error && error.cordGauge) console.error(`cord-gauge: ${error.message}`);
+  else console.error(`cord-gauge: ${error.stack || error.message}`);
+  process.exit(1);
+});

@@ -1,0 +1,12 @@
+from: /
+name: Calculator
+href: /extension-cord-gauge-calculator
+matches: 1
+status: 200
+url: http://127.0.0.1:4321/extension-cord-gauge-calculator
+title: Extension cord gauge calculator · CordGauge Guide
+h1: Extension cord gauge from amps and length
+jsonLd: WebSite, Article, FAQPage
+canonical: https://www.cordgaugeguide.com/extension-cord-gauge-calculator
+nav Primary: How to pick | Calculator | Master chart | 12 vs 14 | 15 A saws | Long runs | Outdoor | About
+expect: ok
