@@ -267,8 +267,7 @@ main > div.mx-auto {
 
 .guide-card a:hover,
 .related-card a:hover,
-.related-compact a:hover,
-.brand:hover {
+.related-compact a:hover {
   color: var(--color-amp-dark);
 }
 
@@ -966,8 +965,7 @@ select:focus-visible {
     justify-content: space-between;
   }
 
-  .instrument-fields,
-  .drop-grid {
+  .instrument-fields {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

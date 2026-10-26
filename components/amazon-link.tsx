@@ -21,15 +21,13 @@ export function AmazonLink({
       target="_blank"
       aria-label={`View ${label} on Amazon`}
       onClick={() => {
-        const payload = JSON.stringify({
-          path: window.location.pathname || "/",
-          asin,
-        });
-        try {
-          navigator.sendBeacon(CLICK_BEACON, payload);
-        } catch {
-          // The purchase link still opens when the counter is unavailable.
-        }
+        navigator.sendBeacon(
+          CLICK_BEACON,
+          JSON.stringify({
+            path: window.location.pathname || "/",
+            asin,
+          }),
+        );
       }}
     >
       {children ?? "View on Amazon"}
