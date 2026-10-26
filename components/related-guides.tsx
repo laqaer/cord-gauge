@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BenchMark, markForKicker } from "@/components/marks";
 import { guides, guidesByHref } from "@/lib/guides";
 
 type RelatedGuidesProps = {
@@ -22,19 +23,15 @@ export function RelatedGuides({
 
   if (compact) {
     return (
-      <section className="motion-card reveal mt-10 border border-rule bg-card px-4 py-4 sm:px-5">
-        <h2 className="text-lg font-semibold tracking-tight text-ink">{heading}</h2>
-        {intro ? <p className="mt-1 text-sm leading-6 text-ink-soft">{intro}</p> : null}
-        <ul className="mt-2 divide-y divide-rule">
+      <section className="related related-compact motion-card reveal">
+        <h2>{heading}</h2>
+        {intro ? <p className="related-intro">{intro}</p> : null}
+        <ul>
           {items.map((guide) => (
-            <li key={guide.href} className="py-3">
-              <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-amp-dark">
-                {guide.kicker}
-              </p>
-              <Link className="mt-1 block font-semibold text-ink hover:text-amp-dark" href={guide.href}>
-                {guide.title}
-              </Link>
-              <p className="mt-1 text-sm leading-6 text-ink-soft">{whyByHref?.[guide.href] ?? guide.dek}</p>
+            <li key={guide.href}>
+              <p className="kicker">{guide.kicker}</p>
+              <Link href={guide.href}>{guide.title}</Link>
+              <p>{whyByHref?.[guide.href] ?? guide.dek}</p>
             </li>
           ))}
         </ul>
@@ -43,22 +40,20 @@ export function RelatedGuides({
   }
 
   return (
-    <section className="mt-14 border-t border-rule pt-8">
-      <h2 className="text-2xl font-semibold tracking-tight text-ink">{heading}</h2>
-      {intro ? <p className="mt-2 text-sm leading-6 text-ink-soft">{intro}</p> : null}
-      <ul className="mt-4 grid gap-4 md:grid-cols-2">
+    <section className="related">
+      <h2>{heading}</h2>
+      {intro ? <p className="related-intro">{intro}</p> : null}
+      <ul className="related-grid">
         {items.map((guide) => (
-          <li key={guide.href} className="motion-card reveal border border-rule bg-card p-4">
-            <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-amp-dark">
-              {guide.kicker}
-            </p>
-            <Link
-              className="mt-1 block text-xl font-semibold text-ink hover:text-amp-dark"
-              href={guide.href}
-            >
-              {guide.title}
-            </Link>
-            <p className="mt-2 text-sm leading-6 text-ink-soft">{whyByHref?.[guide.href] ?? guide.dek}</p>
+          <li key={guide.href} className="bench-card motion-card reveal related-card">
+            <div className="mark-plate mark-plate-sm" aria-hidden="true">
+              <BenchMark kind={markForKicker(guide.kicker)} />
+            </div>
+            <div>
+              <p className="kicker">{guide.kicker}</p>
+              <Link href={guide.href}>{guide.title}</Link>
+              <p>{whyByHref?.[guide.href] ?? guide.dek}</p>
+            </div>
           </li>
         ))}
       </ul>

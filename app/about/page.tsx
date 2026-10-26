@@ -30,10 +30,8 @@ export default function AboutPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <JsonLd data={organizationJsonLd()} />
-      <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-amp-dark">About</p>
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
-        CordGauge Guide is a directory, not a cord brand
-      </h1>
+      <p className="kicker">About</p>
+      <h1 className="display">CordGauge Guide is a directory, not a cord brand</h1>
       <div className="prose-cord mt-8">
         <p>
           <strong>CordGauge Guide</strong> helps people pick portable-cord gauge by{" "}

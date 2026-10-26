@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { AmazonLink } from "@/components/amazon-link";
+import { CrossSection } from "@/components/marks";
 import { selectProducts } from "@/lib/affiliates";
 import {
   formatDrop,
   lengthsFt,
   loadAmps,
   recommendAwg,
+  voltageDropPercent,
   type LengthFt,
   type LoadAmps,
 } from "@/lib/cords";
@@ -19,17 +21,24 @@ export function GaugePicker() {
   const shop = selectProducts({ pick, lengthFt });
 
   return (
-    <form className="mt-8 border border-rule bg-card p-5" onSubmit={(event) => event.preventDefault()}>
-      <h2 className="text-2xl font-semibold tracking-tight text-ink">Gauge calculator</h2>
-      <p className="mt-2 text-sm leading-6 text-ink-soft">
-        Planning estimate for a 120 V copper cord. The marked ampacity on the cord still wins if it
-        is lower. This does not size a new circuit.
-      </p>
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        <label className="block text-sm font-medium text-ink">
+    <form className="instrument" onSubmit={(event) => event.preventDefault()}>
+      <div className="instrument-head">
+        <div>
+          <h2>Gauge calculator</h2>
+          <p>
+            Planning estimate for a 120 V copper cord. The marked ampacity on the cord still wins if it
+            is lower. This does not size a new circuit.
+          </p>
+        </div>
+        <div className="instrument-face" aria-hidden="true">
+          <CrossSection awg={pick} />
+          <span>{pick} AWG</span>
+        </div>
+      </div>
+      <div className="instrument-fields">
+        <label>
           Nameplate amps
           <select
-            className="mt-2 w-full border border-rule bg-paper px-3 py-2 text-base text-ink hover:border-amp-dark focus-visible:border-amp-dark"
             name="amps"
             value={amps}
             onChange={(event) => setAmps(Number(event.target.value) as LoadAmps)}
@@ -41,10 +50,9 @@ export function GaugePicker() {
             ))}
           </select>
         </label>
-        <label className="block text-sm font-medium text-ink">
+        <label>
           Run length, outlet to tool
           <select
-            className="mt-2 w-full border border-rule bg-paper px-3 py-2 text-base text-ink hover:border-amp-dark focus-visible:border-amp-dark"
             name="length"
             value={lengthFt}
             onChange={(event) => setLengthFt(Number(event.target.value) as LengthFt)}
@@ -59,29 +67,36 @@ export function GaugePicker() {
       </div>
       <div aria-live="polite">
         <div key={`${amps}-${lengthFt}`} className="result-ease">
-          <p className="mt-5 text-lg font-semibold text-ink">
-            Shop pick: <span className="text-amp-dark">{pick} AWG</span>
+          <p className="instrument-pick">
+            Shop pick: <span>{pick} AWG</span>
           </p>
-          <p className="mt-1 font-mono text-sm text-ink-soft">
+          <p className="instrument-drop">
             {pick} AWG drop at {amps} A · {lengthFt} ft: {formatDrop(pick, amps, lengthFt)}
           </p>
-          <dl className="mt-4 grid gap-2 text-sm text-ink-soft sm:grid-cols-3">
-            {([14, 12, 10] as const).map((awg) => (
-              <div key={awg} className="border border-rule px-3 py-2">
-                <dt className="font-mono text-xs text-amp-dark">{awg} AWG</dt>
-                <dd className="mt-1 text-ink">{formatDrop(awg, amps, lengthFt)}</dd>
-              </div>
-            ))}
+          <dl className="drop-grid">
+            {([14, 12, 10] as const).map((awg) => {
+              const percent = voltageDropPercent(awg, amps, lengthFt);
+              const width = Math.min(100, (percent / 8) * 100);
+              return (
+                <div key={awg} className={awg === pick ? "drop-cell is-pick" : "drop-cell"}>
+                  <dt>{awg} AWG</dt>
+                  <dd>{formatDrop(awg, amps, lengthFt)}</dd>
+                  <div className="drop-track" aria-hidden="true">
+                    <span className="drop-fill" style={{ width: `${width}%` }} />
+                  </div>
+                </div>
+              );
+            })}
           </dl>
         </div>
       </div>
-      {shop.note ? <p className="mt-4 text-sm leading-6 text-ink">{shop.note}</p> : null}
-      <ul className="mt-4 grid gap-3">
+      {shop.note ? <p className="instrument-note">{shop.note}</p> : null}
+      <ul className="shop-list">
         {shop.products.map((product) => (
-          <li key={product.asin} className="motion-line flex flex-col gap-2 border border-rule px-3 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <li key={product.asin} className="shop-row motion-line">
             <div>
-              <p className="font-medium text-ink">{product.label}</p>
-              <p className="mt-1 font-mono text-xs text-amp-dark">
+              <p className="shop-label">{product.label}</p>
+              <p className="shop-spec">
                 {product.awg} AWG · {product.lengthFt} ft · {product.jacket}
               </p>
             </div>

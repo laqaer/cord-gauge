@@ -1,64 +1,57 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/marks";
 import { guides } from "@/lib/guides";
 import { affiliateDisclosure, electricalCaveat, site } from "@/lib/site";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-16 border-t border-rule bg-card">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="grid gap-10 md:grid-cols-3">
+    <footer className="site-footer">
+      <div className="site-footer-inner">
+        <div className="site-footer-grid">
           <div>
-            <p className="text-lg font-semibold tracking-tight text-ink">{site.name}</p>
-            <p className="mt-3 max-w-sm text-sm leading-6 text-ink-soft">{site.tagline}</p>
-            <p className="mt-3 text-sm text-ink-soft">
+            <p className="site-footer-brand">
+              <BrandMark />
+              {site.name}
+            </p>
+            <p className="site-footer-tag">{site.tagline}</p>
+            <p className="site-footer-meta">
               A {site.publisher} comparison site.{" "}
-              <a className="text-steel hover:text-amp-dark" href={site.url}>
-                {new URL(site.url).host}
-              </a>
-              .
+              <a href={site.url}>{new URL(site.url).host}</a>.
             </p>
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-ink">Guides</h2>
-            <ul className="mt-3 space-y-2 text-sm">
+            <h2>Guides</h2>
+            <ul>
               {guides.map((guide) => (
                 <li key={guide.href}>
-                  <Link className="text-steel hover:text-amp-dark" href={guide.href}>
-                    {guide.title}
-                  </Link>
+                  <Link href={guide.href}>{guide.title}</Link>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-ink">Site</h2>
-            <ul className="mt-3 space-y-2 text-sm">
+            <h2>Site</h2>
+            <ul>
               <li>
-                <Link className="text-steel hover:text-amp-dark" href="/about">
-                  About & editorial standards
-                </Link>
+                <Link href="/about">About & editorial standards</Link>
               </li>
               <li>
-                <Link className="text-steel hover:text-amp-dark" href="/privacy">
-                  Privacy
-                </Link>
+                <Link href="/privacy">Privacy</Link>
               </li>
               <li>
-                <a className="text-steel hover:text-amp-dark" href={`mailto:${site.email}`}>
-                  {site.email}
-                </a>
+                <a href={`mailto:${site.email}`}>{site.email}</a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-10 space-y-3 border-t border-rule pt-6 text-sm leading-6 text-ink-soft">
+        <div className="site-footer-notes">
           <p>
-            <strong className="text-ink">Affiliate disclosure. </strong>
+            <strong>Affiliate disclosure. </strong>
             {affiliateDisclosure}
           </p>
           <p>
-            <strong className="text-ink">Electrical caveat. </strong>
+            <strong>Electrical caveat. </strong>
             {electricalCaveat}
           </p>
           <p>

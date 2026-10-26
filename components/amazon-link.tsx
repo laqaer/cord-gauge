@@ -15,25 +15,19 @@ export function AmazonLink({
 }) {
   return (
     <a
-      className={
-        children
-          ? "font-medium text-steel underline underline-offset-3 hover:text-amp-dark"
-          : "shrink-0 text-sm font-medium text-steel underline underline-offset-3 hover:text-amp-dark"
-      }
+      className={children ? "text-link" : "buy-link"}
       href={amazonUrl(asin)}
       rel="nofollow sponsored noopener"
       target="_blank"
       aria-label={`View ${label} on Amazon`}
       onClick={() => {
-        const payload = JSON.stringify({
-          path: window.location.pathname || "/",
-          asin,
-        });
-        try {
-          navigator.sendBeacon(CLICK_BEACON, payload);
-        } catch {
-          // The purchase link still opens when the counter is unavailable.
-        }
+        navigator.sendBeacon(
+          CLICK_BEACON,
+          JSON.stringify({
+            path: window.location.pathname || "/",
+            asin,
+          }),
+        );
       }}
     >
       {children ?? "View on Amazon"}

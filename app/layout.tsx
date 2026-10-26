@@ -51,7 +51,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${barlow.variable} ${plexMono.variable}`}>
-      <body className="font-sans antialiased">
+      <body className="site-body font-sans antialiased">
         <JsonLd data={websiteJsonLd()} />
         <a
           href="#main"

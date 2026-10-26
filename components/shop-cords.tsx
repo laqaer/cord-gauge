@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AmazonLink } from "@/components/amazon-link";
+import { CrossSection } from "@/components/marks";
 import { products, selectProducts } from "@/lib/affiliates";
 import type { Awg } from "@/lib/cords";
 
@@ -20,7 +21,7 @@ export function ShopBuyLine({
   if (!product) return null;
 
   return (
-    <p className={className}>
+    <p className={className ? `buy-line ${className}` : "buy-line"}>
       <AmazonLink asin={product.asin} label={product.label}>
         {children}
       </AmazonLink>
@@ -41,30 +42,26 @@ export function ShopCords({
   const selection = selectProducts({ pick, lengthFt });
 
   return (
-    <section className="mt-14" id="shop-cords">
-      <h2 className="text-2xl font-semibold tracking-tight text-ink">{heading}</h2>
-      <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-soft">
+    <section className="shop-panel" id="shop-cords">
+      <h2>{heading}</h2>
+      <p className="shop-intro">
         Named SJTW cords checked against the Amazon listing for gauge, length, and a live buy box.
         Links go to Amazon (Associates tag laqaer-20). We may earn a commission. No scores and no
         prices.
       </p>
-      {selection.note ? (
-        <p className="mt-3 max-w-2xl border border-rule bg-warn-soft px-4 py-3 text-sm leading-6 text-ink">
-          {selection.note}
-        </p>
-      ) : null}
-      <ul className="mt-6 grid gap-3">
+      {selection.note ? <p className="shop-caution">{selection.note}</p> : null}
+      <ul className="shop-list">
         {selection.products.map((product) => (
-          <li
-            key={product.asin}
-            className="motion-line flex flex-col gap-3 border border-rule bg-card p-5 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <div>
-              <p className="font-semibold text-ink">{product.label}</p>
-              <p className="mt-1 font-mono text-xs font-medium text-amp-dark">
-                {product.awg} AWG · {product.lengthFt} ft · {product.jacket}
-              </p>
-              {product.note ? <p className="mt-2 text-sm leading-6 text-ink-soft">{product.note}</p> : null}
+          <li key={product.asin} className="shop-row motion-line">
+            <div className="shop-row-main">
+              <CrossSection awg={product.awg} className="shop-face" />
+              <div>
+                <p className="shop-label">{product.label}</p>
+                <p className="shop-spec">
+                  {product.awg} AWG · {product.lengthFt} ft · {product.jacket}
+                </p>
+                {product.note ? <p className="shop-row-note">{product.note}</p> : null}
+              </div>
             </div>
             <AmazonLink asin={product.asin} label={product.label} />
           </li>
