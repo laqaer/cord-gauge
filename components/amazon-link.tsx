@@ -15,11 +15,7 @@ export function AmazonLink({
 }) {
   return (
     <a
-      className={
-        children
-          ? "font-medium text-steel underline underline-offset-3 hover:text-amp-dark"
-          : "shrink-0 text-sm font-medium text-steel underline underline-offset-3 hover:text-amp-dark"
-      }
+      className={children ? "text-link" : "buy-link"}
       href={amazonUrl(asin)}
       rel="nofollow sponsored noopener"
       target="_blank"

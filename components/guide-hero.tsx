@@ -1,3 +1,5 @@
+import { BenchMark, markForKicker } from "@/components/marks";
+
 type GuideHeroProps = {
   kicker: string;
   title: string;
@@ -6,14 +8,15 @@ type GuideHeroProps = {
 
 export function GuideHero({ kicker, title, dek }: GuideHeroProps) {
   return (
-    <header className="max-w-3xl">
-      <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-amp-dark">
-        {kicker}
-      </p>
-      <h1 className="mt-2 text-4xl leading-tight font-semibold tracking-tight text-ink sm:text-5xl">
-        {title}
-      </h1>
-      <p className="mt-4 text-lg leading-8 text-ink-soft">{dek}</p>
+    <header className="guide-hero">
+      <div className="guide-hero-copy">
+        <p className="kicker">{kicker}</p>
+        <h1 className="display">{title}</h1>
+        <p className="dek">{dek}</p>
+      </div>
+      <div className="mark-plate" aria-hidden="true">
+        <BenchMark kind={markForKicker(kicker)} />
+      </div>
     </header>
   );
 }

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function GaugeChartPage() {
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+    <article className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <JsonLd
         data={articleJsonLd({
           headline: title,

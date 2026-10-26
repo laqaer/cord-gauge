@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/marks";
 import { site } from "@/lib/site";
 
 const primaryNav = [
@@ -12,24 +13,20 @@ const primaryNav = [
 
 export function SiteHeader() {
   return (
-    <header className="border-b border-rule bg-card/85 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <Link href="/" className="text-lg font-semibold tracking-tight text-ink hover:text-amp-dark">
-          {site.shortName}
-          <span className="ml-1.5 font-normal text-ink-soft">Guide</span>
+    <header className="site-header">
+      <div className="site-header-bar">
+        <Link href="/" className="brand">
+          <BrandMark />
+          {site.shortName} Guide
         </Link>
-        <nav aria-label="Primary" className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-soft">
-          <Link className="hover:text-amp-dark focus-visible:text-amp-dark" href="/#how-to-pick">
-            How to pick
-          </Link>
+        <nav aria-label="Primary" className="site-nav">
+          <Link href="/#how-to-pick">How to pick</Link>
           {primaryNav.map((item) => (
-            <Link key={item.href} className="hover:text-amp-dark focus-visible:text-amp-dark" href={item.href}>
+            <Link key={item.href} href={item.href}>
               {item.label}
             </Link>
           ))}
-          <Link className="hover:text-amp-dark focus-visible:text-amp-dark" href="/about">
-            About
-          </Link>
+          <Link href="/about">About</Link>
         </nav>
       </div>
     </header>
