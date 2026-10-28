@@ -843,7 +843,8 @@ main > div.mx-auto {
 .cord-jacket,
 .cord-sheen,
 .cord-copper,
-.cord-flow,
+.cord-flow-glow,
+.cord-flow-core,
 .cord-shadow {
   vector-effect: non-scaling-stroke;
   stroke-linecap: round;
@@ -870,21 +871,15 @@ main > div.mx-auto {
   stroke-width: calc(var(--cord) * 0.24);
 }
 
-.cord-flow {
-  stroke-dashoffset: -24;
-}
-
 .cord-flow-glow {
   stroke: #f3d7a4;
   stroke-width: calc(var(--cord) * 0.46);
-  stroke-dasharray: 12 88;
   opacity: 0.85;
 }
 
 .cord-flow-core {
   stroke: #fffaf2;
   stroke-width: calc(var(--cord) * 0.18);
-  stroke-dasharray: 4 96;
 }
 
 .gauge-stamp,
@@ -942,14 +937,6 @@ select:focus-visible {
 
 .site-footer a:focus-visible {
   outline-color: #f0c08a;
-}
-
-.motion-card:hover,
-.motion-card:focus-within,
-.motion-line:hover,
-.motion-line:focus-within {
-  border-color: #b8612a;
-  background-color: #fff;
 }
 
 @media (min-width: 640px) {
@@ -1018,7 +1005,31 @@ select:focus-visible {
   }
 }
 
-@keyframes cord-flow {
+.cord-flow-glow.motion-travel {
+  stroke-dasharray: 18 82;
+  stroke-dashoffset: 0;
+}
+
+.cord-flow-core.motion-travel {
+  stroke-dasharray: 4 96;
+  stroke-dashoffset: -50;
+}
+
+.instrument {
+  --_result-ms: 420ms;
+}
+
+.motion-arrive-draw {
+  --_draw-ms: 700ms;
+}
+
+.motion-hover:hover,
+.motion-hover:focus-within {
+  border-color: #b8612a;
+  background-color: #fff;
+}
+
+@keyframes motion-travel {
   from {
     stroke-dashoffset: 0;
   }
@@ -1028,7 +1039,19 @@ select:focus-visible {
   }
 }
 
-@keyframes gauge-pass {
+@keyframes motion-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes motion-arrive-pass {
   0% {
     opacity: 0;
   }
@@ -1043,7 +1066,7 @@ select:focus-visible {
   }
 }
 
-@keyframes gauge-lock {
+@keyframes motion-arrive-lock {
   from {
     opacity: 0;
     transform: translateY(4px);
@@ -1055,19 +1078,29 @@ select:focus-visible {
   }
 }
 
-@keyframes reveal-rise {
+@keyframes motion-arrive-draw {
+  from {
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+  }
+
+  to {
+    stroke-dasharray: 120;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes motion-arrive-ink {
   from {
     opacity: 0;
-    transform: translateY(12px);
   }
 
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
-@keyframes result-in {
+@keyframes motion-result {
   from {
     opacity: 0;
     transform: translateY(8px);
@@ -1080,67 +1113,79 @@ select:focus-visible {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a,
-  .buy-link,
-  select {
-    transition:
-      color 160ms ease,
-      border-color 160ms ease,
-      background-color 160ms ease;
+  .motion-travel {
+    animation: motion-travel 2.6s linear infinite;
   }
 
-  .motion-card,
-  .motion-line {
-    transition:
-      translate 180ms ease,
-      border-color 180ms ease,
-      background-color 180ms ease;
+  .cord-flow-core.motion-travel {
+    animation-delay: -1.3s;
   }
 
-  .motion-card:hover,
-  .motion-card:focus-within {
+  .motion-arrive-draw .mark-copper {
+    animation: motion-arrive-draw var(--_draw-ms) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .motion-arrive-draw .mark-copper-fill {
+    animation: motion-arrive-ink var(--_draw-ms) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .motion-arrive-settle .gauge-readout-16 {
+    animation: motion-arrive-pass 0.46s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  .motion-arrive-settle .gauge-readout-14 {
+    animation: motion-arrive-pass 0.46s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
+  }
+
+  .motion-arrive-settle .gauge-readout-12 {
+    animation: motion-arrive-lock 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.84s both;
+  }
+
+  .motion-hover {
+    transition:
+      translate 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      border-color 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-color 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .motion-hover:hover,
+  .motion-hover:focus-within {
     translate: 0 -2px;
   }
 
-  .drop-fill {
-    transition: width 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  .site-header a,
+  .site-footer a {
+    transition: color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .cord-flow {
-    animation: cord-flow 2.6s linear infinite;
+  .instrument select {
+    transition:
+      color 160ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .gauge-readout-16 {
-    animation: gauge-pass 0.46s ease forwards;
+  .motion-result {
+    animation: motion-result var(--_result-ms) cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 
-  .gauge-readout-14 {
-    animation: gauge-pass 0.46s ease 0.4s forwards;
-  }
-
-  .gauge-readout-12 {
-    animation: gauge-lock 0.4s ease 0.84s both;
-  }
-
-  .result-ease {
-    animation: result-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  .instrument .drop-fill {
+    transition: width var(--_result-ms) cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   @supports (animation-timeline: view()) {
-    .reveal,
-    .prose-cord > h2,
-    .prose-cord > h3 {
-      animation-name: reveal-rise;
+    .motion-arrive:not(.motion-arrive-draw):not(.motion-arrive-settle),
+    .prose-cord > h2 {
+      animation-name: motion-arrive;
       animation-duration: auto;
-      animation-timing-function: ease;
+      animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
       animation-fill-mode: both;
       animation-timeline: view();
       animation-range: entry 0% entry 18%;
     }
 
-    .reveal:focus-within,
-    .prose-cord > h2:focus-within,
-    .prose-cord > h3:focus-within {
+    .motion-arrive:not(.motion-arrive-draw):not(.motion-arrive-settle):focus-within,
+    .prose-cord > h2:focus-within {
       animation: none;
       opacity: 1;
       transform: none;
@@ -1149,21 +1194,10 @@ select:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cord-flow,
-  .gauge-readout,
-  .reveal,
-  .result-ease,
-  .motion-card,
-  .motion-line,
-  .drop-fill,
-  a,
-  select {
-    animation: none;
-    transition: none;
-  }
-
-  .gauge-readout-12 {
-    opacity: 1;
-    transform: none;
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

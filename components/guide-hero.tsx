@@ -14,7 +14,7 @@ export function GuideHero({ kicker, title, dek }: GuideHeroProps) {
         <h1 className="display">{title}</h1>
         <p className="dek">{dek}</p>
       </div>
-      <div className="mark-plate" aria-hidden="true">
+      <div className="mark-plate motion-arrive-draw" aria-hidden="true">
         <BenchMark kind={markForKicker(kicker)} />
       </div>
     </header>

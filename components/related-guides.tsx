@@ -23,7 +23,7 @@ export function RelatedGuides({
 
   if (compact) {
     return (
-      <section className="related related-compact motion-card reveal">
+      <section className="related related-compact motion-hover motion-arrive">
         <h2>{heading}</h2>
         {intro ? <p className="related-intro">{intro}</p> : null}
         <ul>
@@ -45,7 +45,7 @@ export function RelatedGuides({
       {intro ? <p className="related-intro">{intro}</p> : null}
       <ul className="related-grid">
         {items.map((guide) => (
-          <li key={guide.href} className="bench-card motion-card reveal related-card">
+          <li key={guide.href} className="bench-card motion-hover motion-arrive related-card">
             <div className="mark-plate mark-plate-sm" aria-hidden="true">
               <BenchMark kind={markForKicker(guide.kicker)} />
             </div>
