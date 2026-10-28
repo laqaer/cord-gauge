@@ -36,7 +36,7 @@ export default function HomePage() {
         <h2 className="band-title">How to pick a cord</h2>
         <ol className="step-grid">
           {pickSteps.map((step) => (
-            <li key={step.n} className="bench-card motion-card reveal">
+            <li key={step.n} className="bench-card motion-hover motion-arrive">
               <p className="kicker">Step {step.n}</p>
               <h3>{step.title}</h3>
               <p>{step.body}</p>
@@ -48,7 +48,7 @@ export default function HomePage() {
       <GaugePicker />
 
       <section className="band">
-        <div className="reveal">
+        <div className="motion-arrive">
           <div className="band-head">
             <h2 className="band-title">15 A shop loads, at a glance</h2>
             <Link className="text-link" href="/extension-cord-gauge-chart">
@@ -97,7 +97,7 @@ export default function HomePage() {
       <ShopCords />
 
       <section className="point-grid">
-        <article className="bench-card motion-card reveal">
+        <article className="bench-card motion-hover motion-arrive">
           <h2>12 AWG beats 14 on long 15 A runs</h2>
           <p>
             A 14 AWG cord is not “wrong” at 25 feet. At 50–100 feet the same 15 A saw is a voltage-drop
@@ -108,7 +108,7 @@ export default function HomePage() {
             .
           </p>
         </article>
-        <article className="bench-card motion-card reveal">
+        <article className="bench-card motion-hover motion-arrive">
           <h2>SJTW is a jacket, not a gauge</h2>
           <p>
             Outdoor-rated means weather-resistant insulation. It does not make 16 AWG safe for a saw.
@@ -119,7 +119,7 @@ export default function HomePage() {
             .
           </p>
         </article>
-        <article className="bench-card motion-card reveal">
+        <article className="bench-card motion-hover motion-arrive">
           <h2>100 feet wants thicker copper</h2>
           <p>
             Two cheap 50-foot 16 AWG cords in a daisy chain are how tools overheat. Use the{" "}
@@ -139,7 +139,7 @@ export default function HomePage() {
         </p>
         <ul className="guide-grid">
           {guides.map((guide) => (
-            <li key={guide.href} className="bench-card motion-card reveal guide-card">
+            <li key={guide.href} className="bench-card motion-hover motion-arrive guide-card">
               <div className="mark-plate mark-plate-sm" aria-hidden="true">
                 <BenchMark kind={markForKicker(guide.kicker)} />
               </div>

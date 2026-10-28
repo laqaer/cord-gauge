@@ -21,8 +21,8 @@ export function HeroCord() {
         <path className="cord-jacket" d={run} />
         <path className="cord-sheen" d={runSheen} />
         <path className="cord-copper" d={run} />
-        <path className="cord-flow cord-flow-glow" pathLength="100" d={run} />
-        <path className="cord-flow cord-flow-core" pathLength="100" d={run} />
+        <path className="cord-flow-glow motion-travel" pathLength="100" d={run} />
+        <path className="cord-flow-core motion-travel" pathLength="100" d={run} />
       </svg>
       <svg className="cord-cap-svg" viewBox="0 0 40 112" fill="none" focusable="false">
         <rect className="cord-cap" x="0" y="32" width="34" height="48" rx="5" />
@@ -30,12 +30,12 @@ export function HeroCord() {
         <rect className="cord-slot" x="9" y="52" width="16" height="3.5" rx="1" />
         <circle className="cord-ground-hole" cx="17" cy="64" r="2.3" />
       </svg>
-      <div className="gauge-face">
+      <div className="gauge-face motion-arrive-settle">
         <CrossSection awg={16} className="gauge-readout gauge-readout-16" />
         <CrossSection awg={14} className="gauge-readout gauge-readout-14" />
         <CrossSection awg={12} className="gauge-readout gauge-readout-12" />
       </div>
-      <div className="gauge-stamp">
+      <div className="gauge-stamp motion-arrive-settle">
         <span className="gauge-readout gauge-readout-16">16 AWG</span>
         <span className="gauge-readout gauge-readout-14">14 AWG</span>
         <span className="gauge-readout gauge-readout-12">12 AWG</span>

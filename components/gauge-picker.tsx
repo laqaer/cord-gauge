@@ -66,34 +66,34 @@ export function GaugePicker() {
         </label>
       </div>
       <div aria-live="polite">
-        <div key={`${amps}-${lengthFt}`} className="result-ease">
+        <div key={`${amps}-${lengthFt}`} className="motion-result">
           <p className="instrument-pick">
             Shop pick: <span>{pick} AWG</span>
           </p>
           <p className="instrument-drop">
             {pick} AWG drop at {amps} A · {lengthFt} ft: {formatDrop(pick, amps, lengthFt)}
           </p>
-          <dl className="drop-grid">
-            {([14, 12, 10] as const).map((awg) => {
-              const percent = voltageDropPercent(awg, amps, lengthFt);
-              const width = Math.min(100, (percent / 8) * 100);
-              return (
-                <div key={awg} className={awg === pick ? "drop-cell is-pick" : "drop-cell"}>
-                  <dt>{awg} AWG</dt>
-                  <dd>{formatDrop(awg, amps, lengthFt)}</dd>
-                  <div className="drop-track" aria-hidden="true">
-                    <span className="drop-fill" style={{ width: `${width}%` }} />
-                  </div>
-                </div>
-              );
-            })}
-          </dl>
         </div>
+        <dl className="drop-grid">
+          {([14, 12, 10] as const).map((awg) => {
+            const percent = voltageDropPercent(awg, amps, lengthFt);
+            const width = Math.min(100, (percent / 8) * 100);
+            return (
+              <div key={awg} className={awg === pick ? "drop-cell is-pick" : "drop-cell"}>
+                <dt>{awg} AWG</dt>
+                <dd>{formatDrop(awg, amps, lengthFt)}</dd>
+                <div className="drop-track" aria-hidden="true">
+                  <span className="drop-fill" style={{ width: `${width}%` }} />
+                </div>
+              </div>
+            );
+          })}
+        </dl>
       </div>
       {shop.note ? <p className="instrument-note">{shop.note}</p> : null}
       <ul className="shop-list">
         {shop.products.map((product) => (
-          <li key={product.asin} className="shop-row motion-line">
+          <li key={product.asin} className="shop-row">
             <div>
               <p className="shop-label">{product.label}</p>
               <p className="shop-spec">

@@ -19,6 +19,6 @@ http://127.0.0.1:4321/_next/static/chunks/turbopack-_08bm286._.js
 http://127.0.0.1:4321/_next/static/chunks/_0991-sa._.js
 http://127.0.0.1:4321/_next/static/chunks/node_modules_next_dist_20wefz_._.js
 http://127.0.0.1:4321/_next/static/chunks/node_modules_next_dist_00pwe04._.js
-http://127.0.0.1:4321/_next/static/chunks/_08ncy49._.js
+http://127.0.0.1:4321/_next/static/chunks/_0fs6ozs._.js
 http://127.0.0.1:4321/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js
-http://127.0.0.1:4321/icon.svg?icon.0fyc45znc2-k0.svg
+http://127.0.0.1:4321/icon.svg?icon.3ptmi08m9acdh.svg

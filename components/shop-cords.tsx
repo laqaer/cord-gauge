@@ -52,7 +52,7 @@ export function ShopCords({
       {selection.note ? <p className="shop-caution">{selection.note}</p> : null}
       <ul className="shop-list">
         {selection.products.map((product) => (
-          <li key={product.asin} className="shop-row motion-line">
+          <li key={product.asin} className="shop-row">
             <div className="shop-row-main">
               <CrossSection awg={product.awg} className="shop-face" />
               <div>

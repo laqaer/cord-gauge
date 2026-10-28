@@ -2,6 +2,7 @@ Gauge calculator
 
 Planning estimate for a 120 V copper cord. The marked ampacity on the cord still wins if it is lower. This does not size a new circuit.
 
+10 AWG
 Nameplate amps
 10 A
 13 A
