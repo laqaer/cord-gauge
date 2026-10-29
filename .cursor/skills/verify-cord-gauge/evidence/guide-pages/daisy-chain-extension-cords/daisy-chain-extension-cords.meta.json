@@ -1,0 +1,14 @@
+{
+  "url": "http://127.0.0.1:4321/daisy-chain-extension-cords",
+  "status": 200,
+  "title": "Can you daisy-chain extension cords? · CordGauge Guide",
+  "h1": "Can you daisy-chain extension cords?",
+  "jsonLdTypes": [
+    "WebSite",
+    "Article",
+    "FAQPage"
+  ],
+  "canonical": "https://www.cordgaugeguide.com/daisy-chain-extension-cords",
+  "capturedAt": "2026-10-29T11:28:48.524Z",
+  "featureId": "guide-pages"
+}

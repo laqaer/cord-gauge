@@ -1,0 +1,12 @@
+from: /
+name: Outdoor
+href: /outdoor-extension-cord-gauge-sjtw
+matches: 1
+status: 200
+url: http://127.0.0.1:4321/outdoor-extension-cord-gauge-sjtw
+title: Outdoor extension cord gauge and SJTW · CordGauge Guide
+h1: SJTW is the jacket. AWG is still the wire.
+jsonLd: WebSite, Article, FAQPage
+canonical: https://www.cordgaugeguide.com/outdoor-extension-cord-gauge-sjtw
+nav Primary: How to pick | Calculator | Master chart | 12 vs 14 | 15 A saws | Long runs | Outdoor | About
+expect: ok

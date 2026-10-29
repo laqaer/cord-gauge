@@ -1,0 +1,12 @@
+from: /
+name: Best extension cord for a pressure washer
+href: /best-extension-cord-for-pressure-washer
+matches: 2
+status: 200
+url: http://127.0.0.1:4321/best-extension-cord-for-pressure-washer
+title: Best extension cord for a pressure washer (15 A) · CordGauge Guide
+h1: Extension cord sizing for a 15 A pressure washer
+jsonLd: WebSite, Article, FAQPage
+canonical: https://www.cordgaugeguide.com/best-extension-cord-for-pressure-washer
+nav Primary: How to pick | Calculator | Master chart | 12 vs 14 | 15 A saws | Long runs | Outdoor | About
+expect: ok

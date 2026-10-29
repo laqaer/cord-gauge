@@ -1,0 +1,4 @@
+feature: guide-pages
+entry: Long runs from /
+path: /100-foot-extension-cord-gauge
+commands: cord-gauge follow --from / --name "Long runs"; cord-gauge snapshot /100-foot-extension-cord-gauge --screenshot --feature guide-pages
