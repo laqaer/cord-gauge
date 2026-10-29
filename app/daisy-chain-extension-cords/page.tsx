@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -20,6 +21,53 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/daisy-chain-extension-cords" },
 };
 
+const faq = guideFaq([
+  {
+    question: "Can you daisy-chain extension cords?",
+    answer: [
+      "Two 50-foot cords are a 100-foot copper path plus a second pair of contacts to heat, loosen, and corrode.",
+      "The thinnest link sets the ampacity. Heat shows up at the plugs.",
+      "One cord in the right gauge is the fix.",
+      "This page is not saying two listed 12 AWG cords in perfect condition are a fire by definition.",
+      "They are still a 100-foot 12 AWG drop plus extra plugs, which is the wrong product for a 15 A motor at that length.",
+    ].join(" "),
+  },
+  {
+    question: "What copper drop do two 50-foot cords add at 15 A?",
+    answer: [
+      `Two 50-foot 16 AWG cords drop the same copper voltage as one 100-foot 16 AWG cord: ${formatDrop(16, 15, 100)} on a 15 A, 120 V load.`,
+      `Two 14 AWG 50s are ${formatDrop(14, 15, 100)}.`,
+      `A 50-foot 16 AWG cord plus a 50-foot 12 AWG cord drops ${seriesDrop(16, 12, 15, 50)}, which is worse than 100 feet of 12 AWG alone at ${formatDrop(12, 15, 100)}, because the thin half still carries the whole load for 50 feet.`,
+      `One 100-foot 12 AWG cord drops ${formatDrop(12, 15, 100)}.`,
+      `One 100-foot 10 AWG cord drops ${formatDrop(10, 15, 100)}. The shop pick at 15 A and 100 feet is ${recommendAwg(15, 100)} AWG.`,
+      "The planning math is the same NEC Chapter 9 Table 8 copper as the master chart.",
+      "Each added coupling is contact resistance the copper table does not count.",
+    ].join(" "),
+  },
+  {
+    question: "What sets the ampacity of a daisy chain?",
+    answer: [
+      "Series cords are one circuit.",
+      "The marked ampacity of the lightest cord and the smallest plug wins.",
+      "Not the average, not the heavier reel, and not the words heavy duty on one hang tag.",
+      "A 16 AWG cord plus a 12 AWG shop reel is a 16 AWG circuit with extra length.",
+      "Do not put a 15 A motor on it.",
+      "Adding another 14 AWG cord does not upgrade the listing.",
+    ].join(" "),
+  },
+  {
+    question: "What is the fix instead of a daisy chain?",
+    answer: [
+      `A 15 A shop motor at 100 feet wants one ${recommendAwg(15, 100)} AWG cord, fully unspooled. Not two 16 AWG or 14 AWG 50s.`,
+      "A 15 A tool at 25 to 50 feet wants one 12 AWG reel.",
+      "Or move the tool closer and let a hose travel.",
+      "SJTW is the outdoor jacket, not thicker copper, and it does not make a daisy chain safer.",
+      "Two indoor 16 AWG cords outside are still indoor 16 AWG, plus wet contacts.",
+      "This page is not a brand ranking and it does not have a score.",
+    ].join(" "),
+  },
+]);
+
 function seriesDrop(first: Awg, second: Awg, amps: number, eachFt: number): string {
   const volts = voltageDropVolts(first, amps, eachFt) + voltageDropVolts(second, amps, eachFt);
   const pct = (volts / 120) * 100;
@@ -36,6 +84,7 @@ export default function DaisyChainPage() {
           path: "/daisy-chain-extension-cords",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="Daisy chain"
         title="Can you daisy-chain extension cords?"
@@ -161,6 +210,7 @@ export default function DaisyChainPage() {
           100-foot 12 AWG drop plus extra plugs, which is the wrong product for a 15 A motor at
           that length. One cord, right AWG, intact ends, matching receptacle. That is the buy.
         </p>
+        {faq.answers}
       </div>
       <ShopCords pick={12} lengthFt={50} heading="One cord instead of a chain" />
       <RelatedGuides except="/daisy-chain-extension-cords" />

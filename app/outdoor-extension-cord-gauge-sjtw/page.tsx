@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -19,6 +20,53 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/outdoor-extension-cord-gauge-sjtw" },
 };
 
+const faq = guideFaq([
+  {
+    question: "What does SJTW mean on an outdoor extension cord?",
+    answer: [
+      "SJTW is the common big-box outdoor cord: junior hard-service, thermoplastic insulation, weather-resistant.",
+      "S means hard service, the 600 V class. SJ means junior hard service, the 300 V class. Extension cords on 120 V tools are usually SJ.",
+      "T means a thermoplastic jacket. W means weather-resistant, the letter people mean by outdoor cord.",
+      "O or OO means an oil-resistant jacket, or jacket and insulation. That is still not a gauge upgrade.",
+      "SJTOW adds oil resistance. SOOW is the heavier family that stays more flexible in the cold.",
+      "None of those letters change AWG.",
+      "The listing on the jacket wins if it disagrees with this page.",
+    ].join(" "),
+  },
+  {
+    question: "Does an outdoor jacket change the gauge?",
+    answer: [
+      "No. Outdoor-rated cords keep water and sunlight off the insulation. They do not add copper.",
+      "Size outdoor runs the same way as indoor ones: nameplate amps, then length, then gauge.",
+      "Then buy that AWG in SJTW, or a harder outdoor type, if the cord will see weather.",
+      "A 16 AWG SJTW cord is correctly outdoor-rated and still the wrong product for a 15 A circular saw.",
+      "50 ft 12 AWG SJTW is the usual outdoor shop buy on this page.",
+    ].join(" "),
+  },
+  {
+    question: "Can a thick indoor cord be used outside?",
+    answer: [
+      "A cord without W is not an outdoor cord, even if it is 12 AWG.",
+      "Water and UV attack the jacket.",
+      "Use an outdoor listing outside, then unplug and store it so the reel is not a puddle.",
+      "Do not bury an SJTW cord as if it were UF or conduit. Portable cord is portable.",
+      "A thick cord is not a GFCI.",
+      "Cold weather stiffens thermoplastic. A rubber outdoor type is a comfort buy, not a voltage-drop buy.",
+      "Keep connections off the ground where you can.",
+    ].join(" "),
+  },
+  {
+    question: "What is this page not claiming?",
+    answer: [
+      "This page is not a UL listing, and it does not name a best SJTW brand.",
+      "If two outdoor cords share AWG, length, and a real listing mark, choose the one you can inspect.",
+      "Look for an intact jacket, strain relief that still holds, and ends that match the receptacle.",
+      "Replace a cracked outdoor cord.",
+      "The W letter does not last forever in the sun.",
+    ].join(" "),
+  },
+]);
+
 export default function OutdoorSjtwPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -29,6 +77,7 @@ export default function OutdoorSjtwPage() {
           path: "/outdoor-extension-cord-gauge-sjtw",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="Outdoor / SJTW"
         title="SJTW is the jacket. AWG is still the wire."
@@ -110,6 +159,7 @@ export default function OutdoorSjtwPage() {
           intact jacket, strain relief that still holds, ends that match the receptacle. Replace a
           cracked outdoor cord. The W letter does not last forever in the sun.
         </p>
+        {faq.answers}
       </div>
       <ShopCords />
       <RelatedGuides except="/outdoor-extension-cord-gauge-sjtw" />

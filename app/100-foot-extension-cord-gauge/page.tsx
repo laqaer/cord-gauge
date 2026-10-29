@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -20,6 +21,48 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/100-foot-extension-cord-gauge" },
 };
 
+const faq = guideFaq([
+  {
+    question: "What gauge does this page pick for a 100-foot cord?",
+    answer: [
+      `At 10 A the shop pick is ${recommendAwg(10, 100)} AWG, and 12 AWG drops ${formatDrop(12, 10, 100)}.`,
+      `At 13 A the shop pick is ${recommendAwg(13, 100)} AWG, and 12 AWG drops ${formatDrop(12, 13, 100)}.`,
+      `At 15 A the shop pick is ${recommendAwg(15, 100)} AWG. 14 AWG drops ${formatDrop(14, 15, 100)} and 10 AWG drops ${formatDrop(10, 15, 100)}.`,
+      "16 AWG is out at this length. 14 AWG is a light-load maybe. 12 AWG is the floor for many shop tools. 10 AWG is the 15 A motor answer.",
+      "These use the same NEC Chapter 9 Table 8 copper numbers as the master chart, on 120 V.",
+      "They are not a lab report for a named reel.",
+    ].join(" "),
+  },
+  {
+    question: "When is 12 AWG enough at 100 feet?",
+    answer: [
+      "Loads around 10 A, such as lights, a radio, a charger, or a small drill that is not bound up.",
+      `You accept ${formatDrop(12, 10, 100)} at 10 A on 12 AWG, which is still in a comfortable band.`,
+      "The cord has to be marked for the amps, fully unspooled, with tight connections.",
+      "A 15 A circular saw at 100 feet is not that job. Use 10 AWG, or move power closer.",
+    ].join(" "),
+  },
+  {
+    question: "When is 10 AWG the honest pick at 100 feet?",
+    answer: [
+      "13 to 15 A motor tools at a full 100 feet.",
+      "Anything that already dimmed lights on a shorter 12 AWG run.",
+      "A compressor or similar load that starts hard. Nameplate understates the first instant.",
+      "10 AWG 100-foot cords are heavy. If you cannot carry one, run a properly installed receptacle closer to the work instead of stacking light cords.",
+      "A weather-rated jacket does not reduce voltage drop. A 100-foot 16 AWG outdoor reel is still a 16 AWG resistor.",
+    ].join(" "),
+  },
+  {
+    question: "Are two 50-foot cords the same as one 100-foot cord?",
+    answer: [
+      "No. Daisy-chaining two 50-foot 14 AWG or 16 AWG cords adds the same copper drop plus another pair of contacts to heat and corrode.",
+      "If you need 100 feet, buy 100 feet in the gauge the load wants.",
+      "Do not invent length with extra plugs.",
+      "14 AWG at 100 feet on 15 A is the wrong aisle.",
+    ].join(" "),
+  },
+]);
+
 export default function HundredFootPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -30,6 +73,7 @@ export default function HundredFootPage() {
           path: "/100-foot-extension-cord-gauge",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="Long runs"
         title="What gauge for a 100-foot extension cord"
@@ -120,6 +164,7 @@ export default function HundredFootPage() {
         >
           50 ft 12 AWG SJTW is the usual shop buy
         </ShopBuyLine>
+        {faq.answers}
       </div>
       <ShopCords pick={10} lengthFt={100} heading="Cords for a 100-foot run" />
       <RelatedGuides except="/100-foot-extension-cord-gauge" />

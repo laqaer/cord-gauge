@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -20,6 +21,59 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/best-extension-cord-for-pressure-washer" },
 };
 
+const faq = guideFaq([
+  {
+    question: "Which amp row should a pressure washer use?",
+    answer: [
+      "Most consumer electric units land at 13 to 15 A on 120 V while the pump is running.",
+      "That number is continuous-ish draw under spray, not the first instant the motor spins up.",
+      "Start surge is uglier, same as an air compressor.",
+      "Gas washers do not want an extension cord.",
+      "Some larger electric units are 20 A or 240 V and want a dedicated receptacle, not a 15 A outdoor reel.",
+      "This page is the 13 to 15 A, 120 V driveway load.",
+      "If the hose can reach from an outlet, let the hose travel.",
+    ].join(" "),
+  },
+  {
+    question: "What gauge does this page pick for a 15 A electric washer?",
+    answer: [
+      `At 25 feet the shop pick is ${recommendAwg(15, 25)} AWG, and 14 AWG drops ${formatDrop(14, 15, 25)}.`,
+      `At 50 feet the shop pick is ${recommendAwg(15, 50)} AWG, and 12 AWG drops ${formatDrop(12, 15, 50)}.`,
+      "A short 14 AWG run is close on paper and still the wrong aisle for a motor that runs the whole driveway.",
+      `At 100 feet the shop pick is ${recommendAwg(15, 100)} AWG, and 10 AWG drops ${formatDrop(10, 15, 100)}.`,
+      "Those figures are the same NEC Chapter 9 Table 8 copper planning math as the master chart, on 120 V.",
+      "They are not a lab score for a named reel.",
+      "12 AWG is the default at 25 to 50 feet. Step up to 10 AWG for a full 100 feet, when lights already dip on a 12 AWG start, or when the washer lives on the cord all afternoon.",
+    ].join(" "),
+  },
+  {
+    question: "Does an outdoor jacket change the gauge for a pressure washer?",
+    answer: [
+      "No. Buy a weather-rated jacket in the gauge you already chose.",
+      "SJTW is that jacket. The W letter keeps water and UV from eating the insulation.",
+      "It does not add copper.",
+      "A 16 AWG outdoor reel is correctly outdoor-rated and still the wrong product.",
+      "Indoor SJT stays indoors.",
+      "A thicker cord is not a GFCI.",
+      "Keep connections off the wet concrete where you can.",
+      "Two thin 50-foot cords chained together are a 100-foot drop plus extra wet contacts. Buy one cord in the gauge the load wants.",
+    ].join(" "),
+  },
+  {
+    question: "What does best mean on this page?",
+    answer: [
+      "This page is not a brand ranking and it does not have a score.",
+      "A 12 AWG, 50-foot, SJTW cord with intact 15 A ends from a known listing is the product for a typical electric washer.",
+      "Brand paint, lighted ends, and a retractable reel are convenience.",
+      "They are not a substitute for copper.",
+      "A 16 AWG heavy duty outdoor reel is still 16 AWG.",
+      "Light-duty 16 AWG cords are for lamps and chargers.",
+      "Signs the cord is too thin include a motor that hums and will not start, pressure that sags in a normal spray then recovers when you let off the trigger, lights that dip when the washer starts, a breaker or GFCI that trips on start then holds at the wall, and a jacket that is warm along the run.",
+      "Those signs can also mean a clogged nozzle, a kinked hose, or a tired GFCI.",
+    ].join(" "),
+  },
+]);
+
 export default function PressureWasherPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -30,6 +84,7 @@ export default function PressureWasherPage() {
           path: "/best-extension-cord-for-pressure-washer",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="Pressure washer"
         title="Extension cord sizing for a 15 A pressure washer"
@@ -171,6 +226,7 @@ export default function PressureWasherPage() {
           paint, lighted ends, and a retractable reel are convenience. They are not a substitute
           for copper, and a 16 AWG “heavy duty” outdoor reel is still 16 AWG.
         </p>
+        {faq.answers}
       </div>
       <ShopCords pick={12} lengthFt={50} heading="Cords for a pressure washer" />
       <RelatedGuides except="/best-extension-cord-for-pressure-washer" />

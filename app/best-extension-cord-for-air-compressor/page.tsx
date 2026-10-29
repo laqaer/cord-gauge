@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -20,6 +21,58 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/best-extension-cord-for-air-compressor" },
 };
 
+const faq = guideFaq([
+  {
+    question: "Which amp row should an air compressor use?",
+    answer: [
+      "Most portable 120 V units land at 13 to 15 A while they are pumping.",
+      "That number is running draw, not the first instant the motor tries to spin the pump.",
+      "Start surge, locked-rotor amps, is several times the nameplate.",
+      "If the plate says 15 A, use the 15 A row.",
+      "Larger 20 A or 240 V shop compressors want a dedicated circuit, not a 15 A outdoor reel.",
+      "Many manuals say do not use an extension cord.",
+      "The first answer is to move the compressor to the outlet, or to let the hose travel.",
+    ].join(" "),
+  },
+  {
+    question: "What gauge does this page pick for a 15 A compressor?",
+    answer: [
+      `At 25 feet the shop pick is ${recommendAwg(15, 25)} AWG, and 14 AWG drops ${formatDrop(14, 15, 25)}.`,
+      `At 50 feet the shop pick is ${recommendAwg(15, 50)} AWG, and 12 AWG drops ${formatDrop(12, 15, 50)}.`,
+      "Start surge is why this page does not shop 14 AWG as the close enough compressor cord at 25 and 50 feet.",
+      `At 100 feet the shop pick is ${recommendAwg(15, 100)} AWG, and 10 AWG drops ${formatDrop(10, 15, 100)}.`,
+      "Those figures are the same NEC Chapter 9 Table 8 copper planning math as the master chart, on 120 V.",
+      "They are not a lab score for a named reel.",
+      "12 AWG is the shop default at 25 to 50 feet. Step up to 10 AWG for a full 100 feet, when lights already dip on a 12 AWG start, or when the compressor lives on the cord all day.",
+    ].join(" "),
+  },
+  {
+    question: "What are signs the cord is too thin for a compressor?",
+    answer: [
+      "The motor hums and will not start, or it starts only with an empty tank.",
+      "Lights on the same circuit dip when the compressor kicks on.",
+      "The breaker or GFCI trips on start, then holds if you plug in at the wall.",
+      "The cord jacket is warm along the run, not just at a loose plug.",
+      "Those signs can also mean a bad capacitor, a seized pump, or a tank that will not drain.",
+      "Check the compressor. Then check gauge and length.",
+      "A coiled reel under that load makes the drop worse. Unspool what you are using.",
+      "Two thin 50-foot cords chained together are a 100-foot drop plus extra contacts.",
+    ].join(" "),
+  },
+  {
+    question: "What does best mean on this page?",
+    answer: [
+      "This page is not a brand ranking and it does not have a score.",
+      "A 12 AWG, 50-foot, SJTW cord with intact 15 A ends from a known listing is the product for a typical portable compressor.",
+      "Brand paint, lighted ends, and a retractable reel are convenience.",
+      "They are not a substitute for copper.",
+      "A 16 AWG heavy duty outdoor reel is still 16 AWG.",
+      "Light-duty 16 AWG cords are for lamps and chargers.",
+      "Driveway work needs an outdoor-rated jacket in the gauge you already chose. That jacket is SJTW. It does not add copper.",
+    ].join(" "),
+  },
+]);
+
 export default function AirCompressorPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -30,6 +83,7 @@ export default function AirCompressorPage() {
           path: "/best-extension-cord-for-air-compressor",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="Compressor"
         title="Extension cord sizing for a 15 A air compressor"
@@ -161,6 +215,7 @@ export default function AirCompressorPage() {
           Brand paint, lighted ends, and a retractable reel are convenience. They are not a
           substitute for copper, and a 16 AWG “heavy duty” outdoor reel is still 16 AWG.
         </p>
+        {faq.answers}
       </div>
       <ShopCords pick={12} lengthFt={50} heading="Cords for a 15 A compressor" />
       <RelatedGuides except="/best-extension-cord-for-air-compressor" />
