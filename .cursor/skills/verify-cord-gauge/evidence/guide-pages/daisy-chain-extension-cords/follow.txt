@@ -1,0 +1,12 @@
+from: /
+name: Can you daisy-chain extension cords?
+href: /daisy-chain-extension-cords
+matches: 2
+status: 200
+url: http://127.0.0.1:4321/daisy-chain-extension-cords
+title: Can you daisy-chain extension cords? · CordGauge Guide
+h1: Can you daisy-chain extension cords?
+jsonLd: WebSite, Article, FAQPage
+canonical: https://www.cordgaugeguide.com/daisy-chain-extension-cords
+nav Primary: How to pick | Calculator | Master chart | 12 vs 14 | 15 A saws | Long runs | Outdoor | About
+expect: ok

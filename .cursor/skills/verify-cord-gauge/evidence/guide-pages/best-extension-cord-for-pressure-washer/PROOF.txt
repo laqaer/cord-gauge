@@ -1,0 +1,4 @@
+feature: guide-pages
+entry: Best extension cord for a pressure washer from /
+path: /best-extension-cord-for-pressure-washer
+commands: cord-gauge follow --from / --name "Best extension cord for a pressure washer"; cord-gauge snapshot /best-extension-cord-for-pressure-washer --screenshot --feature guide-pages

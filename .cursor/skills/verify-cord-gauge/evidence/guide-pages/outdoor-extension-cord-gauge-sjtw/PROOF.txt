@@ -1,0 +1,4 @@
+feature: guide-pages
+entry: Outdoor from /
+path: /outdoor-extension-cord-gauge-sjtw
+commands: cord-gauge follow --from / --name "Outdoor"; cord-gauge snapshot /outdoor-extension-cord-gauge-sjtw --screenshot --feature guide-pages

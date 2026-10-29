@@ -1,0 +1,14 @@
+{
+  "url": "http://127.0.0.1:4321/outdoor-extension-cord-gauge-sjtw",
+  "status": 200,
+  "title": "Outdoor extension cord gauge and SJTW · CordGauge Guide",
+  "h1": "SJTW is the jacket. AWG is still the wire.",
+  "jsonLdTypes": [
+    "WebSite",
+    "Article",
+    "FAQPage"
+  ],
+  "canonical": "https://www.cordgaugeguide.com/outdoor-extension-cord-gauge-sjtw",
+  "capturedAt": "2026-10-29T11:28:49.648Z",
+  "featureId": "guide-pages"
+}
