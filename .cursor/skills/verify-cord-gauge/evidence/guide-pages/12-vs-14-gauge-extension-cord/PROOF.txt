@@ -1,0 +1,4 @@
+feature: guide-pages
+entry: 12 vs 14 from /
+path: /12-vs-14-gauge-extension-cord
+commands: cord-gauge follow --from / --name "12 vs 14"; cord-gauge snapshot /12-vs-14-gauge-extension-cord

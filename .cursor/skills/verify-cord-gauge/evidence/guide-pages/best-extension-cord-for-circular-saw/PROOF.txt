@@ -1,0 +1,4 @@
+feature: guide-pages
+entry: 15 A saws from /
+path: /best-extension-cord-for-circular-saw
+commands: cord-gauge follow --from / --name "15 A saws"; cord-gauge snapshot /best-extension-cord-for-circular-saw

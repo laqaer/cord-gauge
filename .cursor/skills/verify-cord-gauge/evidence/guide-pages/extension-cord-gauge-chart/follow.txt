@@ -1,0 +1,12 @@
+from: /
+name: Master chart
+href: /extension-cord-gauge-chart
+matches: 1
+status: 200
+url: http://127.0.0.1:4321/extension-cord-gauge-chart
+title: Extension cord gauge chart (AWG × amps × length) · CordGauge Guide
+h1: Extension cord gauge by amps and length
+jsonLd: WebSite, Article, FAQPage
+canonical: https://www.cordgaugeguide.com/extension-cord-gauge-chart
+nav Primary: How to pick | Calculator | Master chart | 12 vs 14 | 15 A saws | Long runs | Outdoor | About
+expect: ok

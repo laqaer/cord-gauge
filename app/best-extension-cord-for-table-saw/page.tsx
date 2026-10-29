@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -20,6 +21,39 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/best-extension-cord-for-table-saw" },
 };
 
+const faq = guideFaq([
+  {
+    question: "Does this page cover a 240 V cabinet saw?",
+    answer:
+      "No. Cabinet and many hybrid saws are 240 V, often 20 A or more, and they want a dedicated circuit, not a 15 A outdoor reel. If the nameplate is 240 V, stop shopping extension cords and wire the receptacle. This page is the 15 A, 120 V shop load.",
+  },
+  {
+    question: "What gauge does this page pick for a 15 A table saw?",
+    answer: [
+      "Same copper planning math as the master chart.",
+      "NEC Chapter 9 Table 8 resistances on 120 V, not a lab score for a named reel.",
+      `At 25 feet and at 50 feet the shop pick is ${recommendAwg(15, 25)} AWG.`,
+      "A table saw often lives on a 50-foot cord because the outlet is on the wall and the outfeed is in the aisle.",
+      "That is a 12 AWG job.",
+      `At 100 feet the shop pick is ${recommendAwg(15, 100)} AWG.`,
+    ].join(" "),
+  },
+  {
+    question: "Is 14 AWG close enough for a table saw?",
+    answer: [
+      "14 AWG is close on paper at 25 feet and already the wrong aisle at 50 feet for a motor that runs a long rip.",
+      "12 AWG is the default shop cord.",
+      "Step up to 10 AWG when the run is a full 100 feet, when lights already dip on a 12 AWG start, or when the cord is permanent shop wiring.",
+      "A table saw has more rotating mass than a circular saw, so start surge is uglier.",
+    ].join(" "),
+  },
+  {
+    question: "What does best mean for a table saw cord?",
+    answer:
+      "This page is not a brand ranking and it does not have a score. A 12 AWG, 50-foot, SJTW cord with intact 15 A ends from a known listing is the product for a typical contractor saw. A 16 AWG heavy-duty outdoor reel is still 16 AWG.",
+  },
+]);
+
 export default function TableSawPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -30,6 +64,7 @@ export default function TableSawPage() {
           path: "/best-extension-cord-for-table-saw",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="Table saw"
         title="Extension cord sizing for a 15 A table saw"
@@ -146,6 +181,7 @@ export default function TableSawPage() {
           paint, lighted ends, and a retractable reel are convenience. They are not a substitute
           for copper, and a 16 AWG “heavy duty” outdoor reel is still 16 AWG.
         </p>
+        {faq.answers}
       </div>
       <ShopCords pick={12} lengthFt={50} heading="Cords for a 15 A table saw" />
       <RelatedGuides except="/best-extension-cord-for-table-saw" />

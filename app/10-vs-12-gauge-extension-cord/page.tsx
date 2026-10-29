@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -20,6 +21,33 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/10-vs-12-gauge-extension-cord" },
 };
 
+const faq = guideFaq([
+  {
+    question: "How do 10 AWG and 12 AWG compare on a 15 A load?",
+    answer: [
+      "Resistance from NEC Chapter 9, Table 8 is 1.21 Ω per 1,000 ft for 10 AWG versus 1.93 Ω for 12 AWG (uncoated, 75 °C).",
+      "Same amps, same feet, the 10 AWG path drops about two-thirds the voltage of the 12 AWG path.",
+      `At 50 feet, 12 AWG drops ${formatDrop(12, 15, 50)} and 10 AWG drops ${formatDrop(10, 15, 50)}.`,
+      `At 100 feet those drops are ${formatDrop(12, 15, 100)} and ${formatDrop(10, 15, 100)}.`,
+    ].join(" "),
+  },
+  {
+    question: "When is 12 AWG enough on this page?",
+    answer:
+      "For a 25–50 foot run on a 15 A tool, and for a load well under 15 A (lights, chargers, a small drill) even on a long cord.",
+  },
+  {
+    question: "When is 10 AWG the right buy?",
+    answer:
+      "For a 100-foot, 15 A motor. At 100 feet, 12 AWG on 15 A is already near 5%. 10 AWG is the comfortable pick. Also when lights on the same circuit dip as the motor starts on a 12 AWG run, or when the cord is semi-permanent shop wiring.",
+  },
+  {
+    question: "Does this page link a checked 10 AWG cord?",
+    answer:
+      "No. The buy line is a 50-foot 12 AWG cord. When this page's pick is 10 AWG at 100 feet, it does not link a checked 10 AWG cord. A 12 AWG SJTW 100-foot outdoor reel is still a 12 AWG cord. A 10 AWG cable with a 15 A plug is still a 15 A cord.",
+  },
+]);
+
 export default function TenVsTwelvePage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -30,6 +58,7 @@ export default function TenVsTwelvePage() {
           path: "/10-vs-12-gauge-extension-cord",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="10 vs 12"
         title="When 10 AWG beats 12 AWG"
@@ -147,6 +176,7 @@ export default function TenVsTwelvePage() {
         >
           50 ft 12 AWG SJTW is the usual shop buy
         </ShopBuyLine>
+        {faq.answers}
       </div>
       <ShopCords pick={10} lengthFt={100} heading="Cords when the pick is 10 AWG" />
       <RelatedGuides except="/10-vs-12-gauge-extension-cord" />
