@@ -1,0 +1,4 @@
+feature: guide-pages
+entry: Master chart from /
+path: /extension-cord-gauge-chart
+commands: cord-gauge follow --from / --name "Master chart"; cord-gauge snapshot /extension-cord-gauge-chart

@@ -1,0 +1,4 @@
+feature: guide-pages
+entry: 10 vs 12 gauge extension cord from /
+path: /10-vs-12-gauge-extension-cord
+commands: cord-gauge follow --from / --name "10 vs 12 gauge extension cord"; cord-gauge snapshot /10-vs-12-gauge-extension-cord

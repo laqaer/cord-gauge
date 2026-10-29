@@ -1,0 +1,14 @@
+{
+  "url": "http://127.0.0.1:4321/extension-cord-gauge-chart",
+  "status": 200,
+  "title": "Extension cord gauge chart (AWG × amps × length) · CordGauge Guide",
+  "h1": "Extension cord gauge by amps and length",
+  "jsonLdTypes": [
+    "WebSite",
+    "Article",
+    "FAQPage"
+  ],
+  "canonical": "https://www.cordgaugeguide.com/extension-cord-gauge-chart",
+  "capturedAt": "2026-10-29T06:48:12.437Z",
+  "featureId": "guide-pages"
+}

@@ -1,0 +1,12 @@
+from: /
+name: 10 vs 12 gauge extension cord
+href: /10-vs-12-gauge-extension-cord
+matches: 2
+status: 200
+url: http://127.0.0.1:4321/10-vs-12-gauge-extension-cord
+title: 10 vs 12 gauge extension cord: when 10 AWG wins · CordGauge Guide
+h1: When 10 AWG beats 12 AWG
+jsonLd: WebSite, Article, FAQPage
+canonical: https://www.cordgaugeguide.com/10-vs-12-gauge-extension-cord
+nav Primary: How to pick | Calculator | Master chart | 12 vs 14 | 15 A saws | Long runs | Outdoor | About
+expect: ok
