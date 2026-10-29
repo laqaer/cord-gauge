@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -20,6 +21,33 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/12-vs-14-gauge-extension-cord" },
 };
 
+const faq = guideFaq([
+  {
+    question: "How do 12 AWG and 14 AWG compare on a 15 A load?",
+    answer: [
+      "Resistance from NEC Chapter 9, Table 8 is 1.93 Ω per 1,000 ft for 12 AWG versus 3.07 Ω for 14 AWG (uncoated, 75 °C).",
+      "Same amps, same feet, the 12 AWG path drops about two-thirds the voltage of the 14 AWG path.",
+      `At 50 feet, 14 AWG drops ${formatDrop(14, 15, 50)} and 12 AWG drops ${formatDrop(12, 15, 50)}.`,
+      `At 100 feet those drops are ${formatDrop(14, 15, 100)} and ${formatDrop(12, 15, 100)}.`,
+    ].join(" "),
+  },
+  {
+    question: "When is 14 AWG enough?",
+    answer:
+      "When the tool nameplate is well under 15 A (drills, lights, chargers, a small sander), the run is 25 feet or maybe a tight 50 if the load is modest and not a hard-starting motor, and the cord and plug are marked for the amps you will actually draw.",
+  },
+  {
+    question: "When is 12 AWG the right buy?",
+    answer:
+      "For a 15 A circular saw, miter saw, or similar motor, for fifty feet or more on a 13–15 A load, and when one cord should also feed a 15 A table saw. At 100 feet, 12 AWG on 15 A is already near 5%. 10 AWG is the comfortable pick.",
+  },
+  {
+    question: "Is 16 AWG a cheaper stand-in for 14 AWG?",
+    answer:
+      "No. 16 AWG is the light-duty aisle. It is not a cheaper 14. If the choice is truly 12 vs 14, stay in that pair. 16 AWG on a 15 A saw is how people learn about tripping breakers and melted jackets.",
+  },
+]);
+
 export default function TwelveVsFourteenPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -30,6 +58,7 @@ export default function TwelveVsFourteenPage() {
           path: "/12-vs-14-gauge-extension-cord",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="12 vs 14"
         title="When 12 AWG beats 14 AWG"
@@ -129,6 +158,7 @@ export default function TwelveVsFourteenPage() {
           stay in that pair. 16 AWG on a 15 A saw is how people learn about tripping breakers and
           melted jackets.
         </p>
+        {faq.answers}
       </div>
       <ShopCords pick={12} lengthFt={50} heading="12 AWG cords for this comparison" />
       <RelatedGuides except="/12-vs-14-gauge-extension-cord" />

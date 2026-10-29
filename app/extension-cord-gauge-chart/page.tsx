@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -22,6 +23,33 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/extension-cord-gauge-chart" },
 };
 
+const faq = guideFaq([
+  {
+    question: "What do the drop figures on this chart mean?",
+    answer: [
+      "Drop figures use copper resistance from NEC Chapter 9, Table 8 (uncoated, 75 °C) and the two-way path on 120 V: 2 × length × amps × Ω/kft ÷ 1,000.",
+      "They are planning estimates.",
+      "This chart was not a bench test of a named SKU.",
+      "Temperature, connector quality, and how much cord is still coiled all move the real number.",
+    ].join(" "),
+  },
+  {
+    question: "Is 3% a code limit?",
+    answer:
+      "No. 3% is a shop target, not a law. Many electricians keep feeder-plus-branch drop near 5% total, and treat ~3% as a comfort band for 120 V motor tools.",
+  },
+  {
+    question: "Does a smaller AWG number mean a thinner cord?",
+    answer:
+      "No. Smaller AWG numbers are thicker copper. A 12 AWG cord has more metal than a 14 AWG cord, so it drops less voltage over the same feet. Jacket type is weather and oil, not a substitute for gauge.",
+  },
+  {
+    question: "Is the shop pick the thinnest gauge under 3%?",
+    answer:
+      "No. Shop pick is the thinnest AWG in this set that keeps a 120 V motor-tool load near 3% at that length, then rounded thicker when the math is close. Confirm the cord's marked ampacity and plug rating. A 12 AWG cord with a 15 A plug is a 15 A cord.",
+  },
+]);
+
 export default function GaugeChartPage() {
   return (
     <article className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
@@ -32,6 +60,7 @@ export default function GaugeChartPage() {
           path: "/extension-cord-gauge-chart",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="Master chart"
         title="Extension cord gauge by amps and length"
@@ -152,6 +181,7 @@ export default function GaugeChartPage() {
         <ShopBuyLine awg={12} lengthFt={50} after="for a 15 A tool at 50 feet. At 100 feet the chart pick is 10 AWG.">
           50 ft 12 AWG SJTW is the usual shop buy
         </ShopBuyLine>
+        {faq.answers}
       </div>
       <ShopCords />
       <RelatedGuides except="/extension-cord-gauge-chart" />

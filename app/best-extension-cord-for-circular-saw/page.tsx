@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Callout } from "@/components/callout";
+import { guideFaq } from "@/components/guide-faq";
 import { GuideHero } from "@/components/guide-hero";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedGuides } from "@/components/related-guides";
@@ -20,6 +21,43 @@ export const metadata: Metadata = {
   openGraph: { ...openGraphImage, title, description, url: "/best-extension-cord-for-circular-saw" },
 };
 
+const faq = guideFaq([
+  {
+    question: "Which amp row should a circular saw use?",
+    answer:
+      "Most sidewinder circular saws are 13–15 A on the nameplate. If it says 15 A, use the 15 A row. If it says 13 A, you still should not shop 16 AWG. Worm-drive and large-beam saws can sit at the top of the 15 A cord world. Treat them as 15 A plus a long-run problem.",
+  },
+  {
+    question: "What gauge does this page pick for a 15 A circular saw?",
+    answer: [
+      `At 25 feet the shop pick is ${recommendAwg(15, 25)} AWG.`,
+      `12 AWG is the conservative pick even though 14 AWG drops ${formatDrop(14, 15, 25)}.`,
+      `At 50 feet the shop pick is ${recommendAwg(15, 50)} AWG, and 12 AWG drops ${formatDrop(12, 15, 50)}.`,
+      `At 100 feet the shop pick is ${recommendAwg(15, 100)} AWG, and 10 AWG drops ${formatDrop(10, 15, 100)}.`,
+    ].join(" "),
+  },
+  {
+    question: "What are signs the cord is too thin for a circular saw?",
+    answer: [
+      "Lights on the same circuit dip when the saw starts.",
+      "The blade speed falls in a normal cut, then recovers when you unload.",
+      "The cord jacket is warm along the run, not just at a bad connection.",
+      "The saw smells hot after a short session that used to be easy on a short factory cord.",
+      "Those signs can also mean a dull blade or a binding cut.",
+    ].join(" "),
+  },
+  {
+    question: "What does best mean on this page?",
+    answer: [
+      "This page is not a brand ranking and it does not have a score.",
+      "A 12 AWG, 50-foot, SJTW cord with intact 15 A ends from a known listing is the product.",
+      "Brand paint, lighted ends, and a hanging storage loop are convenience.",
+      "They are not a substitute for copper.",
+      "Light-duty 16 AWG cords are for lamps and chargers.",
+    ].join(" "),
+  },
+]);
+
 export default function CircularSawPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -30,6 +68,7 @@ export default function CircularSawPage() {
           path: "/best-extension-cord-for-circular-saw",
         })}
       />
+      {faq.script}
       <GuideHero
         kicker="15 A saws"
         title="Extension cord sizing for a 15 A circular saw"
@@ -124,6 +163,7 @@ export default function CircularSawPage() {
           intact 15 A ends from a known listing is the product. Brand paint, lighted ends, and a
           hanging storage loop are convenience. They are not a substitute for copper.
         </p>
+        {faq.answers}
       </div>
       <ShopCords pick={12} lengthFt={50} heading="Cords for a 15 A saw" />
       <RelatedGuides except="/best-extension-cord-for-circular-saw" />
