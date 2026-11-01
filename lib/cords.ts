@@ -1,12 +1,3 @@
-/**
- * Copper planning numbers for portable cords on 120 V, single-phase.
- *
- * Resistance is NEC Chapter 9, Table 8, uncoated copper at 75 °C (Ω / 1,000 ft).
- * Voltage drop is the two-way path: VD = 2 × L(ft) × I(A) × R / 1,000.
- *
- * These are planning estimates, not a lab test of a named SKU and not a
- * substitute for the cord’s listed ampacity or the tool nameplate.
- */
 export const copperOhmsPerKft = {
   16: 4.89,
   14: 3.07,
@@ -38,10 +29,6 @@ export function formatDrop(awg: Awg, amps: number, lengthFt: number): string {
   return `${volts.toFixed(1)} V (${pct.toFixed(1)}%)`;
 }
 
-/**
- * Shop pick for motor tools that should stay near 3% drop at 120 V.
- * Ampacity of the marked cord still wins if it is lower.
- */
 export function recommendAwg(amps: number, lengthFt: number): Awg {
   if (amps <= 10 && lengthFt <= 25) return 16;
   if (amps <= 10 && lengthFt <= 50) return 14;
@@ -84,17 +71,14 @@ export const gaugeChart: ChartRow[] = loadAmps.flatMap((amps) =>
 
 export const pickSteps = [
   {
-    n: "1",
     title: "Read the tool amps",
     body: "Use the nameplate, not the marketing box. A circular saw that says 15 A is a 15 A load even if the cut “feels light.”",
   },
   {
-    n: "2",
     title: "Measure the run",
     body: "Length is outlet to tool, including any extra coil you leave on the ground. Two 50-foot cords in series are a 100-foot problem plus an extra connection.",
   },
   {
-    n: "3",
     title: "Pick AWG for drop, then check the mark",
     body: "Thicker copper (smaller AWG number) drops less voltage. Then confirm the cord and plug are listed for at least the tool’s amps. A 12 AWG cord with a 15 A plug is still a 15 A cord.",
   },

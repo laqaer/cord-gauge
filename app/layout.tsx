@@ -55,12 +55,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <JsonLd data={websiteJsonLd()} />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-card focus:px-3 focus:py-2"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-paper focus:px-3 focus:py-2"
         >
           Skip to content
         </a>
         <SiteHeader />
-        <div className="strand-rule" aria-hidden />
         <main id="main">{children}</main>
         <SiteFooter />
       </body>

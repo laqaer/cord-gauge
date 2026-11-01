@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { AmazonLink } from "@/components/amazon-link";
-import { CrossSection } from "@/components/marks";
 import { products, selectProducts } from "@/lib/affiliates";
 import type { Awg } from "@/lib/cords";
 
@@ -53,15 +52,12 @@ export function ShopCords({
       <ul className="shop-list">
         {selection.products.map((product) => (
           <li key={product.asin} className="shop-row">
-            <div className="shop-row-main">
-              <CrossSection awg={product.awg} className="shop-face" />
-              <div>
-                <p className="shop-label">{product.label}</p>
-                <p className="shop-spec">
-                  {product.awg} AWG · {product.lengthFt} ft · {product.jacket}
-                </p>
-                {product.note ? <p className="shop-row-note">{product.note}</p> : null}
-              </div>
+            <div>
+              <p className="shop-label">{product.label}</p>
+              <p className="shop-spec">
+                {product.awg} AWG · {product.lengthFt} ft · {product.jacket}
+              </p>
+              {product.note ? <p className="shop-row-note">{product.note}</p> : null}
             </div>
             <AmazonLink asin={product.asin} label={product.label} />
           </li>

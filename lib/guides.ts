@@ -1,7 +1,6 @@
 export type Guide = {
   href: string;
   title: string;
-  kicker: string;
   dek: string;
   description: string;
 };
@@ -10,7 +9,6 @@ export const guides: Guide[] = [
   {
     href: "/extension-cord-gauge-calculator",
     title: "Extension cord gauge calculator",
-    kicker: "Calculator",
     dek: "Nameplate amps and run length in, AWG pick and copper voltage drop out, plus a cord only when the listing matches.",
     description:
       "Extension cord gauge calculator for 10, 13, and 15 amp tools at 25, 50, and 100 feet. Copper voltage-drop planning and a matching in-stock cord when we have one.",
@@ -18,7 +16,6 @@ export const guides: Guide[] = [
   {
     href: "/extension-cord-gauge-chart",
     title: "Extension cord gauge chart",
-    kicker: "Master chart",
     dek: "AWG × amps × length with copper voltage-drop planning numbers — and why the jacket color is not the spec.",
     description:
       "Extension cord gauge chart for 16, 14, 12, and 10 AWG. Amps, run length, and copper voltage-drop planning numbers for shop tools.",
@@ -26,7 +23,6 @@ export const guides: Guide[] = [
   {
     href: "/12-vs-14-gauge-extension-cord",
     title: "12 vs 14 gauge extension cord",
-    kicker: "12 vs 14",
     dek: "When 12 AWG is the right buy for a 15 A tool, and when a short 14 AWG cord is still enough.",
     description:
       "Compare 12 AWG and 14 AWG extension cords for 15 A shop tools. Voltage drop, weight, and when the thinner cord is fine.",
@@ -34,7 +30,6 @@ export const guides: Guide[] = [
   {
     href: "/10-vs-12-gauge-extension-cord",
     title: "10 vs 12 gauge extension cord",
-    kicker: "10 vs 12",
     dek: "When 10 AWG beats 12 AWG on 100-foot 15 A motors, start sag, and a cord that lives on the shop floor.",
     description:
       "Compare 10 AWG and 12 AWG extension cords for 15 A shop tools. Voltage drop at 100 feet, motor start, and when the thicker cord is worth the weight.",
@@ -42,7 +37,6 @@ export const guides: Guide[] = [
   {
     href: "/best-extension-cord-for-circular-saw",
     title: "Best extension cord for a circular saw",
-    kicker: "15 A saws",
     dek: "Nameplate amps, start surge, and the gauge that keeps a 15 A saw from sagging on a long run.",
     description:
       "Extension cord gauge for a 15 A circular saw. Why 12 AWG beats 14 AWG past a short run, and why 16 AWG is the wrong aisle.",
@@ -50,7 +44,6 @@ export const guides: Guide[] = [
   {
     href: "/best-extension-cord-for-table-saw",
     title: "Best extension cord for a table saw",
-    kicker: "Table saw",
     dek: "Nameplate 15 A contractor saws, start surge, and when 12 AWG is enough vs when 10 AWG is the honest run.",
     description:
       "Extension cord gauge for a 15 A table saw. Why 16 AWG is wrong, when 12 AWG is the shop default, and when 10 AWG is the honest long run.",
@@ -58,7 +51,6 @@ export const guides: Guide[] = [
   {
     href: "/best-extension-cord-for-air-compressor",
     title: "Best extension cord for an air compressor",
-    kicker: "Compressor",
     dek: "Nameplate vs start surge on a 15 A portable compressor, why thin cords trip and heat, and when 12 AWG vs 10 AWG.",
     description:
       "Extension cord gauge for a 15 A portable air compressor. Nameplate vs start surge, why thin cords trip and heat, and when 12 AWG vs 10 AWG.",
@@ -66,7 +58,6 @@ export const guides: Guide[] = [
   {
     href: "/best-extension-cord-for-pressure-washer",
     title: "Best extension cord for a pressure washer",
-    kicker: "Pressure washer",
     dek: "Nameplate 13–15 A electric washers outdoors, SJTW jacket, why thin cords trip and heat, and 12 AWG vs 10 AWG on a driveway.",
     description:
       "Extension cord gauge for a 13–15 A electric pressure washer. Why outdoor SJTW matters, why thin cords trip and heat, and when 12 AWG vs 10 AWG on a driveway.",
@@ -74,7 +65,6 @@ export const guides: Guide[] = [
   {
     href: "/100-foot-extension-cord-gauge",
     title: "100-foot extension cord gauge",
-    kicker: "Long runs",
     dek: "Voltage drop at 100 feet. When 12 AWG is the floor, and when 10 AWG is the honest pick.",
     description:
       "What gauge for a 100-foot extension cord. Copper voltage-drop planning for 10–15 A tools, and why two 50-foot cords are not the same.",
@@ -82,7 +72,6 @@ export const guides: Guide[] = [
   {
     href: "/daisy-chain-extension-cords",
     title: "Can you daisy-chain extension cords?",
-    kicker: "Daisy chain",
     dek: "Why two 50-foot cords are a 100-foot drop plus extra plugs — and why the thinnest link sets the ampacity.",
     description:
       "Why stacking two 50-foot cords fails for shop tools. 100-foot voltage drop, ampacity of the thinnest link, heat at the plugs, and when one properly gauged cord is the fix.",
@@ -90,7 +79,6 @@ export const guides: Guide[] = [
   {
     href: "/outdoor-extension-cord-gauge-sjtw",
     title: "Outdoor extension cord gauge and SJTW",
-    kicker: "Outdoor / SJTW",
     dek: "SJTW is a jacket rating, not a thicker wire. Outdoor-rated still has to match amps and length.",
     description:
       "What SJTW means on an outdoor extension cord, how jacket type differs from AWG, and how to size outdoor shop runs.",
@@ -111,7 +99,6 @@ export function guidesByHref(hrefs: readonly string[]): Guide[] {
   });
 }
 
-/** Purchase-intent guides. Order is the order shown after the calculator and chart. */
 export const toolBuyerHrefs = [
   "/best-extension-cord-for-circular-saw",
   "/best-extension-cord-for-table-saw",
@@ -119,7 +106,6 @@ export const toolBuyerHrefs = [
   "/best-extension-cord-for-pressure-washer",
 ] as const;
 
-/** One-line why for the post-math handoff. Gauge advice only — not a product pitch. */
 export const toolBuyerWhy: Record<(typeof toolBuyerHrefs)[number], string> = {
   "/best-extension-cord-for-circular-saw":
     "About 13–15 A. Short runs → 12 AWG.",
