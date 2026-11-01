@@ -30,7 +30,6 @@ export default function AboutPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <JsonLd data={organizationJsonLd()} />
-      <p className="kicker">About</p>
       <h1 className="display">CordGauge Guide is a directory, not a cord brand</h1>
       <div className="prose-cord mt-8">
         <p>
