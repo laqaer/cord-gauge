@@ -7,6 +7,7 @@
   --color-ink: #1b1714;
   --color-rule: #d5c9b6;
   --color-amp: #c46a2e;
+  --color-amp-dark: #8c3f12;
   --color-steel: #1c3d49;
   --text-sm: 0.9375rem;
   --text-sm--line-height: 1.55;
@@ -416,7 +417,7 @@ main > div.mx-auto {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.75rem;
   letter-spacing: 0;
-  color: var(--color-amp);
+  color: var(--color-amp-dark);
 }
 
 .instrument-fields {
@@ -462,13 +463,13 @@ main > div.mx-auto {
 }
 
 .instrument-pick span {
-  color: var(--color-amp);
+  color: var(--color-amp-dark);
 }
 
 .instrument-drop,
 .shop-spec {
   margin-top: 0.25rem;
-  color: var(--color-amp);
+  color: var(--color-amp-dark);
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.82rem;
   letter-spacing: 0;
@@ -490,7 +491,7 @@ main > div.mx-auto {
 }
 
 .drop-cell dt {
-  color: var(--color-amp);
+  color: var(--color-amp-dark);
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.72rem;
   letter-spacing: 0;
