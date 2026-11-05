@@ -1,0 +1,17 @@
+# CordGauge Guide
+
+> Independent AWG decision guide for shop and DIY power tools. Compare extension-cord gauge by amps × run length. No fake reviews.
+
+## Money guides
+
+- [Extension cord gauge calculator](https://www.cordgaugeguide.com/extension-cord-gauge-calculator): Extension cord gauge calculator for 10, 13, and 15 amp tools at 25, 50, and 100 feet. Copper voltage drop, the AWG pick, and a cord only when the listing matches.
+- [Extension cord gauge chart (AWG × amps × length)](https://www.cordgaugeguide.com/extension-cord-gauge-chart): Master extension-cord gauge chart for 16, 14, 12, and 10 AWG. Copper voltage-drop planning numbers at 10, 13, and 15 A for 25, 50, and 100 feet.
+- [12 vs 14 gauge extension cord: when 12 AWG wins](https://www.cordgaugeguide.com/12-vs-14-gauge-extension-cord): When a 12 AWG extension cord beats 14 AWG for 15 A shop tools, and when a short 14 AWG run is still the right buy.
+- [10 vs 12 gauge extension cord: when 10 AWG wins](https://www.cordgaugeguide.com/10-vs-12-gauge-extension-cord): When a 10 AWG extension cord beats 12 AWG for 15 A shop motors, and when 12 AWG is still the right buy.
+- [Best extension cord for a circular saw (15 A)](https://www.cordgaugeguide.com/best-extension-cord-for-circular-saw): Extension cord gauge for a 15 A circular saw. Why 12 AWG is the default, when 14 AWG is only a short-run cord, and why 16 AWG is the wrong aisle.
+- [Best extension cord for a table saw (15 A)](https://www.cordgaugeguide.com/best-extension-cord-for-table-saw): Extension cord gauge for a 15 A table saw. Why 16 AWG is wrong, when 12 AWG is the shop default, and when 10 AWG is the honest long run.
+- [Best extension cord for an air compressor (15 A)](https://www.cordgaugeguide.com/best-extension-cord-for-air-compressor): Extension cord gauge for a 15 A portable air compressor. Nameplate vs start surge, why thin cords trip and heat, and when 12 AWG vs 10 AWG.
+- [Best extension cord for a pressure washer (15 A)](https://www.cordgaugeguide.com/best-extension-cord-for-pressure-washer): Extension cord gauge for a 13–15 A electric pressure washer. Why outdoor SJTW matters, why thin cords trip and heat, and when 12 AWG vs 10 AWG on a driveway.
+- [100-foot extension cord gauge](https://www.cordgaugeguide.com/100-foot-extension-cord-gauge): What gauge for a 100-foot extension cord. Copper voltage-drop planning for 10–15 A tools, and why daisy-chaining two 50-foot cords is worse.
+- [Can you daisy-chain extension cords?](https://www.cordgaugeguide.com/daisy-chain-extension-cords): Why stacking two 50-foot cords fails for shop tools. 100-foot voltage drop, ampacity of the thinnest link, heat at the plugs, and when one properly gauged cord is the fix.
+- [Outdoor extension cord gauge and SJTW](https://www.cordgaugeguide.com/outdoor-extension-cord-gauge-sjtw): What SJTW means on an outdoor extension cord, how jacket type differs from AWG, and how to size outdoor shop runs by amps and length.
