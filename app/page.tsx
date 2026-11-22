@@ -46,15 +46,13 @@ export default function HomePage() {
       <GaugePicker />
 
       <section className="band">
-        <div className="band-head">
-          <h2 className="band-title">15 A shop loads, at a glance</h2>
-          <Link className="text-link" href="/extension-cord-gauge-chart">
-            Full gauge × amps × length chart
-          </Link>
-        </div>
+        <h2 className="band-title">15 A shop loads, at a glance</h2>
         <p className="band-note">
           Copper planning drop at 120 V (NEC Ch. 9 Table 8 resistances). Aim near 3% for motor tools.
-          The marked ampacity on the cord still wins if it is lower.
+          The marked ampacity on the cord still wins if it is lower. See the{" "}
+          <Link className="text-link" href="/extension-cord-gauge-chart">
+            Full gauge × amps × length chart
+          </Link>.
         </p>
         <div className="table-scroll">
           <table>

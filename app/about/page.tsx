@@ -35,7 +35,9 @@ export default function AboutPage() {
         <p>
           <strong>CordGauge Guide</strong> helps people pick portable-cord gauge by{" "}
           <strong>amps × run length × AWG</strong> so a 15 A shop tool is not hanging on a 16 AWG
-          “outdoor” reel. We do not manufacture cords. We do not invent star ratings.
+          “outdoor” reel. The amps, feet, and AWG for that choice are on the{" "}
+          <Link href="/extension-cord-gauge-chart">extension cord gauge chart</Link>. We do not
+          manufacture cords. We do not invent star ratings.
         </p>
         <p>
           The site is published by <strong>{site.publisher}</strong> at{" "}

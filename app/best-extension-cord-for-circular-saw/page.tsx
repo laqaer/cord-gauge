@@ -117,7 +117,8 @@ export default function CircularSawPage() {
           At 25 feet, 12 AWG is the conservative pick even though 14 AWG is close on paper. Motors
           forgive less than a work light. At 50 feet, buy 12 AWG. At 100 feet, 10 AWG is the honest
           15 A answer — details in the{" "}
-          <Link href="/100-foot-extension-cord-gauge">100-foot guide</Link>.
+          <Link href="/100-foot-extension-cord-gauge">100-foot guide</Link>. Every other amp row is
+          on the <Link href="/extension-cord-gauge-chart">extension cord gauge chart</Link>.
         </p>
         <ShopBuyLine awg={12} lengthFt={50}>
           50 ft 12 AWG SJTW is the usual shop buy.

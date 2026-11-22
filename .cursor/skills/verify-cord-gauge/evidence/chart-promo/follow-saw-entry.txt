@@ -1,0 +1,12 @@
+from: /
+name: 15 A saws
+href: /best-extension-cord-for-circular-saw
+matches: 1
+status: 200
+url: http://127.0.0.1:4321/best-extension-cord-for-circular-saw
+title: Best extension cord for a circular saw (15 A) · CordGauge Guide
+h1: Extension cord sizing for a 15 A circular saw
+jsonLd: WebSite, Article, FAQPage
+canonical: https://www.cordgaugeguide.com/best-extension-cord-for-circular-saw
+nav Primary: How to pick | Calculator | Master chart | 12 vs 14 | 15 A saws | Long runs | Outdoor | About
+expect: ok

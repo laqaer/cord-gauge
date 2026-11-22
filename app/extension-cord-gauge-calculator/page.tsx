@@ -132,7 +132,7 @@ export default function CalculatorPage() {
           inspect your circuit from an email.
         </p>
       </div>
-      <ShopCords heading="Checked outdoor cords" />
+      <ShopCords heading="Checked outdoor cords" lengthByAwg />
       <RelatedGuides except={path} />
     </article>
   );

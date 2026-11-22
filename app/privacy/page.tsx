@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ogImage, twitterWithImage } from "@/lib/metadata";
 import { site } from "@/lib/site";
 
@@ -58,10 +59,11 @@ export default function PrivacyPage() {
 
         <h2>Affiliate and advertising technology</h2>
         <p>
-          Some product links are Amazon Associates links (tag=laqaer-20). Clicking through to
-          Amazon can cause Amazon to set cookies, record that you came from CordGauge Guide, and
-          attribute a commission if you buy. Amazon has its own privacy policy. CordGauge Guide
-          does not receive your payment card number.
+          Some product links are Amazon Associates links (tag=laqaer-20), including on the{" "}
+          <Link href="/extension-cord-gauge-chart">extension cord gauge chart</Link>. Clicking
+          through to Amazon can cause Amazon to set cookies, record that you came from CordGauge
+          Guide, and attribute a commission if you buy. Amazon has its own privacy policy.
+          CordGauge Guide does not receive your payment card number.
         </p>
         <p>
           <code>ads.txt</code> on this site is a placeholder. We do not run display ads or list
