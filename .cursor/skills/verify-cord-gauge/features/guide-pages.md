@@ -38,6 +38,11 @@ Hub cards and the footer, using `guides[].title`:
 - `100-foot extension cord gauge` → `/100-foot-extension-cord-gauge` — `h1` `What gauge for a 100-foot extension cord`
 - `Can you daisy-chain extension cords?` → `/daisy-chain-extension-cords` — `h1` `Can you daisy-chain extension cords?`
 - `Outdoor extension cord gauge and SJTW` → `/outdoor-extension-cord-gauge-sjtw` — `h1` `SJTW is the jacket. AWG is still the wire.`
+- `30 amp RV extension cord` → `/30-amp-rv-extension-cord` — `h1` `30 amp RV extension cord`
+- `Extension cord for a generator` → `/best-extension-cord-for-generator` — `h1` `Extension cord for a generator`
+- `Christmas lights extension cord` → `/christmas-lights-extension-cord` — `h1` `Christmas lights extension cord`
+- `Extension cord for a welder` → `/best-extension-cord-for-welder` — `h1` `Extension cord for a welder`
+- `EV charger extension cord` → `/ev-charger-extension-cord` — `h1` `EV charger extension cord`
 
 `10 vs 12`, the table saw, the air compressor, the pressure washer, and the daisy-chain page are not in the header. Their hub card is an entry. The calculator page is covered by `gauge-calculator.md`, not here.
 

@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { JsonLd } from "@/components/json-ld";
 import { ogImage, openGraphImage } from "@/lib/metadata";
-import { websiteJsonLd } from "@/lib/schema";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/schema";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -53,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${barlow.variable} ${plexMono.variable}`}>
       <body className="site-body font-sans antialiased">
         <JsonLd data={websiteJsonLd()} />
+        <JsonLd data={organizationJsonLd()} />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-paper focus:px-3 focus:py-2"

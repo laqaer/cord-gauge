@@ -34,6 +34,11 @@ const SITEMAP_PATHS = [
   "/100-foot-extension-cord-gauge",
   "/daisy-chain-extension-cords",
   "/outdoor-extension-cord-gauge-sjtw",
+  "/30-amp-rv-extension-cord",
+  "/best-extension-cord-for-generator",
+  "/christmas-lights-extension-cord",
+  "/best-extension-cord-for-welder",
+  "/ev-charger-extension-cord",
 ];
 
 const PRODUCTION_HOSTS = [

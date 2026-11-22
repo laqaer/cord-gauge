@@ -17,7 +17,7 @@ export type CordPickCell = {
   asin: string | null;
 };
 
-function amazonSearchUrl(keywords: string): string {
+export function amazonSearchUrl(keywords: string): string {
   const query = new URLSearchParams({ k: keywords, tag: AMAZON_TAG });
   return `https://www.amazon.com/s?${query}`;
 }

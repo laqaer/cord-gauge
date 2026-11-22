@@ -8,7 +8,7 @@ import { RelatedGuides } from "@/components/related-guides";
 import { GaugePicker } from "@/components/gauge-picker";
 import { ShopBuyLine, ShopCords } from "@/components/shop-cords";
 import { awgOrder, gaugeChart, listedAmpNotes } from "@/lib/cords";
-import { toolBuyerHrefs, toolBuyerWhy } from "@/lib/guides";
+import { specialtyLoadHrefs, specialtyLoadWhy, toolBuyerHrefs, toolBuyerWhy } from "@/lib/guides";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
 
@@ -134,6 +134,14 @@ export default function GaugeChartPage() {
         whyByHref={toolBuyerWhy}
         heading="Next: tool-specific picks"
         intro="You already have the amps and the feet. These pages apply that pick to the tool."
+      />
+
+      <RelatedGuides
+        compact
+        hrefs={specialtyLoadHrefs}
+        whyByHref={specialtyLoadWhy}
+        heading="RV, generator, lights, welder, EV"
+        intro="These loads are not a 15 A shop tool. The plug and the cord rating change."
       />
 
       <div className="prose-cord mt-10">

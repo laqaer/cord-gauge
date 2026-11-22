@@ -12,6 +12,9 @@ export const site = {
   updated: "2026-09-26",
 } as const;
 
+export const lastReviewed = "2026-11-22";
+export const lastReviewedLabel = "November 22, 2026";
+
 export const affiliateDisclosure =
   "CordGauge Guide is reader-supported. Some links are Amazon Associates links (tag=laqaer-20). If you buy through those links, we may earn a commission at no extra cost to you. We do not sell numbered review scores.";
 
