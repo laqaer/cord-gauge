@@ -1,4 +1,4 @@
-import { site } from "@/lib/site";
+import { lastReviewed, site } from "@/lib/site";
 
 export function websiteJsonLd() {
   return {
@@ -32,7 +32,7 @@ export function articleJsonLd(input: {
     url,
     mainEntityOfPage: url,
     datePublished: site.updated,
-    dateModified: input.dateModified ?? site.updated,
+    dateModified: input.dateModified ?? lastReviewed,
     inLanguage: "en-US",
     author: {
       "@type": "Organization",

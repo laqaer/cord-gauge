@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { guides } from "@/lib/guides";
-import { site } from "@/lib/site";
+import { lastReviewed, site } from "@/lib/site";
 
 const staticRoutes = ["/", "/about", "/privacy"] as const;
 
@@ -8,7 +8,7 @@ const staticRoutes = ["/", "/about", "/privacy"] as const;
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date(site.updated);
+  const lastModified = new Date(lastReviewed);
 
   return [
     ...staticRoutes.map((path) => ({

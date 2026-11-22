@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { recommendAwg, voltageDropPercent, voltageDropVolts } from "./cords.ts";
-import { AMAZON_TAG, amazonUrl, cordPickGrid, products, selectProducts } from "./affiliates.ts";
-import { guidesByHref, toolBuyerHrefs, toolBuyerWhy } from "./guides.ts";
+import { AMAZON_TAG, amazonSearchUrl, amazonUrl, cordPickGrid, products, selectProducts } from "./affiliates.ts";
+import { guides, guidesByHref, specialtyLoadHrefs, specialtyLoadWhy, toolBuyerHrefs, toolBuyerWhy } from "./guides.ts";
 
 test("15 A voltage drop uses the two-way copper path", () => {
   assert.equal(voltageDropVolts(12, 15, 100), 5.79);
@@ -95,5 +95,28 @@ test("calculator and chart hand off to the four tool buyer guides", () => {
   );
   for (const href of toolBuyerHrefs) {
     assert.match(toolBuyerWhy[href], /AWG/);
+  }
+});
+
+test("amazon search urls carry one laqaer-20 tag and no product ASIN", () => {
+  const href = amazonSearchUrl("30 amp RV extension cord 10 AWG TT-30");
+  assert.equal(
+    href,
+    "https://www.amazon.com/s?k=30+amp+RV+extension+cord+10+AWG+TT-30&tag=laqaer-20",
+  );
+  assert.equal(href.split("tag=").length, 2);
+  assert.equal(href.includes("/dp/"), false);
+  assert.equal(href.includes("B00004SQF4"), false);
+  assert.equal(href.includes("B00004SQF5"), false);
+});
+
+test("specialty load guides are real pages the chart can link", () => {
+  assert.deepEqual(
+    guidesByHref(specialtyLoadHrefs).map((guide) => guide.href),
+    [...specialtyLoadHrefs],
+  );
+  for (const href of specialtyLoadHrefs) {
+    assert.equal(guides.some((guide) => guide.href === href), true);
+    assert.ok(specialtyLoadWhy[href].length > 0);
   }
 });

@@ -83,6 +83,41 @@ export const guides: Guide[] = [
     description:
       "What SJTW means on an outdoor extension cord, how jacket type differs from AWG, and how to size outdoor shop runs.",
   },
+  {
+    href: "/30-amp-rv-extension-cord",
+    title: "30 amp RV extension cord",
+    dek: "A listed 30 A TT-30 cord, commonly 10 AWG, for 25 or 50 feet. A 50 A coach takes a 14-50 cord.",
+    description:
+      "30 amp RV extension cord sizing: 10 AWG TT-30 at 25 and 50 feet, how that differs from a 50 amp 14-50 cord, and when a longer lead needs a harder look at voltage drop.",
+  },
+  {
+    href: "/best-extension-cord-for-generator",
+    title: "Extension cord for a generator",
+    dek: "12 AWG for most short 120 V generator loads, 10 AWG when the run or the amps go up. A house connection needs a transfer switch or interlock.",
+    description:
+      "Extension cord for a generator: 12 AWG versus 10 AWG by length and load, 120 V outlets versus an L14-30, and why a house connection uses a transfer switch or interlock.",
+  },
+  {
+    href: "/christmas-lights-extension-cord",
+    title: "Christmas lights extension cord",
+    dek: "A 16 AWG outdoor cord is enough when the strings' labeled watts stay inside that cord's marked amps. Use a W or SJTW jacket on a GFCI receptacle.",
+    description:
+      "Christmas lights extension cord: when 16 AWG is enough, when to step up, and why outdoor lights want a W or SJTW jacket on a GFCI receptacle.",
+  },
+  {
+    href: "/best-extension-cord-for-welder",
+    title: "Extension cord for a welder",
+    dek: "Use the welder's input amps, keep the cord short, and step from 12 AWG to 10 AWG or 8 AWG as the input rises.",
+    description:
+      "Extension cord for a welder: 120 V versus 240 V, 12, 10, and 8 AWG, duty cycle, and why the nameplate input amps — not the weld output — size the cord.",
+  },
+  {
+    href: "/ev-charger-extension-cord",
+    title: "EV charger extension cord",
+    dek: "Most EV charger makers say do not use a household extension cord. If the manual allows one, use a short outdoor cord of 12 AWG or heavier, or a UL-listed J1772 extension.",
+    description:
+      "EV charger extension cord: why most EVSE makers say not to use a household cord, when a short 12 AWG outdoor cord or a UL-listed J1772 extension is the allowed path, and Level 1 on a 15 A circuit.",
+  },
 ];
 
 export function guideByHref(href: string): Guide | undefined {
@@ -105,6 +140,25 @@ export const toolBuyerHrefs = [
   "/best-extension-cord-for-air-compressor",
   "/best-extension-cord-for-pressure-washer",
 ] as const;
+
+export const specialtyLoadHrefs = [
+  "/30-amp-rv-extension-cord",
+  "/best-extension-cord-for-generator",
+  "/christmas-lights-extension-cord",
+  "/best-extension-cord-for-welder",
+  "/ev-charger-extension-cord",
+] as const;
+
+export const specialtyLoadWhy: Record<(typeof specialtyLoadHrefs)[number], string> = {
+  "/30-amp-rv-extension-cord": "30 A TT-30, commonly 10 AWG. A 50 A coach is a 14-50 cord.",
+  "/best-extension-cord-for-generator":
+    "12 AWG on a short 120 V outlet. House power needs a transfer switch or interlock.",
+  "/christmas-lights-extension-cord":
+    "16 AWG when the label watts fit the cord mark. Outdoor jacket and GFCI.",
+  "/best-extension-cord-for-welder": "Input amps, short cord, 12 / 10 / 8 AWG as the load rises.",
+  "/ev-charger-extension-cord":
+    "Household cords are usually disallowed. Short 12 AWG, or a listed J1772 extension.",
+};
 
 export const toolBuyerWhy: Record<(typeof toolBuyerHrefs)[number], string> = {
   "/best-extension-cord-for-circular-saw":

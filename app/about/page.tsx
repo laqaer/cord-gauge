@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { JsonLd } from "@/components/json-ld";
 import { ogImage, twitterWithImage } from "@/lib/metadata";
-import { organizationJsonLd } from "@/lib/schema";
 import { site } from "@/lib/site";
 
 const title = "About CordGauge Guide";
@@ -29,7 +27,6 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <JsonLd data={organizationJsonLd()} />
       <h1 className="display">CordGauge Guide is a directory, not a cord brand</h1>
       <div className="prose-cord mt-8">
         <p>
