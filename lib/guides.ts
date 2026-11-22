@@ -114,9 +114,9 @@ export const guides: Guide[] = [
   {
     href: "/ev-charger-extension-cord",
     title: "EV charger extension cord",
-    dek: "Most EV charger makers say do not use a household extension cord. If the manual allows one, use a short outdoor cord of 12 AWG or heavier, or a UL-listed J1772 extension.",
+    dek: "Most EV charger makers say do not use a household extension cord. If the manual allows one, use a short outdoor cord of 12 AWG or heavier, or a J1772 extension that maker allows.",
     description:
-      "EV charger extension cord: why most EVSE makers say not to use a household cord, when a short 12 AWG outdoor cord or a UL-listed J1772 extension is the allowed path, and Level 1 on a 15 A circuit.",
+      "EV charger extension cord: why most EVSE makers say not to use a household cord, when a short 12 AWG outdoor cord or a maker-allowed J1772 extension is the path, and Level 1 on a 15 A circuit.",
   },
 ];
 
@@ -157,7 +157,7 @@ export const specialtyLoadWhy: Record<(typeof specialtyLoadHrefs)[number], strin
     "16 AWG when the label watts fit the cord mark. Outdoor jacket and GFCI.",
   "/best-extension-cord-for-welder": "Input amps, short cord, 12 / 10 / 8 AWG as the load rises.",
   "/ev-charger-extension-cord":
-    "Household cords are usually disallowed. Short 12 AWG, or a listed J1772 extension.",
+    "Household cords are usually disallowed. Short 12 AWG, or a J1772 extension only if the maker allows it.",
 };
 
 export const toolBuyerWhy: Record<(typeof toolBuyerHrefs)[number], string> = {

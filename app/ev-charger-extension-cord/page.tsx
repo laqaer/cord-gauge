@@ -13,7 +13,7 @@ import { articleJsonLd } from "@/lib/schema";
 const path = "/ev-charger-extension-cord";
 const title = "EV charger extension cord";
 const description =
-  "EV charger extension cord: most EVSE makers say not to use a household cord. Where a cord is allowed, use a short outdoor 12 AWG or heavier cord, or a UL-listed J1772 extension.";
+  "EV charger extension cord: most EVSE makers say not to use a household cord. Where a cord is allowed, use a short outdoor 12 AWG or heavier cord. A J1772 extension is a different cable, and only if that maker allows it.";
 
 export const metadata: Metadata = {
   title,
@@ -26,17 +26,17 @@ const faq = guideFaq([
   {
     question: "Can you use an extension cord for EV charging?",
     answer:
-      "Most EVSE manufacturers say no. Follow that instruction. Where the manual allows a cord, use a short outdoor-rated cord of 12 AWG or heavier, and stay inside the cord's marked amps. A UL-listed J1772 extension is a different product from a household cord, and it is still only appropriate when the vehicle maker allows it.",
+      "Most EVSE manufacturers say no. Follow that instruction. Where the manual allows a cord, use a short outdoor-rated cord of 12 AWG or heavier, and stay inside the cord's marked amps. A J1772 extension is a different cable from a household cord. Use one only when the vehicle maker allows it. The J1772 name is the connector, not a listing for the finished cable.",
   },
   {
     question: "What is a J1772 extension cord?",
     answer:
-      "A J1772 extension is a cable assembly with SAE J1772 connectors, the coupler most North American Level 1 and Level 2 stations use on the car. It is a listed EV cord, not a household extension cord. Use a UL-listed one, and only where the EVSE maker allows an extension.",
+      "A J1772 extension is a cable with SAE J1772 connectors, the coupler most North American Level 1 and Level 2 stations use on the car. That name is the connector. It does not mean the finished extension is a listed assembly. A seller can mark a plug or a piece of cable as certified while the assembled cord is not listed. Use one only where the EVSE maker allows an extension, and follow that maker on which cable is acceptable.",
   },
   {
     question: "Can a Tesla mobile connector use an extension cord?",
     answer:
-      "Follow the mobile connector instructions that shipped with the unit. If they disallow a household extension cord, do not add one. A UL-listed extension made for that connector is a different product, and it is allowed only when those instructions say so.",
+      "Follow the mobile connector instructions that shipped with the unit. If they disallow a household extension cord, do not add one. An extension made for that connector is a different cable from a household cord. Use one only when those instructions say so.",
   },
   {
     question: "What does Level 1 charging draw on a 15 A circuit?",
@@ -53,7 +53,7 @@ export default function EvChargerCordPage() {
       <GuideHero
         kicker="EV charging"
         title="EV charger extension cord"
-        dek="Most EV charger makers say do not use a household extension cord. If the manual allows one, use a short outdoor cord of 12 AWG or heavier, or a UL-listed J1772 extension."
+        dek="Most EV charger makers say do not use a household extension cord. If the manual allows one, use a short outdoor cord of 12 AWG or heavier, or a J1772 extension that maker allows."
       />
 
       <div className="prose-cord mt-10">
@@ -66,9 +66,10 @@ export default function EvChargerCordPage() {
         </p>
         <p>
           NEC Article 625 covers electric vehicle power transfer. A household cord set is a UL 817
-          product with a plug rating, often 15 A. That is a different piece of equipment from a
-          UL-listed J1772 extension. Flexible-cord ampacity for the household cord is still NEC
-          Table 400.5(A)(1), and the jacket mark is the limit.
+          product with a plug rating, often 15 A. A J1772 extension is a different cable: SAE J1772
+          is the connector on the car end, not a listing of the finished extension. Flexible-cord
+          ampacity for the household cord is still NEC Table 400.5(A)(1), and the jacket mark is
+          the limit.
         </p>
 
         <h2>What to use</h2>
@@ -91,7 +92,7 @@ export default function EvChargerCordPage() {
               </tr>
               <tr>
                 <td>J1772 extension</td>
-                <td>UL-listed J1772 assembly the vehicle or EVSE maker allows</td>
+                <td>Only a cable the vehicle or EVSE maker allows. J1772 names the connector, not a listing of the assembly.</td>
               </tr>
               <tr>
                 <td>Level 1 on a 15 A circuit</td>
@@ -118,17 +119,17 @@ export default function EvChargerCordPage() {
             Search short 12 AWG outdoor cords.
           </AmazonLink>{" "}
           <AmazonLink
-            href={amazonSearchUrl("UL listed J1772 extension cord")}
-            label="UL listed J1772 extension cord"
+            href={amazonSearchUrl("J1772 extension cord")}
+            label="J1772 extension cord"
           >
-            Search UL-listed J1772 extensions.
+            Search J1772 extension cords.
           </AmazonLink>
         </p>
         <Callout title="Follow the EVSE manufacturer" tone="warn">
           If the manual disallows an extension cord, a heavier household cord is still disallowed.
-          A UL-listed J1772 extension is the product to look for only when the maker allows an
-          extension. Outdoor charging belongs on a GFCI-protected receptacle where the installation
-          requires one.
+          A J1772 extension is allowed only when the maker says so. The connector name is not a
+          listing for the finished cable. Outdoor charging belongs on a GFCI-protected receptacle
+          where the installation requires one.
         </Callout>
         {faq.answers}
       </div>
