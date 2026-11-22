@@ -1,0 +1,21 @@
+feature: chart-promo
+entry: hub link "Full gauge × amps × length chart" → /extension-cord-gauge-chart
+also: "15 A saws" then "extension cord gauge chart"; About and Privacy prose links of the same name
+
+commands:
+- cord-gauge doctor (pass, pid 2777, hub h1)
+- cord-gauge follow --from / --name "Full gauge × amps × length chart"
+- cord-gauge follow --from / --name "15 A saws"
+- cord-gauge follow --from /best-extension-cord-for-circular-saw --name "extension cord gauge chart"
+- cord-gauge follow --from /about --name "extension cord gauge chart"
+- cord-gauge follow --from /privacy --name "extension cord gauge chart"
+- cord-gauge get on /extension-cord-gauge-chart, /extension-cord-gauge-calculator, /about, /privacy, /best-extension-cord-for-circular-saw
+- cord-gauge snapshot of the chart and the calculator with screenshots
+
+built export (npm run build, files in out/):
+- 65 Amazon hrefs, each with exactly one tag=laqaer-20 and rel="nofollow sponsored noopener"
+- chart and calculator: 10 search hrefs and the two checked ASINs B00004SQF4 (50 ft 12 AWG) and B00004SQF5 (100 ft 12 AWG)
+- 100 ft 10 AWG is a search, not B00004SQF5
+- shop disclosure text sits above the table; footer "Affiliate disclosure." remains
+- chart JSON-LD types WebSite, Article, FAQPage; the four FAQ answers match the visible text
+- no dollar amounts on the chart or calculator HTML

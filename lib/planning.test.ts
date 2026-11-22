@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { recommendAwg, voltageDropPercent, voltageDropVolts } from "./cords.ts";
-import { AMAZON_TAG, amazonUrl, products, selectProducts } from "./affiliates.ts";
+import { AMAZON_TAG, amazonUrl, cordPickGrid, products, selectProducts } from "./affiliates.ts";
 import { guidesByHref, toolBuyerHrefs, toolBuyerWhy } from "./guides.ts";
 
 test("15 A voltage drop uses the two-way copper path", () => {
@@ -53,6 +53,30 @@ test("in-stock shop links match gauge and length", () => {
   const light = selectProducts({ pick: 16, lengthFt: 25 });
   assert.match(light.note ?? "", /16 AWG/);
   assert.equal(light.products.length, 2);
+});
+
+test("length by gauge shop links use laqaer-20 and only the checked ASINs", () => {
+  const cells = cordPickGrid().flat();
+  assert.equal(cells.length, 12);
+  const byKey = new Map(cells.map((cell) => [`${cell.lengthFt}-${cell.awg}`, cell]));
+  assert.equal(byKey.get("50-12")?.href, "https://www.amazon.com/dp/B00004SQF4?tag=laqaer-20");
+  assert.equal(byKey.get("50-12")?.asin, "B00004SQF4");
+  assert.equal(byKey.get("100-12")?.href, "https://www.amazon.com/dp/B00004SQF5?tag=laqaer-20");
+  assert.equal(byKey.get("100-12")?.asin, "B00004SQF5");
+  assert.equal(
+    byKey.get("25-16")?.href,
+    "https://www.amazon.com/s?k=25+ft+16+gauge+extension+cord&tag=laqaer-20",
+  );
+  assert.equal(byKey.get("100-10")?.asin, null);
+  assert.match(byKey.get("100-10")?.href ?? "", /k=100\+ft\+10\+gauge\+extension\+cord&tag=laqaer-20$/);
+  for (const cell of cells) {
+    assert.equal(cell.href.includes("tag=laqaer-20"), true);
+    assert.equal(cell.href.split("tag=").length, 2);
+  }
+  assert.deepEqual(
+    cells.flatMap((cell) => (cell.asin ? [cell.asin] : [])),
+    ["B00004SQF4", "B00004SQF5"],
+  );
 });
 
 test("calculator and chart hand off to the four tool buyer guides", () => {

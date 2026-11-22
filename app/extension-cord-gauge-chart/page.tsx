@@ -183,7 +183,7 @@ export default function GaugeChartPage() {
         </ShopBuyLine>
         {faq.answers}
       </div>
-      <ShopCords />
+      <ShopCords lengthByAwg />
       <RelatedGuides except="/extension-cord-gauge-chart" />
     </article>
   );

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { AmazonLink } from "@/components/amazon-link";
-import { products, selectProducts } from "@/lib/affiliates";
+import { cordPickAwgs, cordPickGrid, products, selectProducts } from "@/lib/affiliates";
 import type { Awg } from "@/lib/cords";
 
 export function ShopBuyLine({
@@ -29,14 +29,58 @@ export function ShopBuyLine({
   );
 }
 
+function LengthAwgTable() {
+  const rows = cordPickGrid();
+
+  return (
+    <>
+      <p className="shop-intro">
+        50 ft 12 AWG and 100 ft 12 AWG open the checked Southwire pages. Every other cell searches
+        Amazon for that length and gauge.
+      </p>
+      <div className="table-scroll">
+        <table>
+          <caption className="sr-only">Extension cords by length and AWG. Links open Amazon.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Length</th>
+              {cordPickAwgs.map((awg) => (
+                <th key={awg} scope="col">
+                  {awg} AWG
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row[0].lengthFt}>
+                <th scope="row">{row[0].lengthFt} ft</th>
+                {row.map((cell) => (
+                  <td key={cell.awg}>
+                    <AmazonLink href={cell.href} asin={cell.asin ?? undefined} label={cell.label}>
+                      {cell.awg} AWG
+                    </AmazonLink>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+}
+
 export function ShopCords({
   pick,
   lengthFt,
   heading = "Shop outdoor cords",
+  lengthByAwg = false,
 }: {
   pick?: Awg;
   lengthFt?: 25 | 50 | 100;
   heading?: string;
+  lengthByAwg?: boolean;
 }) {
   const selection = selectProducts({ pick, lengthFt });
 
@@ -48,6 +92,7 @@ export function ShopCords({
         Links go to Amazon (Associates tag laqaer-20). We may earn a commission. No scores and no
         prices.
       </p>
+      {lengthByAwg ? <LengthAwgTable /> : null}
       {selection.note ? <p className="shop-caution">{selection.note}</p> : null}
       <ul className="shop-list">
         {selection.products.map((product) => (

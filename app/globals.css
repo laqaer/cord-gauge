@@ -159,14 +159,6 @@ main > div.mx-auto {
   font-size: clamp(1.9rem, 3vw, 2.35rem);
 }
 
-.band-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 0.75rem 1.25rem;
-}
-
 .band-note,
 .shop-intro,
 .related-intro {

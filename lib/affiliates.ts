@@ -6,6 +6,47 @@ export function amazonUrl(asin: string): string {
   return `https://www.amazon.com/dp/${asin}?tag=${AMAZON_TAG}`;
 }
 
+const cordPickLengths = [25, 50, 100] as const;
+export const cordPickAwgs = [16, 14, 12, 10] as const;
+
+export type CordPickCell = {
+  lengthFt: (typeof cordPickLengths)[number];
+  awg: (typeof cordPickAwgs)[number];
+  href: string;
+  label: string;
+  asin: string | null;
+};
+
+function amazonSearchUrl(keywords: string): string {
+  const query = new URLSearchParams({ k: keywords, tag: AMAZON_TAG });
+  return `https://www.amazon.com/s?${query}`;
+}
+
+export function cordPickGrid(): CordPickCell[][] {
+  return cordPickLengths.map((lengthFt) =>
+    cordPickAwgs.map((awg) => {
+      const product = products.find((item) => item.awg === awg && item.lengthFt === lengthFt);
+      if (product) {
+        return {
+          lengthFt,
+          awg,
+          href: amazonUrl(product.asin),
+          label: product.label,
+          asin: product.asin,
+        };
+      }
+      const label = `${lengthFt} ft ${awg} gauge extension cord`;
+      return {
+        lengthFt,
+        awg,
+        href: amazonSearchUrl(label),
+        label,
+        asin: null,
+      };
+    }),
+  );
+}
+
 export type AffiliateProduct = {
   asin: string;
   label: string;
