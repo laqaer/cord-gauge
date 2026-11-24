@@ -1,0 +1,5 @@
+feature: guide-pages
+entry: hub card "Refrigerator extension cord" from /
+also followed from /extension-cord-gauge-chart and /extension-cord-gauge-calculator (same href, matches 3)
+back links: extension cord gauge chart, extension cord gauge calculator
+commands: cord-gauge follow, cord-gauge snapshot --feature guide-pages, cord-gauge seo

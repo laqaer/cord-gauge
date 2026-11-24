@@ -140,7 +140,7 @@ export default function GaugeChartPage() {
         compact
         hrefs={specialtyLoadHrefs}
         whyByHref={specialtyLoadWhy}
-        heading="RV, generator, lights, welder, EV"
+        heading="RV, generator, lights, welder, EV, fridge"
         intro="These loads are not a 15 A shop tool. The plug and the cord rating change."
       />
 

@@ -43,6 +43,7 @@ Hub cards and the footer, using `guides[].title`:
 - `Christmas lights extension cord` → `/christmas-lights-extension-cord` — `h1` `Christmas lights extension cord`
 - `Extension cord for a welder` → `/best-extension-cord-for-welder` — `h1` `Extension cord for a welder`
 - `EV charger extension cord` → `/ev-charger-extension-cord` — `h1` `EV charger extension cord`
+- `Refrigerator extension cord` → `/refrigerator-extension-cord` — `h1` `Refrigerator extension cord`
 
 `10 vs 12`, the table saw, the air compressor, the pressure washer, and the daisy-chain page are not in the header. Their hub card is an entry. The calculator page is covered by `gauge-calculator.md`, not here.
 
