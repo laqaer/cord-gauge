@@ -1,0 +1,15 @@
+{
+  "url": "http://127.0.0.1:4321/refrigerator-extension-cord",
+  "status": 200,
+  "title": "Refrigerator extension cord · CordGauge Guide",
+  "h1": "Refrigerator extension cord",
+  "jsonLdTypes": [
+    "WebSite",
+    "Organization",
+    "Article",
+    "FAQPage"
+  ],
+  "canonical": "https://www.cordgaugeguide.com/refrigerator-extension-cord",
+  "capturedAt": "2026-11-24T04:29:20.476Z",
+  "featureId": "guide-pages"
+}

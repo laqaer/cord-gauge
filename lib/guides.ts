@@ -118,6 +118,13 @@ export const guides: Guide[] = [
     description:
       "EV charger extension cord: why most EVSE makers say not to use a household cord, when a short 12 AWG outdoor cord or a maker-allowed J1772 extension is the path, and Level 1 on a 15 A circuit.",
   },
+  {
+    href: "/refrigerator-extension-cord",
+    title: "Refrigerator extension cord",
+    dek: "Many manuals say use a grounded outlet, not an extension cord. If a cord is unavoidable, one short 12 or 14 AWG 3-prong cord rated for the nameplate.",
+    description:
+      "Refrigerator extension cord: many manuals say plug into a grounded outlet. If a cord is unavoidable, use one short 12 or 14 AWG 3-prong cord rated for the nameplate amps.",
+  },
 ];
 
 export function guideByHref(href: string): Guide | undefined {
@@ -147,6 +154,7 @@ export const specialtyLoadHrefs = [
   "/christmas-lights-extension-cord",
   "/best-extension-cord-for-welder",
   "/ev-charger-extension-cord",
+  "/refrigerator-extension-cord",
 ] as const;
 
 export const specialtyLoadWhy: Record<(typeof specialtyLoadHrefs)[number], string> = {
@@ -158,6 +166,8 @@ export const specialtyLoadWhy: Record<(typeof specialtyLoadHrefs)[number], strin
   "/best-extension-cord-for-welder": "Input amps, short cord, 12 / 10 / 8 AWG as the load rises.",
   "/ev-charger-extension-cord":
     "Household cords are usually disallowed. Short 12 AWG, or a J1772 extension only if the maker allows it.",
+  "/refrigerator-extension-cord":
+    "Manual first. If a cord is unavoidable, one short 12 or 14 AWG 3-prong cord, never a power strip.",
 };
 
 export const toolBuyerWhy: Record<(typeof toolBuyerHrefs)[number], string> = {

@@ -39,6 +39,7 @@ const SITEMAP_PATHS = [
   "/christmas-lights-extension-cord",
   "/best-extension-cord-for-welder",
   "/ev-charger-extension-cord",
+  "/refrigerator-extension-cord",
 ];
 
 const PRODUCTION_HOSTS = [

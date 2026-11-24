@@ -1,4 +1,4 @@
 feature: seo-surfaces
 entry: GET /robots.txt, /sitemap.xml, /ads.txt
 commands: cord-gauge seo --dir .cursor/skills/verify-cord-gauge/evidence/seo-surfaces
-result: seo: pass (robots 200, sitemap-locs 19, ads comment-only)
+result: seo: pass (robots 200, sitemap-locs 20, ads comment-only)
