@@ -44,12 +44,20 @@ const faq = guideFaq([
 export default function ChristmasLightsCordPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <JsonLd data={articleJsonLd({ headline: title, description, path })} />
+      <JsonLd
+        data={articleJsonLd({
+          headline: title,
+          description,
+          path,
+          dateModified: "2026-11-24",
+        })}
+      />
       {faq.script}
       <GuideHero
         kicker="Outdoor lights"
         title="Christmas lights extension cord"
         dek="A 16 AWG outdoor cord is enough when the strings' labeled watts stay inside that cord's marked amps. Use a W or SJTW jacket on a GFCI receptacle."
+        reviewedLabel="November 24, 2026"
       />
 
       <div className="prose-cord mt-10">
@@ -64,6 +72,7 @@ export default function ChristmasLightsCordPage() {
           explains those letters. Ordinary outdoor cord sets are listed to UL 817. Flexible-cord
           ampacity is NEC Table 400.5(A)(1); the mark on the jacket is the number to stay under.
         </p>
+        <p>{"Holiday prices change daily. Check today's price on Amazon before you buy."}</p>
 
         <h2>Light load, cord, and length</h2>
         <div className="table-scroll">
@@ -107,24 +116,26 @@ export default function ChristmasLightsCordPage() {
           or another motor.
         </p>
         <p>
+          Search 16 AWG outdoor cords for a light-string run.{" "}
           <AmazonLink
             href={amazonSearchUrl("16 AWG outdoor extension cord SJTW")}
             label="16 AWG outdoor extension cord SJTW"
           >
-            Search 16 AWG outdoor cords for a light-string run.
-          </AmazonLink>{" "}
+            {"Check today's price"}
+          </AmazonLink>.{" "}
           CordGauge has not checked a 16 AWG listing, so this is a search, not a named product.
         </p>
-        <ShopBuyLine awg={12} lengthFt={50}>
+        <ShopBuyLine awg={12} lengthFt={50} linkLabel="Check today's price">
           When the lights outgrow 16 AWG, 50 ft 12 AWG SJTW is the checked outdoor cord.
         </ShopBuyLine>
         <p>
+          Search multi-outlet outdoor cords.{" "}
           <AmazonLink
             href={amazonSearchUrl("outdoor extension cord multi outlet SJTW")}
             label="outdoor extension cord multi outlet SJTW"
           >
-            Search multi-outlet outdoor cords.
-          </AmazonLink>
+            {"Check today's price"}
+          </AmazonLink>.
         </p>
         <Callout title="The cord mark is the total of every socket" tone="warn">
           A three-outlet cord marked 13 A can feed 13 A altogether. It cannot feed 13 A from each

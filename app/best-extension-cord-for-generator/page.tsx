@@ -48,12 +48,20 @@ const faq = guideFaq([
 export default function GeneratorCordPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <JsonLd data={articleJsonLd({ headline: title, description, path })} />
+      <JsonLd
+        data={articleJsonLd({
+          headline: title,
+          description,
+          path,
+          dateModified: "2026-11-24",
+        })}
+      />
       {faq.script}
       <GuideHero
         kicker="Generator"
         title="Extension cord for a generator"
         dek="Match the outlet: 12 AWG for most short 120 V loads, 10 AWG when the run or the amps go up. A house connection needs a transfer switch or interlock, never a male-to-male cord."
+        reviewedLabel="November 24, 2026"
       />
 
       <div className="prose-cord mt-10">
@@ -67,6 +75,7 @@ export default function GeneratorCordPage() {
           has two current-carrying conductors. The plug and the jacket mark are usually lower than
           the table, and the lower mark is the limit. Ordinary cord sets are listed to UL 817.
         </p>
+        <p>{"Holiday prices change daily. Check today's price on Amazon before you buy."}</p>
 
         <h2>Gauge by outlet and length</h2>
         <div className="table-scroll">
@@ -121,29 +130,31 @@ export default function GeneratorCordPage() {
           120 V generator outlet is still a 15 A or 20 A receptacle. The outlet rating wins if it
           is lower than the cord.
         </p>
-        <ShopBuyLine awg={12} lengthFt={50}>
+        <ShopBuyLine awg={12} lengthFt={50} linkLabel="Check today's price">
           50 ft 12 AWG SJTW is the checked cord for a 120 V generator outlet at 15 A.
         </ShopBuyLine>
-        <ShopBuyLine awg={12} lengthFt={100}>
+        <ShopBuyLine awg={12} lengthFt={100} linkLabel="Check today's price">
           100 ft 12 AWG SJTW matches a lighter 100-foot load, such as 10 A.
         </ShopBuyLine>
         <p>
           The 100 ft listing above is 12 AWG. It is not the 15 A pick at 100 feet. That pick is 10
-          AWG, and CordGauge does not currently link a checked 10 AWG cord.{" "}
+          AWG, and CordGauge does not currently link a checked 10 AWG cord. Search 10 AWG generator
+          cords.{" "}
           <AmazonLink
             href={amazonSearchUrl("10 gauge generator extension cord")}
             label="10 gauge generator extension cord"
           >
-            Search 10 AWG generator cords.
-          </AmazonLink>
+            {"Check today's price"}
+          </AmazonLink>.
         </p>
         <p>
+          Search L14-30 generator cords.{" "}
           <AmazonLink
             href={amazonSearchUrl("L14-30 30 amp generator extension cord 10 AWG")}
             label="L14-30 30 amp generator extension cord 10 AWG"
           >
-            Search L14-30 generator cords.
-          </AmazonLink>{" "}
+            {"Check today's price"}
+          </AmazonLink>.{" "}
           An L14-30 is a 30 A, 125/250 V locking outlet. A 15 A household cord does not belong on
           it.
         </p>

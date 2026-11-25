@@ -9,21 +9,30 @@ export function ShopBuyLine({
   children,
   after,
   className,
+  linkLabel,
 }: {
   awg: 10 | 12;
   lengthFt: 50 | 100;
   children: ReactNode;
   after?: ReactNode;
   className?: string;
+  linkLabel?: string;
 }) {
   const product = products.find((item) => item.awg === awg && item.lengthFt === lengthFt);
   if (!product) return null;
 
   return (
     <p className={className ? `buy-line ${className}` : "buy-line"}>
-      <AmazonLink asin={product.asin} label={product.label}>
-        {children}
-      </AmazonLink>
+      {linkLabel ? (
+        <>
+          {children}{" "}
+          <AmazonLink asin={product.asin} label={product.label}>{linkLabel}</AmazonLink>.
+        </>
+      ) : (
+        <AmazonLink asin={product.asin} label={product.label}>
+          {children}
+        </AmazonLink>
+      )}
       {after ? <> {after}</> : null}
     </p>
   );
