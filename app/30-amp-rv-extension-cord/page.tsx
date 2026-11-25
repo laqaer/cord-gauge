@@ -47,12 +47,20 @@ const faq = guideFaq([
 export default function ThirtyAmpRvPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <JsonLd data={articleJsonLd({ headline: title, description, path })} />
+      <JsonLd
+        data={articleJsonLd({
+          headline: title,
+          description,
+          path,
+          dateModified: "2026-11-24",
+        })}
+      />
       {faq.script}
       <GuideHero
         kicker="RV shore power"
         title="30 amp RV extension cord"
         dek="A listed 30 A TT-30 cord, commonly 10 AWG, is the cord for a 30-amp RV at 25 or 50 feet. A 50-amp coach takes a 14-50 cord instead."
+        reviewedLabel="November 24, 2026"
       />
 
       <div className="prose-cord mt-10">
@@ -68,6 +76,7 @@ export default function ThirtyAmpRvPage() {
           household 15 A cord, including a 12 AWG shop cord, has the wrong plug and the wrong amp
           mark for a 30 A RV inlet.
         </p>
+        <p>{"Holiday prices change daily. Check today's price on Amazon before you buy."}</p>
 
         <h2>30 A TT-30 by length</h2>
         <div className="table-scroll">
@@ -106,12 +115,13 @@ export default function ThirtyAmpRvPage() {
           <Link href="/extension-cord-gauge-calculator">extension cord gauge calculator</Link>.
         </p>
         <p>
+          Search 30 A TT-30 cords.{" "}
           <AmazonLink
             href={amazonSearchUrl("30 amp RV extension cord 10 AWG TT-30")}
             label="30 amp RV extension cord 10 AWG TT-30"
           >
-            Search 30 A TT-30 cords.
-          </AmazonLink>{" "}
+            {"Check today's price"}
+          </AmazonLink>.{" "}
           CordGauge does not link a checked 30 A RV listing. The two cords checked on this site are
           12 AWG household SJTW cords marked 15 A, so they are the wrong product here.
         </p>
@@ -150,12 +160,13 @@ export default function ThirtyAmpRvPage() {
           is rated to deliver. Follow the cord and adapter markings, and the coach manufacturer.
         </Callout>
         <p>
+          Search 50 A 14-50 RV cords.{" "}
           <AmazonLink
             href={amazonSearchUrl("50 amp RV extension cord 14-50")}
             label="50 amp RV extension cord 14-50"
           >
-            Search 50 A 14-50 RV cords.
-          </AmazonLink>
+            {"Check today's price"}
+          </AmazonLink>.
         </p>
         {faq.answers}
       </div>
