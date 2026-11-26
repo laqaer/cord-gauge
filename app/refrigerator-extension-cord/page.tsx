@@ -14,7 +14,7 @@ import { articleJsonLd } from "@/lib/schema";
 const path = "/refrigerator-extension-cord";
 const title = "Refrigerator extension cord";
 const description =
-  "Refrigerator extension cord: many manuals say plug into a grounded outlet. If a cord is unavoidable, use one short 12 or 14 AWG 3-prong cord rated for the nameplate amps.";
+  "Many refrigerator manuals say plug into a grounded outlet. If a cord is unavoidable, use one short 12 or 14 AWG 3-prong cord rated for the nameplate amps.";
 
 export const metadata: Metadata = {
   title,

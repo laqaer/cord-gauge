@@ -10,7 +10,7 @@ import { formatDrop, recommendAwg } from "@/lib/cords";
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
 
-const title = "Best extension cord for a pressure washer (15 A)";
+const title = "Best extension cord for pressure washer (15 A)";
 const description =
   "Extension cord gauge for a 13–15 A electric pressure washer. Why outdoor SJTW matters, why thin cords trip and heat, and when 12 AWG vs 10 AWG on a driveway.";
 

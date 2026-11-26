@@ -12,7 +12,7 @@ import { specialtyLoadHrefs, specialtyLoadWhy, toolBuyerHrefs, toolBuyerWhy } fr
 import { openGraphImage } from "@/lib/metadata";
 import { articleJsonLd } from "@/lib/schema";
 
-const title = "Extension cord gauge chart (AWG × amps × length)";
+const title = "Extension cord gauge chart (AWG × amps × feet)";
 const description =
   "Master extension-cord gauge chart for 16, 14, 12, and 10 AWG. Copper voltage-drop planning numbers at 10, 13, and 15 A for 25, 50, and 100 feet.";
 
