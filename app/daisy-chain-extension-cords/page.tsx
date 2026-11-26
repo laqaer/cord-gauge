@@ -12,7 +12,7 @@ import { articleJsonLd } from "@/lib/schema";
 
 const title = "Can you daisy-chain extension cords?";
 const description =
-  "Why stacking two 50-foot cords fails for shop tools. 100-foot voltage drop, thinnest-link ampacity, heat at plugs, and one properly gauged cord is the fix.";
+  "Why stacking two 50-foot cords fails for shop tools: 100-foot voltage drop, thinnest-link ampacity, heat at the plugs, and why one right-gauge cord fixes it.";
 
 export const metadata: Metadata = {
   title,
