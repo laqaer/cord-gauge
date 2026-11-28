@@ -44,8 +44,8 @@ function LengthAwgTable() {
   return (
     <>
       <p className="shop-intro">
-        50 ft 12 AWG and 100 ft 12 AWG open the checked Southwire pages. Every other cell searches
-        Amazon for that length and gauge.
+        Verified cords open their Amazon product page. Every other cell searches Amazon for that
+        length and gauge.
       </p>
       <div className="table-scroll">
         <table>

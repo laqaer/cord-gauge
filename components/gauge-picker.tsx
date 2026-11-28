@@ -18,7 +18,7 @@ export function GaugePicker() {
   const [amps, setAmps] = useState<LoadAmps>(15);
   const [lengthFt, setLengthFt] = useState<LengthFt>(50);
   const pick = recommendAwg(amps, lengthFt);
-  const shop = selectProducts({ pick, lengthFt });
+  const shop = selectProducts({ pick, lengthFt, amps });
 
   return (
     <form className="instrument" onSubmit={(event) => event.preventDefault()}>
