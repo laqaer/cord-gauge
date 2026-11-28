@@ -26,7 +26,7 @@ test("in-stock shop links match gauge and length", () => {
   assert.equal(amazonUrl("B00004SQF4"), "https://www.amazon.com/dp/B00004SQF4?tag=laqaer-20");
   assert.deepEqual(
     products.map((product) => product.asin),
-    ["B00004SQF4", "B00004SQF5"],
+    ["B00004SQF4", "B00004SQF5", "B00065UZG8", "B0CQ23CMKP"],
   );
   for (const dropped of ["B01LXI1NL8", "B09BDFM4HC", "B09BDGHQBP"]) {
     assert.equal(
@@ -43,6 +43,20 @@ test("in-stock shop links match gauge and length", () => {
     [50, 100],
   );
 
+  const fourteenFifty = selectProducts({ pick: 14, lengthFt: 50 });
+  assert.equal(fourteenFifty.note, null);
+  assert.deepEqual(
+    fourteenFifty.products.map((product) => product.asin),
+    ["B00065UZG8"],
+  );
+
+  const twelveShort = selectProducts({ pick: 12, lengthFt: 25 });
+  assert.equal(twelveShort.note, null);
+  assert.deepEqual(
+    twelveShort.products.map((product) => product.asin),
+    ["B0CQ23CMKP", "B00004SQF4", "B00004SQF5"],
+  );
+
   const hundred = selectProducts({ pick: 10, lengthFt: 100 });
   assert.match(hundred.note ?? "", /10 AWG/);
   assert.deepEqual(
@@ -52,13 +66,17 @@ test("in-stock shop links match gauge and length", () => {
 
   const light = selectProducts({ pick: 16, lengthFt: 25 });
   assert.match(light.note ?? "", /16 AWG/);
-  assert.equal(light.products.length, 2);
+  assert.equal(light.products.length, 4);
 });
 
 test("length by gauge shop links use laqaer-20 and only the checked ASINs", () => {
   const cells = cordPickGrid().flat();
   assert.equal(cells.length, 12);
   const byKey = new Map(cells.map((cell) => [`${cell.lengthFt}-${cell.awg}`, cell]));
+  assert.equal(byKey.get("25-12")?.href, "https://www.amazon.com/dp/B0CQ23CMKP?tag=laqaer-20");
+  assert.equal(byKey.get("25-12")?.asin, "B0CQ23CMKP");
+  assert.equal(byKey.get("50-14")?.href, "https://www.amazon.com/dp/B00065UZG8?tag=laqaer-20");
+  assert.equal(byKey.get("50-14")?.asin, "B00065UZG8");
   assert.equal(byKey.get("50-12")?.href, "https://www.amazon.com/dp/B00004SQF4?tag=laqaer-20");
   assert.equal(byKey.get("50-12")?.asin, "B00004SQF4");
   assert.equal(byKey.get("100-12")?.href, "https://www.amazon.com/dp/B00004SQF5?tag=laqaer-20");
@@ -75,7 +93,7 @@ test("length by gauge shop links use laqaer-20 and only the checked ASINs", () =
   }
   assert.deepEqual(
     cells.flatMap((cell) => (cell.asin ? [cell.asin] : [])),
-    ["B00004SQF4", "B00004SQF5"],
+    ["B0CQ23CMKP", "B00065UZG8", "B00004SQF4", "B00004SQF5"],
   );
 });
 

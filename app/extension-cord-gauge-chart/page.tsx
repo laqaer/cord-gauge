@@ -58,6 +58,7 @@ export default function GaugeChartPage() {
           headline: title,
           description,
           path: "/extension-cord-gauge-chart",
+          dateModified: "2026-11-28",
         })}
       />
       {faq.script}

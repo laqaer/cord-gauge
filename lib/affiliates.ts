@@ -50,8 +50,8 @@ export function cordPickGrid(): CordPickCell[][] {
 export type AffiliateProduct = {
   asin: string;
   label: string;
-  awg: 10 | 12;
-  lengthFt: 50 | 100;
+  awg: 10 | 12 | 14;
+  lengthFt: 25 | 50 | 100;
   jacket: string;
   note?: string;
 };
@@ -88,6 +88,20 @@ export const products: AffiliateProduct[] = [
     lengthFt: 100,
     jacket: "SJTW outdoor, lighted end, marked 15 A",
     note: "This is a 12 AWG cord. At 100 ft and 15 A the copper estimate is about 5.8 V (4.8%). The chart pick for that run is 10 AWG, which we are not linking until a checked in-stock listing exists.",
+  },
+  {
+    asin: "B00065UZG8",
+    label: "Prime Wire 14/3 SJTW 50 ft outdoor",
+    awg: 14,
+    lengthFt: 50,
+    jacket: "SJTW outdoor, marked 15 A",
+  },
+  {
+    asin: "B0CQ23CMKP",
+    label: "EP 12/3 SJTW 25 ft outdoor",
+    awg: 12,
+    lengthFt: 25,
+    jacket: "SJTW outdoor, lighted end, marked 15 A",
   },
 ];
 

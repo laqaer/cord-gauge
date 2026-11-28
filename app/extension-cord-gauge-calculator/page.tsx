@@ -48,7 +48,7 @@ export default function CalculatorPage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <JsonLd data={articleJsonLd({ headline: title, description, path })} />
+      <JsonLd data={articleJsonLd({ headline: title, description, path, dateModified: "2026-11-28" })} />
       <JsonLd
         data={{
           "@context": "https://schema.org",

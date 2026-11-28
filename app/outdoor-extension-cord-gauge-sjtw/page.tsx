@@ -75,6 +75,7 @@ export default function OutdoorSjtwPage() {
           headline: title,
           description,
           path: "/outdoor-extension-cord-gauge-sjtw",
+          dateModified: "2026-11-28",
         })}
       />
       {faq.script}

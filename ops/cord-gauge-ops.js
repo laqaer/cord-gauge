@@ -11,7 +11,7 @@
 
 const HOST = "https://www.cordgaugeguide.com";
 const INDEXNOW_KEY = "8601e4edc7ea47dc85f95937f927d93f";
-const ASINS = new Set(["B00004SQF4", "B00004SQF5"]);
+const ASINS = new Set(["B00004SQF4", "B00004SQF5", "B00065UZG8", "B0CQ23CMKP"]);
 const PAGES = [
   "/",
   "/extension-cord-gauge-chart",
