@@ -67,6 +67,26 @@ test("in-stock shop links match gauge and length", () => {
   const light = selectProducts({ pick: 16, lengthFt: 25 });
   assert.match(light.note ?? "", /16 AWG/);
   assert.equal(light.products.length, 4);
+
+  assert.equal(recommendAwg(13, 25), 14);
+  assert.equal(recommendAwg(13, 50), 12);
+  const thirteenShort = selectProducts({ pick: 14, lengthFt: 25, amps: 13 });
+  assert.match(thirteenShort.note ?? "", /14 AWG/);
+  assert.equal(
+    thirteenShort.products.some((product) => product.asin === "B00065UZG8"),
+    false,
+  );
+  assert.deepEqual(
+    thirteenShort.products.map((product) => product.asin),
+    ["B0CQ23CMKP", "B00004SQF4", "B00004SQF5"],
+  );
+
+  const tenAtFifty = selectProducts({ pick: 14, lengthFt: 50, amps: 10 });
+  assert.equal(tenAtFifty.note, null);
+  assert.deepEqual(
+    tenAtFifty.products.map((product) => product.asin),
+    ["B00065UZG8"],
+  );
 });
 
 test("length by gauge shop links use laqaer-20 and only the checked ASINs", () => {

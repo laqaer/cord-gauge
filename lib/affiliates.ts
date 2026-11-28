@@ -1,4 +1,4 @@
-import type { Awg } from "./cords";
+import { recommendAwg, type Awg } from "./cords.ts";
 
 export const AMAZON_TAG = "laqaer-20";
 
@@ -105,7 +105,7 @@ export const products: AffiliateProduct[] = [
   },
 ];
 
-export function selectProducts(input?: { pick?: Awg; lengthFt?: number }): {
+export function selectProducts(input?: { pick?: Awg; lengthFt?: number; amps?: number }): {
   products: AffiliateProduct[];
   note: string | null;
 } {
@@ -115,7 +115,11 @@ export function selectProducts(input?: { pick?: Awg; lengthFt?: number }): {
 
   const minLength = input.lengthFt ?? 0;
   const matches = products
-    .filter((product) => product.awg === input.pick && product.lengthFt >= minLength)
+    .filter((product) => {
+      if (product.awg !== input.pick || product.lengthFt < minLength) return false;
+      if (input.amps == null) return true;
+      return recommendAwg(input.amps, product.lengthFt) >= product.awg;
+    })
     .sort((a, b) => a.lengthFt - b.lengthFt);
 
   if (matches.length > 0) {
@@ -123,7 +127,7 @@ export function selectProducts(input?: { pick?: Awg; lengthFt?: number }): {
   }
 
   const otherGauge = products
-    .filter((product) => product.lengthFt >= minLength)
+    .filter((product) => product.lengthFt >= minLength && product.awg !== input.pick)
     .sort((a, b) => a.lengthFt - b.lengthFt || a.awg - b.awg);
   const lengthLabel = minLength > 0 ? `${minLength} ft ` : "";
 
